@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			.loader{
+				background-image: url('loading.gif');
+				background-repeat: no-repeat;
+				height: 200px;
+				width: 200px;
+				margin: 0 auto;
+				margin-top: 200px;
+				
+			}
+			
+			.hidden{
+				display: none;
+			}
+		</style>
+		<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+		<script src="functions.js"></script>
+		<script>
+
+			$(document).ready(function(){
+				verifyLogin();
+				$( "#logout" ).click(logOut);
+				$("input[name=finishPost]").on( "click", function(){
+					publishPost( $("#post").val() );
+				});	
+				showPosts();
+			});
+				
+		</script>
+	</head>
+	<body>
+	
+		<div id="topBar" class="hidden">
+			<span id="full_name"></span> | <a id="logout" href="#">logout</a> | <a href="profile.html">profile</a> | <a href="home.html">home</a> 
+		</div>
+		<div id="loader" class="loader"></div>
+		<div id="makePost">
+		Update your status:<br>
+			<textarea id="post" placeholder="What's on your mind?"></textarea>
+			<input type="button" value="Post" name="finishPost">
+		</div>
+	</body>
+</html>
