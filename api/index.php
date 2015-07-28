@@ -85,13 +85,15 @@ $app->post( '/user/', function() {
 	global $user, $app;
 	$jsonUser = json_decode( $app->request->getBody(), true );
 	$add = $user->addUser($jsonUser);
-	$boolString = ($add) ? 'true' : 'false';
-	$id = $user->getID($jsonUser['email'], $jsonUser['password']);
-	$results = array(
+	/*$boolString = ($add) ? 'true' : 'false'; 						 //wtf?!?!
+	$id = $user->getID($jsonUser['email'], $jsonUser['password']);  //wtf?!?!
+	$results = array( 												 //wtf?!?!
 		"boolean" => $boolString,
 		"id" => $id['0']['user_id'],
 	);
-	print_r(json_encode ($results));
+	print_r(json_encode ($results));*/
+	echo $add;
+	
 });
 
 //Adding user info

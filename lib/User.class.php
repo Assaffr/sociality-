@@ -19,24 +19,17 @@
 			return $users;
 		}
 		//ASSAF FIX THIS !!!!!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!
-		public function addUser($details){
-			$insertUser = $this->_db->query("
-						INSERT INTO socialityplus.users (user_id, user_email, user_password) 
-						VALUES (NULL, '$details[email]', '" . md5( $details['password'] ) . "');
-					");
-			if ($insertUser){
-				$id = $this->_db->query("
-						SELECT LAST_INSERT_ID();
-					");
-				$id = mysqli_fetch_assoc ($id)['LAST_INSERT_ID()'];	
-				$insertUserInfo = $this->_db->query("
-						INSERT INTO socialityplus.users_info (user_id, user_firstname, user_lastname, user_created) 
-						VALUES ('$id', '$details[firstName]', '$details[lastName]', CURRENT_TIME());
-					");
-				return	$insertUserInfo;
-			}
-
-			return $insertUser;	
+		public function addUser($userDetails){
+			$query = "INSERT INTO users 
+					(user_email , user_password)
+					VALUES 
+					('".$userDetails['user_email']."', '".$userDetails['user_password']."');
+					INSERT INTO users_info ( user_id, user_firstname, user_lastname)
+					VALUES (LAST_INSERT_ID(),'".$userDetails['user_firstname']."','".$userDetails['user_lastname']."');" ;		 
+		
+			$results = $this->_db->query($query); 
+		
+		return $results;
 		}
 		
 		
@@ -63,7 +56,7 @@
 			return $query;
 		}
 		
-	}
+	
 		//END OF ASSAF'S
 		
 		public function getID($email, $password){
@@ -88,7 +81,9 @@
 			
 		}
 		
-		public function updateUser($details){
+		////allready have "updateUser()" on line 37
+		
+	/*	public function updateUser($details){
 			$this->_db->query("
 					
 					UPDATE socialityplus.users_info SET user_nickname = '$details[nickname]', user_firstname = '$details[firstName]', 
@@ -98,7 +93,7 @@
 					
 					UPDATE socialityplus.users SET user_email = '$details[email]', user_password = '$details[password]' WHERE users.user_id = $details[id];
 					");		
-		}
+		}*/
 		
 		public function deleteUser($id){
 			$this->_db->query("
