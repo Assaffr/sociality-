@@ -1,5 +1,5 @@
 <?php
-
+//just checking i can use this repository ((:
 $title = "Welcome To Sociality+";
 $bodyId = "index";
 include_once dirname(__FILE__).'/inc/header.php';
