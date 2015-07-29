@@ -27,7 +27,8 @@ V6VvIgAAAABJRU5ErkJggg==
 			$(document).ready(function(){
 			
 			$("#loginButton").on( "click", function(){
-				login( $("input[name=email].login").val(), $("input[name=password].login").val() )
+				login( $("input[id=email].login").val(), $("input[id=password].login").val() )
+				//changed from using the name to using id!
 			});	
 			$("#registerButton").on( "click", register);	
 			$("input[name=re-password]").on( "focusout", matchBothPasswords);	

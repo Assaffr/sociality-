@@ -1,7 +1,7 @@
 <?php
 
 
-class friends {
+class Friends {
 	
 	private $_db;
 	
@@ -17,8 +17,8 @@ class friends {
 	 */
 	
 	public function __construct () {
-	
-		$this->_db = DB::getInstance();
+		// changed from instance to resource because i called it resource, not instance (:
+		$this->_db = DB::getResource();
 	}
 	
 	

@@ -33,7 +33,8 @@ function login($email, $password){
 					$("span[id=loginFail]").html("Incorrect email or password.");
 					}
 				else {
-					window.location.href = "/socialityplus/home.html";
+					window.location.href = "/socialityplus/home.php";
+					//fixed from the html one to php
 				}
 			}
 		});

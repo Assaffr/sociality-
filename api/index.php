@@ -9,9 +9,11 @@ require_once dirname( __FILE__ ) . "/../lib/DB.class.php";
 require_once dirname( __FILE__ ) . "/../lib/User.class.php";
 require_once dirname( __FILE__ ) . "/../lib/Login.class.php";
 require_once dirname( __FILE__ ) . "/../lib/Post.class.php";
+require_once dirname( __FILE__ ) . "/../lib/friends.class.php";
 $user = new User();
 $login = new Login();
 $post = new Post();
+$friends = new Friends();
 
 //UPLOAD PHOTO
 $app->post( '/upload', function() {
@@ -23,6 +25,7 @@ $app->post( '/upload', function() {
 
 //LOGIN
 $app->post( '/login', function() {
+	
 	global $login, $app;
 	$details = json_decode( $app->request->getBody(), true );
 	$result = $login->match( $details['email'], $details['password'] ) ;
@@ -34,9 +37,10 @@ $app->post( '/login', function() {
 	else {
 		$_SESSION['login'] = true;
 		$_SESSION['userID'] = $result [0]['user_id'];
-		//var_dump($_SESSION);
-		echo $result [0]['user_id'];
+		echo 1;
 	}
+	//okay so, if $result is empty it returns 0, otherwise it returns 1, NOT the userID
+	//but that one is already in the session, we can change it if you want!!!
 	//echo $result [0]['user_id'];
 });
 
@@ -153,8 +157,7 @@ $app->get( '/post/', function() {
 });
 
 //ASSAF'S FRIEND
-$app->get('/friends/:myId/', 
-    function ($myId) use ( $friends ) {
+$app->get('/friends/:myId/', function ($myId) use ( $friends ) {
     	$users = $friends->getAllfriends($myId);
     	echo json_encode($users);  // this is the response to the http:
     }
