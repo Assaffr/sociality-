@@ -193,7 +193,7 @@ function verifyLogin(){
 				login = response;
 				delete login['slim.flash'];
 				if (!login.login)
-					window.location.href = "/socialityplus/index.html";
+					window.location.href = "index.php";
 				$("span[class=firstname]").html(login.user_firstname);
 				$("span[id=email]").html(login.user_email);
 				$("span[class=fullName]").html(login.user_firstname + " " + login.user_lastname);
