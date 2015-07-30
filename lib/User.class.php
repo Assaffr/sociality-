@@ -111,27 +111,9 @@
 			return $users;
 		}
 		
-		public function getUserEmail($ID){
-			$result = $this->_db->query("
-						SELECT user_email FROM users WHERE user_id = $ID
-					");
-			$users = array();
-			while ($row = mysqli_fetch_assoc ($result))
-				$users[] = $row;
-			return $users;
-		}
+
 		
-		public function getUserFullName($ID){
-			$resultSet = $this->_db->query("
-						SELECT user_firstname, user_lastname FROM users_info WHERE user_id = $ID
-					");
-			$result = array();
-			while ($row = mysqli_fetch_assoc ($resultSet))
-				$result[] = $row;
-			
-			$fullName = $result[0]['user_firstname'] . " " . $result[0]['user_lastname'];
-			return $fullName;
-		}
+			///////////////////////////// num rowsssssssss n~~~~~~~~~
 		
 		public function checkEmailExists($email){
 			$result = $this->_db->query("

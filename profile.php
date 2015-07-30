@@ -1,16 +1,28 @@
 <?php
 $title = "Sociality+";
-$bodyId = "home";
+$bodyId = "profile";
 require_once dirname(__FILE__).'/inc/header.php';
 
 ?>
-		<main>
+	<main>
+		<div id="coverWrapper">
+			<div id="coverPhoto">
+			 <img alt="Cover Photo" src="">
+			</div>
+				
+			<div id="coverBottomLine">
+				<div id="profilePhoto"><img alt="Profile Photo" src=""></div>
+				<span id="fullName">Omer Morad</span>
+			</div>
+		
+		</div>
+	
 			<div id="wall">
 			
 				<div id="newStatus" class="box">
 					<div id="newStatus_head" class="divHead">
 						<img alt="Me">
-						<span class="username">Omer</span>, Update your status
+						 Update your status
 					</div>
 					<div id="newStatus_content">
 						<textarea placeholder="What's on your mind?" autocomplete="off" aria-expanded="true"></textarea>
@@ -23,12 +35,10 @@ require_once dirname(__FILE__).'/inc/header.php';
 			<aside>
 			
 				<div id="myBar" class="box">
-					<div id="myBar_head" class="divHead"><span>Welcome</span></div>
+					<div id="myBar_head" class="divHead"><span>About <a href="account.php">(Edit)</a></span></div>
 					<div id="myBar_content">
-						<img alt="Me">
 						<div id="myBar_content_text">
-							<span class="username">Omerico</span><br>
-							<a href="account.php">Edit profile</a>
+							My Friends (<span id="numFriends">46</span>)<br>
 						</div>
 					
 					</div>
@@ -51,5 +61,4 @@ require_once dirname(__FILE__).'/inc/header.php';
 				</div>
 			
 			</aside>
-		</main>
-		<?php require_once dirname(__FILE__).'/inc/footer.php';?>
+	</main>

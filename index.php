@@ -6,7 +6,7 @@ include_once dirname(__FILE__).'/inc/header.php';
 ?>
 
 
-		<div id="main">
+		<main>
 			
 			<div id="mainContent">
 			
@@ -36,9 +36,8 @@ include_once dirname(__FILE__).'/inc/header.php';
 			</div>
 			
 			
-		</div>
-	</body>
-</html>
+		</main>
+		<?php require_once dirname(__FILE__).'/inc/footer.php';?>
 
 
 

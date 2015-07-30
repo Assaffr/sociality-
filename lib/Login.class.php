@@ -21,7 +21,6 @@
 			return $result;
 		}
 		
-		///what is this? 
 		
 		public function verifyLogin(){
 			
