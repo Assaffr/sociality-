@@ -23,13 +23,15 @@
 			$query = "INSERT INTO users 
 					(user_email , user_password)
 					VALUES 
-					('".$userDetails['user_email']."', '".$userDetails['user_password']."');
+					('".$userDetails['user_email']."', '". md5 ( $userDetails['user_password'] ). "');
 					INSERT INTO users_info ( user_id, user_firstname, user_lastname)
-					VALUES (LAST_INSERT_ID(),'".$userDetails['user_firstname']."','".$userDetails['user_lastname']."');" ;		 
+					VALUES (LAST_INSERT_ID(),'".$userDetails['user_firstname']."','".$userDetails['user_lastname']."');" ;
 		
 			$results = $this->_db->query($query); 
-		
-		return $results;
+			
+		//this function does NOT WORK. it works when you literally paste it in
+		// phpmyadmin, but not in a query sent here.
+		return $query;
 		}
 
 		

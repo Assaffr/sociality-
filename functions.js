@@ -152,10 +152,10 @@ function register(){
 			type: "POST",
 			dataType: "JSON",
 			data: JSON.stringify({
-				firstName:$("input[name=first_name].register").val(),
-				lastName:$("input[name=last_name].register").val(),
-				email:$("input[name=email].register").val(),
-				password:$("input[name=password].register").val()}),
+				user_firstname:$("input[id=first_name].register").val(),
+				user_lastname:$("input[id=last_name].register").val(),
+				user_email:$("input[id=email].register").val(),
+				user_password:$("input[id=password].register").val()}),
 			success: function( response ) {
 				if (response.boolean){
 					login( $("input[id=email].register").val(), $("input[id=password].register").val() );

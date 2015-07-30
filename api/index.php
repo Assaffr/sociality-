@@ -84,7 +84,6 @@ $app->post( '/checkemail', function() {
 // Register User
 $app->post( '/user/', function() {
 	global $user, $app;
-	var_dump( $app->request->getBody());
 	$jsonUser = json_decode( $app->request->getBody(), true );
 	$add = $user->addUser($jsonUser);
 	echo $add;
