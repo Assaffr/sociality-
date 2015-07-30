@@ -18,7 +18,7 @@
 				$users[] = $row;
 			return $users;
 		}
-		//ASSAF FIX THIS !!!!!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!
+		
 		public function addUser($userDetails){
 			$query = "INSERT INTO users 
 					(user_email , user_password)
@@ -31,6 +31,7 @@
 		
 		return $results;
 		}
+
 		
 		
 		//ASSAF'S - NEEDS FIXING
@@ -113,16 +114,12 @@
 		
 
 		
-			///////////////////////////// num rowsssssssss n~~~~~~~~~
 		
 		public function checkEmailExists($email){
 			$result = $this->_db->query("
-						SELECT COUNT(*) FROM users WHERE user_email = '$email'
+						SELECT * FROM users WHERE user_email = '$email'
 					");
-			$users = array();
-			while ($row = mysqli_fetch_assoc ($result))
-				$users[] = $row;		
-			return $users;
+			return $result->num_rows;
 		}
 		
 	

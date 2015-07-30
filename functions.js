@@ -30,11 +30,10 @@ function login($email, $password){
 				password: $password}),
 			success: function( response ) {
 				if (response == 0){
-					$("span[id=loginFail]").html("Incorrect email or password.");
+					//error message - add later
 					}
 				else {
-					window.location.href = "/socialityplus/home.php";
-					//fixed from the html one to php
+					window.location.href = "home.php";
 				}
 			}
 		});
@@ -55,25 +54,26 @@ function login($email, $password){
 *	@return (type) (name)
 */
 function checkEmail($email){
-$("input[name=email].register").removeClass("validated");
+$("input[id=email].register").removeClass("validated");
 $("span[id=emailExplain]").html("");
-if ( !$("input[name=email].register").hasClass("validated") && !$email == ""){
+if ( !$("input[id=email].register").hasClass("validated") && !$email == ""){
 		if ( emailRegex( $email ) ){
+			$("#errorBox").fadeOut();
 			$.ajax({
 				url: "api/checkemail",
 				type: "POST",
 				dataType: "TEXT",
 				data: $email,
 				complete: function( response ){
+					console.log(response);
 					if (response.responseText == 0){
-						$("input[name=email].register").addClass("validated");
-						
-						//$("span[id=emailExplain]").html("This email is available");
+						$("input[id=email].register").addClass("validated");
+						$("#errorBox").fadeOut();
 					}
 					if (response.responseText == 1){
 						$("#errorReg").html("This email is unavailable.");
 						$("#errorBox").fadeIn();
-						//$("span[id=emailExplain]").html("This email is unavailable, please try again.");
+						
 					}
 					}					
 				});
@@ -106,11 +106,12 @@ function emailRegex($email){
 *	@return (boolean) (false)
 */
 function matchBothPasswords(){
-	if ( $("input[name=password].register").val() == $("input[name=re-password]").val() ){
-		$("span[id=passExplain]").html("");
+	if ( $("input[id=password].register").val() == $("input[id=re-password]").val() ){
+		$("#errorBox").fadeOut();
 		return true; }
 	else {
-		$("span[id=passExplain]").html("Please make sure both password fields match.");
+		$("#errorReg").html("Please make sure both passwords match");
+		$("#errorBox").fadeIn();
 		return false;
 	}
 }
@@ -125,8 +126,9 @@ function matchBothPasswords(){
  *	@return (boolean) (true) both fields are filled
  */
 function checkNoEmpty(){
-	if ( $("input[class=register]").val() === "" ){
-		$("#failure").text("Please fill in a valid email and password");
+	if ( !$("input[class=register]").val() ){
+		$("#errorReg").html("Please make sure you've filled all fields.");
+		$("#errorBox").fadeIn();
 		return false;
 		}
 	else
@@ -144,7 +146,7 @@ function checkNoEmpty(){
  *	@return (type) (name) - none
  */
 function register(){
-	if ( checkNoEmpty() && matchBothPasswords() && $("input[name=email].register").hasClass("validated") ) {
+	if ( checkNoEmpty() && matchBothPasswords() && $("input[id=email].register").hasClass("validated") ) {
 		$.ajax({
 			url: "api/user",
 			type: "POST",
@@ -156,15 +158,17 @@ function register(){
 				password:$("input[name=password].register").val()}),
 			success: function( response ) {
 				if (response.boolean){
-					login( $("input[name=email].register").val(), $("input[name=password].register").val() );
+					login( $("input[id=email].register").val(), $("input[id=password].register").val() );
 				}
 				else 
-					$("#failure").text("Oops! We couldn't register you. Try again with new details.");
+					$("#errorReg").html("Oops! We couldn't register you.");
+					$("#errorBox").fadeIn();
 			}
 		});
 	}
 	else {
-		
+		$("#errorReg").html("Please make sure all fields are correct.");
+		$("#errorBox").fadeIn();
 	}
 }
 
@@ -177,7 +181,6 @@ function register(){
  *	when it verifies there is, it builds an object called login
  *	which has a verification the user is logged in and also stores the user id.
  *	if the user isn't logged in, it kicks them out to the index page.
- *	it also activates the getUserEmail function using the user id.
  *	@param (type) (name) about this param - none
  *	@return (type) (name)- none
  */
@@ -191,10 +194,9 @@ function verifyLogin(){
 				delete login['slim.flash'];
 				if (!login.login)
 					window.location.href = "/socialityplus/index.html";
-				getUserFullName(login.userID);
-					//$("span[id=loggedEmail]").html(	getUserFullName(login.userID) );
-					$("#loader").fadeOut();
-					$("#topBar").fadeIn();
+				$("span[class=firstname]").html(login.user_firstname);
+				$("span[id=email]").html(login.user_email);
+				$("span[class=fullName]").html(login.user_firstname + " " + login.user_lastname);
 			}
 		});
 }
@@ -211,54 +213,12 @@ function logOut(){
 			url: "api/logout/",
 			type: "GET",
 			complete: function(response) {
-					window.location.href = "/socialityplus/";
+					window.location.href = "index.php";
 				}
 	});
 }
 
-/**
-*	getUserFullName
-*
-*	creates a string of the user's full name
-*
-*	@param (string) (id) the user's id
-*	@return (string) (their full name)
-*/
-function getUserFullName($id){
-	
-	$.ajax({
-			url: "api/fullname/" + $id,
-			type: "GET",
-			success: function(response) {
-					console.log(login);
-					$("span[id=full_name]").html(response);
-					$("#loader").fadeOut();
-					$("#topBar").fadeIn();
-				}
-			});	
-}
 
-/**
- *	getUserEmail
- *
- *	sends an ajax request that gets the user's email using its id
- *	when it has that it fades the loader out and fades in the top bar with the email it got
- *
- *	@param (string) (id) the user id - it gets it from the verifyLogin function 
- *	@return (type) (name)
- */
-function getUserEmail($id){
-	$.ajax({
-			url: "api/getemail/" + $id,
-			type: "GET",
-			success: function(response) {
-					$("span[id=loggedEmail]").html(response);
-					$("#loader").fadeOut();
-					$("#topBar").fadeIn();
-				}
-			});
-
-}
 /**
 *	publishPost
 *
@@ -267,14 +227,14 @@ function getUserEmail($id){
 *	@param (string) (postContent) post content
 *	@return (type) (name) none
 */
-function publishPost(postContent){
+function publishPost($postContent){
 	$.ajax({
 			url: "api/post",
 			type: "POST",
 			dataType: "TEXT",
 			data: JSON.stringify({
-				user_id: login.userID,
-				post_content: postContent}),
+				user_id:login.userID,
+				post_content:$postContent}),
 			success: function( response ) {
 				$("#post").val("");
 			}

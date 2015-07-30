@@ -31,7 +31,12 @@ $app->post( '/login', function() {
 	$result = $login->match( $details['email'], $details['password'] ) ;
 	//var_dump($result);
 	
-	//The test here is incorrect! try to use this -> http://php.net/manual/en/mysqli-result.num-rows.php
+	//The test here is incorrect try to use this -> http://php.net/manual/en/mysqli-result.num-rows.php
+	//ok we need to talk about this cause the REASON i did it like this was because
+	//i wanted to get back the userID or nothing, i need to have the id here also
+	//do you want me to use another function to fetch the id and have this be with numrows
+	//and only return 0 or 1??
+	
 	if (empty($result)){
 		$_SESSION['login'] = false;
 		echo 0;
@@ -39,6 +44,11 @@ $app->post( '/login', function() {
 	else {
 		$_SESSION['login'] = true;
 		$_SESSION['userID'] = $result [0]['user_id'];
+		$moreDetails = $login->addUserInfoToSession( $_SESSION['userID'] );
+		$_SESSION['user_email'] = $moreDetails[0]['user_email'];
+		$_SESSION['user_firstname'] = $moreDetails[0]['user_firstname'];
+		$_SESSION['user_lastname'] = $moreDetails[0]['user_lastname'];
+		
 		echo 1;
 	}
 	//okay so, if $result is empty it returns 0, otherwise it returns 1, NOT the userID
@@ -46,7 +56,8 @@ $app->post( '/login', function() {
 	//echo $result [0]['user_id'];
 });
 
-//What is the purpose of this function?
+//What is the purpose of this function?-question
+//verifies login by echoing session -answer!
 $app->get( '/login/', function() {
 	global $login, $app;
 	echo (json_encode ($_SESSION));
@@ -57,24 +68,7 @@ $app->get( '/logout/', function() {
 	session_destroy();
 	});	
 	
-	//Completely unnecessary
-$app->get( '/fullname/:id', function() {
-	global $user, $app;
-	$req = $app->request;
-	$path = $req->getResourceUri();
-	$id = explode("/", $path)[2];
-	$fullName = $user->getUserFullName($id);
-	echo ( $fullName );
-	});		
-	//As above
-$app->get( '/getemail/:id', function() {
-	global $user, $app;
-	$req = $app->request;
-	$path = $req->getResourceUri();
-	$id = explode("/", $path)[2];
-	$fullname = $user->getUserFullName($id);
-	echo $fullname;
-	});		
+
 
 
 //REGISTER PROCESS - check if email exists
@@ -82,7 +76,7 @@ $app->post( '/checkemail', function() {
 	global $user, $app;
 	//echo ($app->request->getBody());
 	$result = $user->checkEmailExists( $app->request->getBody() ) ;
-	echo $result [0]['COUNT(*)'];
+	echo $result;
 	//var_dump ($us0r->getAllUsers());
 });
 
@@ -90,15 +84,9 @@ $app->post( '/checkemail', function() {
 // Register User
 $app->post( '/user/', function() {
 	global $user, $app;
+	var_dump( $app->request->getBody());
 	$jsonUser = json_decode( $app->request->getBody(), true );
 	$add = $user->addUser($jsonUser);
-	/*$boolString = ($add) ? 'true' : 'false'; 						 //wtf?!?!
-	$id = $user->getID($jsonUser['email'], $jsonUser['password']);  //wtf?!?!
-	$results = array( 												 //wtf?!?!
-		"boolean" => $boolString,
-		"id" => $id['0']['user_id'],
-	);
-	print_r(json_encode ($results));*/
 	echo $add;
 	
 });
@@ -107,7 +95,6 @@ $app->post( '/user/', function() {
 $app->post( '/user/:id', function( $id ) {
 	global $user, $app;
 	$details = json_decode( $app->request->getBody(), true );
-	//var_dump (json_decode( $app->request->getBody() ) );
 	$add = $user->addUserInfo($details);
 	$boolString = ($add) ? 'true' : 'false';
 	echo $boolString;
@@ -147,7 +134,7 @@ $app->put( '/user/:id', function( $id ) {
 //publish post
 $app->post( '/post/', function() {
 	global $post, $app;
-	//var_dump($app->request->getBody());
+	var_dump($app->request->getBody());
 	$jsonDetails = json_decode( $app->request->getBody(), true );
 	echo ( $post->publishPost( $jsonDetails ) );
 	// $user->updateUser($jsonUser);

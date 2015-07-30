@@ -23,21 +23,42 @@ V6VvIgAAAABJRU5ErkJggg==
 		<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 		<script src="functions.js"></script>
 		<script>
-
+		
 			$(document).ready(function(){
-			
-			$("#loginButton").on( "click", function(){
-				login( $("input[id=email].login").val(), $("input[id=password].login").val() )
-				//changed from using the name to using id!
-			});	
-			$("#registerButton").on( "click", register);	
-			$("input[name=re-password]").on( "focusout", matchBothPasswords);	
-			$("input[name=email].register").on( "focusout", function(){
-					checkEmail( $("input[name=email].register").val() );
-				} );
+
+				
+				if (top.location.pathname == "/sociality-/home.php"){
+					
+					verifyLogin();
+					$( "#logout" ).click(logOut);
+					$("button[name=finishPost]").on( "click", function(){
+						publishPost(  $("#postContent").val() );
+					});	
+
+					showPosts();
+				}
+
+				
+				if (top.location.pathname == "/sociality-/index.php"){
+					$("#loginButton").on( "click", function(){
+					login( $("input[id=email].login").val(), $("input[id=password].login").val() )
+					});	
+					$("#registerButton").on( "click", register);	
+					$("input[id=re-password]").on( "focusout", matchBothPasswords);	
+					$("input[id=email].register").on( "focusout", function(){
+							checkEmail( $("input[id=email].register").val() );
+						} );
+					$("span[id=x]").on( "click", function(){
+						$("#errorBox").fadeOut();
+					});	
+				}
+
+
+				
 			});
 		</script>
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
 	</head>
 	<body id="<?php echo $bodyId;?>">
 	
@@ -45,5 +66,6 @@ V6VvIgAAAABJRU5ErkJggg==
 		
 			<div id="topBar">
 				<div id="topBarContent"> 
+				
 				</div>
 			</div>

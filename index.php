@@ -25,7 +25,7 @@ include_once dirname(__FILE__).'/inc/header.php';
 					
 					</div>
 					<div id="registration">
-						<div id="errorBox"><h3>Error</h3><span id="x">x</span><br><span id="errorReg">This username already exists</span></div>
+						<div id="errorBox"><h3>Error</h3><span id="x">x</span><br><span id="errorReg"></span></div>
 						<input type="text" id="email" placeholder="Email" class="register">
 						<input type="password" id="password" placeholder="Password" class="register">
 						<input type="password" id="re-password" placeholder="Re-enter password" class="register">

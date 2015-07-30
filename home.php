@@ -9,25 +9,38 @@ require_once dirname(__FILE__).'/inc/header.php';
 			
 				<div id="newStatus" class="box">
 					<div id="newStatus_head" class="divHead">
-						<img alt="Me">
-						<span class="username">Omer</span>, Update your status
+						<img src="pics/user.png" alt="Me">
+						<span class="firstname"></span>, update your status
 					</div>
 					<div id="newStatus_content">
-						<textarea placeholder="What's on your mind?" autocomplete="off" aria-expanded="true"></textarea>
+						<textarea id="postContent" placeholder="What's on your mind?" autocomplete="off" aria-expanded="true"></textarea>
 					</div>
+
 					<div id="newStatus_footer">
-						<button type="button">Post</button>
+						<button type="button" name="finishPost">Post</button>
 					</div>
 				</div>
+				<!--  just checking how a regular post would look don't freak out -->
+				<div id="newStatus" class="box">
+					<div id="newStatus_head" class="divHead">
+						<img src="pics/user.png" alt="Me">
+						<span class="fullName"></span>
+					</div>
+					<div id="newStatus_content">
+						blah blah blah this is a post
+					</div>
+
+				</div>
+				
 			</div>	
 			<aside>
 			
 				<div id="myBar" class="box">
 					<div id="myBar_head" class="divHead"><span>Welcome</span></div>
 					<div id="myBar_content">
-						<img alt="Me">
+						<img src="pics/user.png" alt="Me">
 						<div id="myBar_content_text">
-							<span class="username">Omerico</span><br>
+							<span class="firstname"></span><br>
 							<a href="account.php">Edit profile</a>
 						</div>
 					
@@ -37,9 +50,9 @@ require_once dirname(__FILE__).'/inc/header.php';
 				<div id="myDetails" class="box">
 					<div id="myDetails_head" class="divHead"><span>My details</span></div>
 					<div id="myDetails_content">
-						<span id="fullName">Omerico</span><br>
+						<span class="fullName"></span><br>
 						<span id="dateOfBirth">01/01/1970</span> (<span id="age">40</span>)<br>
-						<span id="email">Omer@morad.com</span>
+						<span id="email"></span>
 						</div>
 					
 					
@@ -47,7 +60,7 @@ require_once dirname(__FILE__).'/inc/header.php';
 				
 				
 				<div id="myFriends" class="box">
-					<div id="myFriends_head" class="divHead"><span>My Friends</span> (<span id="numFriends">46</span>)</div>
+					<div id="myFriends_head" class="divHead"><span>My Friends</span> (<span id="numFriends"></span>)</div>
 				</div>
 			
 			</aside>
