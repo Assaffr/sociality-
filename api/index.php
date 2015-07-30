@@ -30,6 +30,8 @@ $app->post( '/login', function() {
 	$details = json_decode( $app->request->getBody(), true );
 	$result = $login->match( $details['email'], $details['password'] ) ;
 	//var_dump($result);
+	
+	//The test here is incorrect! try to use this -> http://php.net/manual/en/mysqli-result.num-rows.php
 	if (empty($result)){
 		$_SESSION['login'] = false;
 		echo 0;
@@ -44,7 +46,7 @@ $app->post( '/login', function() {
 	//echo $result [0]['user_id'];
 });
 
-
+//What is the purpose of this function?
 $app->get( '/login/', function() {
 	global $login, $app;
 	echo (json_encode ($_SESSION));
@@ -55,6 +57,7 @@ $app->get( '/logout/', function() {
 	session_destroy();
 	});	
 	
+	//Completely unnecessary
 $app->get( '/fullname/:id', function() {
 	global $user, $app;
 	$req = $app->request;
@@ -63,7 +66,7 @@ $app->get( '/fullname/:id', function() {
 	$fullName = $user->getUserFullName($id);
 	echo ( $fullName );
 	});		
-	
+	//As above
 $app->get( '/getemail/:id', function() {
 	global $user, $app;
 	$req = $app->request;
