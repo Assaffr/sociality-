@@ -157,7 +157,7 @@ function register(){
 				user_email:$("input[id=email].register").val(),
 				user_password:$("input[id=password].register").val()}),
 			success: function( response ) {
-				if (response.boolean){
+				if (response === 1){
 					login( $("input[id=email].register").val(), $("input[id=password].register").val() );
 				}
 				else 
@@ -190,13 +190,12 @@ function verifyLogin(){
 		type: "GET",
 		dataType: "JSON",
 		success: function(response) {
-				login = response;
-				delete login['slim.flash'];
-				if (!login.login)
+				delete response['slim.flash'];
+				if (!response.login)
 					window.location.href = "index.php";
-				$("span[class=firstname]").html(login.user_firstname);
-				$("span[id=email]").html(login.user_email);
-				$("span[class=fullName]").html(login.user_firstname + " " + login.user_lastname);
+				$("span[class=firstname]").html(response.user_firstname);
+				$("span[id=email]").html(response.user_email);
+				$("span[class=fullName]").html(response.user_firstname + " " + response.user_lastname);
 			}
 		});
 }
