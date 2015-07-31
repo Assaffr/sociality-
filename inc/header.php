@@ -26,8 +26,7 @@ V6VvIgAAAABJRU5ErkJggg==
 		
 			$(document).ready(function(){
 
-				
-				if (top.location.pathname == "/sociality-/home.php"){
+				if (top.location.pathname === "/sociality-/home.php"){
 					
 					verifyLogin();
 					$( "#logout" ).click(logOut);
@@ -36,10 +35,10 @@ V6VvIgAAAABJRU5ErkJggg==
 					});	
 
 					showPosts();
-				}
+				};
 
 				
-				if (top.location.pathname == "/sociality-/index.php"){
+				if (top.location.pathname === "/sociality-/index.php"){
 					$("#loginButton").on( "click", function(){
 					login( $("input[id=email].login").val(), $("input[id=password].login").val() )
 					});	

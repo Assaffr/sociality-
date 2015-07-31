@@ -24,14 +24,15 @@
 					(user_email , user_password)
 					VALUES 
 					('".$userDetails['user_email']."', '". md5 ( $userDetails['user_password'] ). "');
-					INSERT INTO users_info ( user_id, user_firstname, user_lastname)
+					INSERT INTO users_info ( user_id, user_firstname, user_lastname )
 					VALUES (LAST_INSERT_ID(),'".$userDetails['user_firstname']."','".$userDetails['user_lastname']."');" ;
 		
-			$results = $this->_db->query($query); 
+			$results = $this->_db->multi_query($query); 
 			
-		//this function does NOT WORK. it works when you literally paste it in
-		// phpmyadmin, but not in a query sent here.
-		return $query;
+		// VERY IMPORTANT NOTE - this only works because we changed the database
+		// M U S T FORCE OMER TO CHANGE DATABASE BEFORE END OR THIS WON'T WORK!!!!!!!!~!~!~!~!~!
+		// please make sure to annoy him as much as possible to do it ;)
+		return $results;
 		}
 
 		
