@@ -196,6 +196,7 @@ function verifyLogin(){
 				$("span[class=firstname]").html(response.user_firstname);
 				$("span[id=email]").html(response.user_email);
 				$("span[class=fullName]").html(response.user_firstname + " " + response.user_lastname);
+				$("#myDetails").attr("data-id", response.userID);
 			}
 		});
 }
@@ -227,12 +228,13 @@ function logOut(){
 *	@return (type) (name) none
 */
 function publishPost($postContent){
+	console.log(login.user_id);
 	$.ajax({
 			url: "api/post",
 			type: "POST",
 			dataType: "TEXT",
 			data: JSON.stringify({
-				user_id:login.userID,
+				user_id: $("#myDetails").attr("data-id"),
 				post_content:$postContent}),
 			success: function( response ) {
 				$("#post").val("");
@@ -240,20 +242,60 @@ function publishPost($postContent){
 		});
 }
 /**
-*	showPosts
+*	showFirstPosts
 *
-*	shows all posts
+*	shows the first posts that will be on the page without clicking load more
 *
 *	@param
 *	@return (type) (name) none
 */
-function showPosts(){
+function showFirstPosts(){
 	$.ajax({
 			url: "api/post",
 			type: "GET",
 			dataType: "JSON",
 			success: function( response ) {
-				console.log( response );
+				$.each( response, function(key, value){
+					// we are manually appending html with the right data for each post
+					//this uses the dumb html i wrote just as an example, when you have the html+css for proper post
+					// i will of course switch to that ;)
+					// "posted at" currently presents full datetime, will change to "time ago" when we have that function
+					$("#wall").append(
+							"<div id='newStatus' class='box'><div id='newStatus_head' class='divHead'><img src='pics/user.png' alt='Me'><span class='fullName'>"+ value.user_firstname + " " + value.user_lastname + " posted at " + value.post_created +"</span></div><div id='newStatus_content'>"+ value.post_content +"</div></div>"
+					);
+				} )
+				$("#wall").append(
+							" <br> <input type='button' value='Load More Posts' id='loadMorePosts'>"
+					);
+				$("#loadMorePosts").on("click", loadMorePosts);
 			}
 		});
+}
+
+/**
+*	loadMorePosts
+*
+*	inserts more posts into page
+*
+*	@param
+*	@return (type) (name) none
+*/
+function loadMorePosts(){
+	$.ajax({
+		url: "api/postmore",
+		type: "GET",
+		dataType: "JSON",
+		success: function( response ) {
+			$.each( response, function(key, value){
+				$( "#loadMorePosts" ).remove();
+				$("#wall").append(
+						"<div id='newStatus' class='box'><div id='newStatus_head' class='divHead'><img src='pics/user.png' alt='Me'><span class='fullName'>"+ value.user_firstname + " " + value.user_lastname + " posted at " + value.post_created +"</span></div><div id='newStatus_content'>"+ value.post_content +"</div></div>"
+				);
+			} )
+			$("#wall").append(
+						" <br> <input type='button' value='Load More Posts' id='loadMorePosts'>"
+				);
+			$("#loadMorePosts").on("click", loadMorePosts);
+		}
+	});
 }

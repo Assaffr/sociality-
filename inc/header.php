@@ -31,10 +31,10 @@ V6VvIgAAAABJRU5ErkJggg==
 					verifyLogin();
 					$( "#logout" ).click(logOut);
 					$("button[name=finishPost]").on( "click", function(){
-						publishPost(  $("#postContent").val() );
+						publishPost(  $("#postContent").val(), login.userID );
 					});	
-
-					showPosts();
+					
+					showFirstPosts();
 				};
 
 				

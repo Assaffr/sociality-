@@ -20,7 +20,7 @@ require_once dirname(__FILE__).'/inc/header.php';
 						<button type="button" name="finishPost">Post</button>
 					</div>
 				</div>
-				<!--  just checking how a regular post would look don't freak out -->
+				<!--  just checking how a regular post would look don't freak out 
 				<div id="newStatus" class="box">
 					<div id="newStatus_head" class="divHead">
 						<img src="pics/user.png" alt="Me">
@@ -30,7 +30,7 @@ require_once dirname(__FILE__).'/inc/header.php';
 						blah blah blah this is a post
 					</div>
 
-				</div>
+				</div>-->
 				
 			</div>	
 			<aside>

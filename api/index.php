@@ -133,7 +133,6 @@ $app->put( '/user/:id', function( $id ) {
 //publish post
 $app->post( '/post/', function() {
 	global $post, $app;
-	var_dump($app->request->getBody());
 	$jsonDetails = json_decode( $app->request->getBody(), true );
 	echo ( $post->publishPost( $jsonDetails ) );
 	// $user->updateUser($jsonUser);
@@ -142,7 +141,13 @@ $app->post( '/post/', function() {
 //show all posts
 $app->get( '/post/', function() {
 	global $post, $app;
-	echo( json_encode ($post->showAllPosts()) );
+	echo( json_encode ($post->showFirstPosts()) );
+});
+
+//show more posts
+	$app->get( '/postmore/', function() {
+		global $post, $app;
+		echo( json_encode ($post->showMorePosts()) );
 });
 
 //ASSAF'S FRIEND
