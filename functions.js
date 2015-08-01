@@ -228,7 +228,6 @@ function logOut(){
 *	@return (type) (name) none
 */
 function publishPost($postContent){
-	console.log(login.user_id);
 	$.ajax({
 			url: "api/post",
 			type: "POST",
@@ -237,6 +236,9 @@ function publishPost($postContent){
 				user_id: $("#myDetails").attr("data-id"),
 				post_content:$postContent}),
 			success: function( response ) {
+				if(response = 1){
+					$("<div id='newStatus' class='box'><div id='newStatus_head' class='divHead'><img src='pics/user.png' alt='Me'><span class='fullName'>"+$("#myDetails").attr("data-id")+" posted at </span></div><div id='newStatus_content'>"+ $postContent +"</div></div>").prependTo("#wall:first-child").hide().fadeIn();
+				}
 				$("#post").val("");
 			}
 		});

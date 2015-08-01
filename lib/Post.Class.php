@@ -29,7 +29,7 @@
 				$posts[] = $row;
 			return $posts;		
 		}
-		//trying to figure out how to keep showing the next posts, taking a break for now cause i'm going to sleep!!! ^_^
+
 		public function showMorePosts($offset){
 			$post = $this->_db->query("
 					SELECT posts.post_id, posts.post_content, posts.post_created, posts.user_id, users_info.user_firstname, users_info.user_lastname FROM users_info INNER JOIN posts WHERE posts.user_id = users_info.user_id ORDER BY posts.post_created DESC LIMIT 3 OFFSET " . $offset . ";
