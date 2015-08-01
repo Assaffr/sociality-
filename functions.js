@@ -213,7 +213,7 @@ function logOut(){
 			url: "api/logout/",
 			type: "GET",
 			complete: function(response) {
-					window.location.href = "index.php";
+					
 				}
 	});
 }
@@ -260,10 +260,8 @@ function showFirstPosts(){
 					//this uses the dumb html i wrote just as an example, when you have the html+css for proper post
 					// i will of course switch to that ;)
 					// "posted at" currently presents full datetime, will change to "time ago" when we have that function
-					$("#wall").append(
-							"<div id='newStatus' class='box'><div id='newStatus_head' class='divHead'><img src='pics/user.png' alt='Me'><span class='fullName'>"+ value.user_firstname + " " + value.user_lastname + " posted at " + value.post_created +"</span></div><div id='newStatus_content'>"+ value.post_content +"</div></div>"
-					);
-				} )
+					$("<div id='newStatus' class='box'><div id='newStatus_head' class='divHead'><img src='pics/user.png' alt='Me'><span class='fullName'>"+ value.user_firstname + " " + value.user_lastname + " posted at " + value.post_created +"</span></div><div id='newStatus_content'>"+ value.post_content +"</div></div>").appendTo("#wall").hide().fadeIn();
+				} );
 				$("#wall").append(
 							" <br> <input type='button' value='Load More Posts' id='loadMorePosts'>"
 					);
@@ -288,10 +286,8 @@ function loadMorePosts(){
 		success: function( response ) {
 			$.each( response, function(key, value){
 				$( "#loadMorePosts" ).remove();
-				$("#wall").append(
-						"<div id='newStatus' class='box'><div id='newStatus_head' class='divHead'><img src='pics/user.png' alt='Me'><span class='fullName'>"+ value.user_firstname + " " + value.user_lastname + " posted at " + value.post_created +"</span></div><div id='newStatus_content'>"+ value.post_content +"</div></div>"
-				);
-			} )
+				$("<div id='newStatus' class='box'><div id='newStatus_head' class='divHead'><img src='pics/user.png' alt='Me'><span class='fullName'>"+ value.user_firstname + " " + value.user_lastname + " posted at " + value.post_created +"</span></div><div id='newStatus_content'>"+ value.post_content +"</div></div>").appendTo("#wall").hide().fadeIn();
+			} );
 			$("#wall").append(
 						" <br> <input type='button' value='Load More Posts' id='loadMorePosts'>"
 				);

@@ -22,40 +22,13 @@ V6VvIgAAAABJRU5ErkJggg==
 		<link rel="stylesheet" type="text/css" href="css/main.css">
 		<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 		<script src="functions.js"></script>
-		<script>
-		
-			$(document).ready(function(){
-
-				if (top.location.pathname === "/sociality-/home.php"){
-					
-					verifyLogin();
-					$( "#logout" ).click(logOut);
-					$("button[name=finishPost]").on( "click", function(){
-						publishPost(  $("#postContent").val(), login.userID );
-					});	
-					
-					showFirstPosts();
-				};
-
-				
-				if (top.location.pathname === "/sociality-/index.php"){
-					$("#loginButton").on( "click", function(){
-					login( $("input[id=email].login").val(), $("input[id=password].login").val() )
-					});	
-					$("#registerButton").on( "click", register);	
-					$("input[id=re-password]").on( "focusout", matchBothPasswords);	
-					$("input[id=email].register").on( "focusout", function(){
-							checkEmail( $("input[id=email].register").val() );
-						} );
-					$("span[id=x]").on( "click", function(){
-						$("#errorBox").fadeOut();
-					});	
-				}
-
-
-				
-			});
-		</script>
+		<?php 
+			$full_path = explode ("/", $_SERVER['PHP_SELF']);
+			$path_with_php = explode (".", $full_path[2]);
+			$file_name = $path_with_php[0];
+			echo "<script src='script/".$file_name.".js'></script>";
+			
+		?>
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
 	</head>

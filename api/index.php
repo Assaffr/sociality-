@@ -56,8 +56,7 @@ $app->post( '/login', function() {
 	//echo $result [0]['user_id'];
 });
 
-//What is the purpose of this function?-question
-//verifies login by echoing session -answer!
+
 $app->get( '/login/', function() {
 	global $login, $app;
 	echo (json_encode ($_SESSION));
@@ -66,6 +65,7 @@ $app->get( '/login/', function() {
 $app->get( '/logout/', function() {
 	global $login, $app;
 	session_destroy();
+	header('Location: index.php');
 	});	
 	
 
