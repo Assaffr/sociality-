@@ -277,5 +277,74 @@ aside {
 	margin-top:-25px;
 	
 }
+#status{
+    width: 670px;
+    height: 160px;
+}
+#Status_head{
+	padding: 10px;
+	padding-bottom:5px;
+	height:45px;
+	
+}
+
+#Status_head strong {
+	float:right;
+	
+}
+
+#Status_head img {
+	width: 45px;
+    height: 45px;
+    display:inline-block;
+    float:left;
+    margin-right:8px;
+	
+	
+}
+
+#status a{
+	color:#133783;
+	font-weight: bold;
+	
+}
+#status_content{
+	padding: 10px;
+	border-bottom: 1px solid #e5e6e9;
+	
+}
+
+.postSince{
+	color:#848484;
+	
+}
+
+#status p {
+	margin:0px;
+	
+}
+
+#status_footer img{
+	width: 36px;
+    height: 36px;
+    margin:7px
+	
+}
+#status_footer textarea{
+    resize: none;
+	width:609px;
+	border-color:#D8D8D8;
+
+}
+
+
+
+
+
+
+
+
+
+
 
 

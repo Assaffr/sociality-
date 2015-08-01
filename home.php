@@ -20,17 +20,30 @@ require_once dirname(__FILE__).'/inc/header.php';
 						<button type="button" name="finishPost">Post</button>
 					</div>
 				</div>
-				<!--  just checking how a regular post would look don't freak out 
-				<div id="newStatus" class="box">
-					<div id="newStatus_head" class="divHead">
-						<img src="pics/user.png" alt="Me">
-						<span class="fullName"></span>
+				
+				<div id="status" class="box">
+					<div id="Status_head">
+						<strong>x</strong>
+						<img alt="S.writer">
+						<div>
+						<a href="profile/id">Assaf Farhan</a><br>
+						<span class="postSince">49 mins</span>
+						</div>
 					</div>
-					<div id="newStatus_content">
-						blah blah blah this is a post
+					
+					<div id="status_content">
+						<p>Dramatic Bodycam Footage Shows Knife Wielding Man Attack Police Officers</p>
 					</div>
 
-				</div>-->
+					<div id="status_footer">
+						<div id="comment">
+						</div>
+						<img alt="me">
+						<textarea placeholder="Leave a comment..."></textarea>
+						
+					</div>
+				</div>
+
 				
 			</div>	
 			<aside>
