@@ -20,7 +20,35 @@ require_once dirname(__FILE__).'/inc/header.php';
 						<button type="button" name="finishPost">Post</button>
 					</div>
 				</div>
+<<<<<<< HEAD
 
+=======
+				
+				<div id="status" class="box">
+					<div id="Status_head">
+						<strong>x</strong>
+						<img alt="S.writer">
+						<div>
+						<a href="profile/id">Assaf Farhan</a><br>
+						<span class="postSince">49 mins</span>
+						</div>
+					</div>
+					
+					<div id="status_content">
+						<p>Dramatic Bodycam Footage Shows Knife Wielding Man Attack Police Officers</p>
+					</div>
+
+					<div id="status_footer">
+						<div id="comment">
+						</div>
+						<img alt="me">
+						<textarea placeholder="Leave a comment..."></textarea>
+						
+					</div>
+				</div>
+
+				
+>>>>>>> origin/master
 			</div>	
 			<aside>
 			
