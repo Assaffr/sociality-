@@ -237,9 +237,11 @@ function publishPost($postContent){
 				post_content:$postContent}),
 			success: function( response ) {
 				if(response = 1){
-					$("<div id='newStatus' class='box'><div id='newStatus_head' class='divHead'><img src='pics/user.png' alt='Me'><span class='fullName'>"+$("#myDetails").attr("data-id")+" posted at </span></div><div id='newStatus_content'>"+ $postContent +"</div></div>").prependTo("#wall:first-child").hide().fadeIn();
+					$("<div id='status' class='box'><div id='Status_head'><strong>x</strong><img alt='S.writer'><div><a href='profile/id'>"+ $("span[class=fullName]").text() +"</a><br><span class='postSince'>Just Now</span></div></div><div id='status_content'><p>"+ $postContent +"</p></div><div id='status_footer'><div id='comment'></div><img alt='me'><textarea placeholder='Leave a comment...'></textarea></div></div>").prependTo("#posts").hide().fadeIn();
+					$("#postContent").val("");
+					$("#status img").attr("src", "pics/user.png");
 				}
-				$("#post").val("");
+				
 			}
 		});
 }
@@ -259,14 +261,13 @@ function showFirstPosts(){
 			success: function( response ) {
 				$.each( response, function(key, value){
 					// we are manually appending html with the right data for each post
-					//this uses the dumb html i wrote just as an example, when you have the html+css for proper post
-					// i will of course switch to that ;)
 					// "posted at" currently presents full datetime, will change to "time ago" when we have that function
-					$("<div id='newStatus' class='box'><div id='newStatus_head' class='divHead'><img src='pics/user.png' alt='Me'><span class='fullName'>"+ value.user_firstname + " " + value.user_lastname + " posted at " + value.post_created +"</span></div><div id='newStatus_content'>"+ value.post_content +"</div></div>").appendTo("#wall").hide().fadeIn();
+					$("<div id='status' class='box'><div id='Status_head'><strong>x</strong><img alt='S.writer'><div><a href='profile/id'>"+ value.user_firstname + " " + value.user_lastname +"</a><br><span class='postSince'>"+ value.post_created +"</span></div></div><div id='status_content'><p>"+ value.post_content +"</p></div><div id='status_footer'><div id='comment'></div><img alt='me'><textarea placeholder='Leave a comment...'></textarea></div></div>").appendTo("#posts").hide().fadeIn();
 				} );
 				$("#wall").append(
 							" <br> <input type='button' value='Load More Posts' id='loadMorePosts'>"
 					);
+				$("#status img").attr("src", "pics/user.png");
 				$("#loadMorePosts").on("click", loadMorePosts);
 			}
 		});
@@ -290,7 +291,7 @@ function loadMorePosts(){
 		success: function( response ) {
 			$.each( response, function(key, value){
 				$( "#loadMorePosts" ).remove();
-				$("<div id='newStatus' class='box'><div id='newStatus_head' class='divHead'><img src='pics/user.png' alt='Me'><span class='fullName'>"+ value.user_firstname + " " + value.user_lastname + " posted at " + value.post_created +"</span></div><div id='newStatus_content'>"+ value.post_content +"</div></div>").appendTo("#wall").hide().fadeIn();
+				$("<div id='status' class='box'><div id='Status_head'><strong>x</strong><img alt='S.writer'><div><a href='profile/id'>"+ value.user_firstname + " " + value.user_lastname +"</a><br><span class='postSince'>"+ value.post_created +"</span></div></div><div id='status_content'><p>"+ value.post_content +"</p></div><div id='status_footer'><div id='comment'></div><img alt='me'><textarea placeholder='Leave a comment...'></textarea></div></div>").appendTo("#posts").hide().fadeIn();
 			} );
 			if( response.length < 3 ){
 				$( "#loadMorePosts" ).remove();
@@ -300,6 +301,7 @@ function loadMorePosts(){
 			else{
 				$("#wall").append(" <br> <input type='button' value='Load More Posts' id='loadMorePosts'>");
 			}
+			$("#status img").attr("src", "pics/user.png");
 			$("#loadMorePosts").on("click", loadMorePosts);
 		}
 	});

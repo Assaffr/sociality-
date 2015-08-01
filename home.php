@@ -4,6 +4,7 @@ $bodyId = "home";
 require_once dirname(__FILE__).'/inc/header.php';
 
 ?>
+		<div id="loader"></div>
 		<main>
 			<div id="wall">
 			
@@ -20,10 +21,8 @@ require_once dirname(__FILE__).'/inc/header.php';
 						<button type="button" name="finishPost">Post</button>
 					</div>
 				</div>
-<<<<<<< HEAD
-
-=======
-				
+				<div id="posts">
+				<!-- - 
 				<div id="status" class="box">
 					<div id="Status_head">
 						<strong>x</strong>
@@ -45,10 +44,8 @@ require_once dirname(__FILE__).'/inc/header.php';
 						<textarea placeholder="Leave a comment..."></textarea>
 						
 					</div>
-				</div>
-
-				
->>>>>>> origin/master
+				</div>-->
+			</div>
 			</div>	
 			<aside>
 			

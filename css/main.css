@@ -340,7 +340,17 @@ aside {
 
 
 
-
+#loader{
+	color: gray;
+	background-color: #E9EAED;
+	background-image: url("../pics/loader.gif");
+	background-repeat: no-repeat;
+	 background-position: center; 
+	height: 1200px;
+	width: 1300px;
+	position: absolute;
+	z-index: 1000;
+}
 
 
 

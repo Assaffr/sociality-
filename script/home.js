@@ -7,4 +7,9 @@
 					
 					showFirstPosts();
 					$offset = 0;
+					//quick loader
+					$(window).load(function() {
+						$("#loader").fadeOut("slow");
+					});
+					
 	});
