@@ -6,4 +6,5 @@
 					});	
 					
 					showFirstPosts();
+					$offset = 0;
 	});

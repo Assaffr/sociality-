@@ -145,9 +145,9 @@ $app->get( '/post/', function() {
 });
 
 //show more posts
-	$app->get( '/postmore/', function() {
+	$app->get( '/postmore/:offset', function($offset) {
 		global $post, $app;
-		echo( json_encode ($post->showMorePosts()) );
+		echo( json_encode ($post->showMorePosts($offset)) );
 });
 
 //ASSAF'S FRIEND

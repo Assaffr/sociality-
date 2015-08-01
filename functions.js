@@ -279,8 +279,10 @@ function showFirstPosts(){
 *	@return (type) (name) none
 */
 function loadMorePosts(){
+
+	$offset+= 3;
 	$.ajax({
-		url: "api/postmore",
+		url: "api/postmore/" + $offset,
 		type: "GET",
 		dataType: "JSON",
 		success: function( response ) {
@@ -288,9 +290,14 @@ function loadMorePosts(){
 				$( "#loadMorePosts" ).remove();
 				$("<div id='newStatus' class='box'><div id='newStatus_head' class='divHead'><img src='pics/user.png' alt='Me'><span class='fullName'>"+ value.user_firstname + " " + value.user_lastname + " posted at " + value.post_created +"</span></div><div id='newStatus_content'>"+ value.post_content +"</div></div>").appendTo("#wall").hide().fadeIn();
 			} );
-			$("#wall").append(
-						" <br> <input type='button' value='Load More Posts' id='loadMorePosts'>"
-				);
+			if( response.length < 3 ){
+				$( "#loadMorePosts" ).remove();
+				$("#wall").append("<br> No more posts!");
+				
+			}
+			else{
+				$("#wall").append(" <br> <input type='button' value='Load More Posts' id='loadMorePosts'>");
+			}
 			$("#loadMorePosts").on("click", loadMorePosts);
 		}
 	});
