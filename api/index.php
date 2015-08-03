@@ -138,7 +138,7 @@ $app->post( '/post/', function() {
 	// $user->updateUser($jsonUser);
 });
 
-//show all posts
+//show first posts
 $app->get( '/post/', function() {
 	global $post, $app;
 	echo( json_encode ($post->showFirstPosts()) );

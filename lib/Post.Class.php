@@ -39,4 +39,26 @@
 				$posts[] = $row;
 			return $posts;
 		}
+		
+		
+		//sets timezone to israel, then takes the string of time in parm and turns it into epoch time
+		//$diff = the difference between current epoch time to the param epoch one.
+		//then it just figures out how long it's been and echoes the correct difference. (hopefully)
+		public function timeAgo($postTimeinString){
+			date_default_timezone_set('Israel');
+			$epoch = strtotime($postTimeinString);
+			$diff = time() - $epoch;
+			$diffMin = $diff / 60;
+			$diffHour = $diffMin / 60;
+			$diffDay = $diffHour / 24;
+			
+			if ($diff <= 60)
+				return (int) ($diff)." seconds ago";
+			if ($diff <= 3600 && $diff >= 60)
+				return (int) ($diffMin)." minutes ago";
+			if ($diff <= 86400 && $diff >= 3600)
+				return (int) ($diffHour)." hours ago";
+			if ($diff < 604800 && $diff >= 86400)
+				return (int) ($diffDay)." days ago";
+		}
 	}
