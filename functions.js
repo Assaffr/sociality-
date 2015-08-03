@@ -259,6 +259,7 @@ function showFirstPosts(){
 			type: "GET",
 			dataType: "JSON",
 			success: function( response ) {
+				console.log(response);
 				$.each( response, function(key, value){
 					// we are manually appending html with the right data for each post
 					// "posted at" currently presents full datetime, will change to "time ago" when we have that function

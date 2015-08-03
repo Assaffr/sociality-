@@ -141,6 +141,16 @@ $app->post( '/post/', function() {
 //show first posts
 $app->get( '/post/', function() {
 	global $post, $app;
+	$posts = $post->showFirstPosts();
+	//i can't get this to work and i give up for tonight!!!! help!!!
+	//for each loop which replaces post created with the time ago
+	//if echoed with json decode it returns a slightly diffrent json decode
+	//
+	//foreach($posts as $value){
+	//	$value['post_created'] = $post->timeAgo($value['post_created']);
+	//	var_dump($value);
+	//}
+	
 	echo( json_encode ($post->showFirstPosts()) );
 });
 
