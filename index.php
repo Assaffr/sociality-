@@ -1,47 +1,83 @@
 <?php
-//just checking i can use this repository ((:
-$title = "Welcome To Sociality+";
-$bodyId = "index";
-include_once dirname(__FILE__).'/inc/header.php';
+$title = "Sociality+";
+$bodyId = "home";
+require_once dirname(__FILE__).'/inc/header.php';
+
 ?>
-
-
+		<div id="loader"></div>
 		<main>
+			<div id="wall">
 			
-			<div id="mainContent">
-			
-				<div id="leftContent">
-				 <h1>Welcome</h1>
-				 <h3>To Sociality+, JohnBryce's social network.</h3>
-				 <h3>Share your memories, connect with others,<br> make new friends.</h3>
-				</div>
-				
-				<div id="rightContent">
-				
-					<div id="login">
-						<input type="text" class="login" id="email" placeholder="Email">
-						<input type="password" class="login" id="password" placeholder="Password">
-						<button type="button" id="loginButton">LOGIN</button>
-					
+				<div id="newStatus" class="box">
+					<div id="newStatus_head" class="divHead">
+						<img src="pics/user.png" alt="Me">
+						<span class="firstname"></span>, update your status
 					</div>
-					<div id="registration">
-						<div id="errorBox"><h3>Error</h3><span id="x">x</span><br><span id="errorReg"></span></div>
-						<input type="text" id="first_name" placeholder="First Name" class="register">
-						<input type="text" id="last_name" placeholder="Last Name" class="register">
-						<input type="text" id="email" placeholder="Email" class="register">
-						<input type="password" id="password" placeholder="Password" class="register">
-						<input type="password" id="re-password" placeholder="Re-enter password" class="register">
-						<button type="button" id="registerButton">REGISTER</button>
+					<div id="newStatus_content">
+						<textarea id="postContent" placeholder="What's on your mind?" autocomplete="off" aria-expanded="true"></textarea>
+					</div>
+
+					<div id="newStatus_footer">
+						<button type="button" name="finishPost">Post</button>
+					</div>
+				</div>
+				<div id="posts">
+				<!-- - 
+				<div id="status" class="box">
+					<div id="Status_head">
+						<strong>x</strong>
+						<img alt="S.writer">
+						<div>
+						<a href="profile/id">Assaf Farhan</a><br>
+						<span class="postSince">49 mins</span>
+						</div>
 					</div>
 					
-				</div>
+					<div id="status_content">
+						<p>Dramatic Bodycam Footage Shows Knife Wielding Man Attack Police Officers</p>
+					</div>
+
+					<div id="status_footer">
+						<div id="comment">
+						</div>
+						<img alt="me">
+						<textarea placeholder="Leave a comment..."></textarea>
+						
+					</div>
+				</div>-->
 			</div>
+			</div>	
+			<aside>
 			
+				<div id="myBar" class="box">
+					<div id="myBar_head" class="divHead"><span>Welcome</span></div>
+					<div id="myBar_content">
+						<img src="pics/user.png" alt="Me">
+						<div id="myBar_content_text">
+							<span class="firstname"></span><br>
+							<a href="account.php">Edit profile</a>
+						</div>
+					
+					</div>
+				</div>
+				
+				<div id="myDetails" class="box">
+					<div id="myDetails_head" class="divHead"><span>My details</span></div>
+					<div id="myDetails_content">
+						<span class="fullName"></span><br>
+					<!--  	<span id="dateOfBirth">01/01/1970</span> (<span id="age">40</span>)<br> -->
+					<!--  	only to be added when user adds it -->
+						<span id="email"></span>
+						</div>
+					
+					
+				</div>
+				
+				
+				<div id="myFriends" class="box">
+					<div id="myFriends_head" class="divHead"><span>My Friends</span> (<span id="numFriends"></span>)</div>
+				</div>
 			
+			</aside>
 		</main>
 		<?php require_once dirname(__FILE__).'/inc/footer.php';?>
-
-
-
-
-

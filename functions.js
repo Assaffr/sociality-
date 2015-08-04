@@ -33,7 +33,7 @@ function login($email, $password){
 					//error message - add later
 					}
 				else {
-					window.location.href = "home.php";
+					window.location.href = "index.php";
 				}
 			}
 		});
@@ -192,7 +192,7 @@ function verifyLogin(){
 		success: function(response) {
 				delete response['slim.flash'];
 				if (!response.login)
-					window.location.href = "index.php";
+					window.location.href = "home.php";
 				$("span[class=firstname]").html(response.user_firstname);
 				$("span[id=email]").html(response.user_email);
 				$("span[class=fullName]").html(response.user_firstname + " " + response.user_lastname);
@@ -213,7 +213,7 @@ function logOut(){
 			url: "api/logout/",
 			type: "GET",
 			complete: function(response) {
-					
+				window.location.href = "home.php";
 				}
 	});
 }
