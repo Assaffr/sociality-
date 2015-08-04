@@ -1,15 +1,14 @@
-	$(document).ready(function(){					
-					verifyLogin();
-					$( "#logout" ).click(logOut);
-					$("button[name=finishPost]").on( "click", function(){
-						publishPost(  $("#postContent").val(), login.userID );
+	$(document).ready(function(){
+					$("#loginButton").on( "click", function(){
+					login( $("input[id=email].login").val(), $("input[id=password].login").val() )
 					});	
-					
-					showFirstPosts();
-					$offset = 0;
-					//quick loader
-					$(window).load(function() {
-						$("#loader").fadeOut("slow");
-					});
-					
-	});
+					$("#registerButton").on( "click", register);	
+					$("input[id=re-password]").on( "focusout", matchBothPasswords);	
+					$("input[id=email].register").on( "focusout", function(){
+							checkEmail( $("input[id=email].register").val() );
+						} );
+					$("span[id=x]").on( "click", function(){
+						$("#errorBox").fadeOut();
+					});	
+
+			});
