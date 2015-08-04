@@ -142,22 +142,25 @@ $app->post( '/post/', function() {
 $app->get( '/post/', function() {
 	global $post, $app;
 	$posts = $post->showFirstPosts();
-	//i can't get this to work and i give up for tonight!!!! help!!!
-	//for each loop which replaces post created with the time ago
-	//if echoed with json decode it returns a slightly diffrent json decode
-	//
-	//foreach($posts as $value){
-	//	$value['post_created'] = $post->timeAgo($value['post_created']);
-	//	var_dump($value);
-	//}
+
+	foreach($posts as $value){
+		$value['post_created'] = $post->timeAgo($value['post_created']);
+		$postsWithTimeAgo[] = $value;
+	}
 	
-	echo( json_encode ($post->showFirstPosts()) );
+	echo ( json_encode ( $postsWithTimeAgo ) );
 });
 
 //show more posts
 	$app->get( '/postmore/:offset', function($offset) {
 		global $post, $app;
-		echo( json_encode ($post->showMorePosts($offset)) );
+		$posts = $post->showMorePosts($offset);
+		foreach($posts as $value){
+			$value['post_created'] = $post->timeAgo($value['post_created']);
+			$postsWithTimeAgo[] = $value;
+		}
+		
+		echo ( json_encode ( $postsWithTimeAgo ) );
 });
 
 //ASSAF'S FRIEND
