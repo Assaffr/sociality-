@@ -297,9 +297,9 @@ aside {
 	margin-top:-25px;
 	
 }
-#status{
+.status{
     width: 670px;
-    height: 160px;
+    min-height: 160px;
 }
 #Status_head{
 	padding: 10px;
@@ -323,7 +323,7 @@ aside {
 	
 }
 
-#status a{
+.status a{
 	color:#133783;
 	font-weight: bold;
 	
@@ -339,7 +339,7 @@ aside {
 	
 }
 
-#status p {
+.status p {
 	margin:0px;
 	
 }
