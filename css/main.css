@@ -14,7 +14,7 @@
 main {
 	margin:0 auto;
 	width:960px;	
-	height:1000px;
+	height:800px;
 }
 
 #index main {
@@ -101,6 +101,16 @@ input ,#errorBox {
 	color: gray;
 }
 
+footer{
+	position: relative;
+	
+}
+
+fieldset p {
+	margin:0px;
+	
+}
+
 #errorBox {
 	font:normal normal normal normal 13.3333330154419px/normal Arial;
 	height:45px;
@@ -171,18 +181,18 @@ button{
 
 .divHead{
 	font-weight: bold;
-	padding:4px;
+	padding:8px;
 	color:#848484;
-	height:40px;
+	height:30px;
 	background-color:#F3F5FA;
 	border-bottom: 1px solid #e5e6e9;
 	
 }
 
 #newStatus_head img {
-	width:28px;
-	height:28px;
-	margin:5px;
+	width:18px;
+	height:18px;
+	
 
 	
 }
@@ -215,7 +225,7 @@ button{
 
 
 aside .divHead span{
-	margin:13px 8px;
+	margin:9px 8px;
 	display:inline-block;
 	
 }

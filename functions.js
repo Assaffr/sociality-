@@ -292,7 +292,7 @@ function loadMorePosts(){ //I think this doesn't work /=
 			$.each( response, function(key, value){
 				$( "#loadMorePosts" ).remove();
 				console.log(value);
-				$("<div id='status' class='box'><div id='Status_head'><strong>x</strong><img alt='S.writer'><div><a href='profile/id'>"+ value.user_firstname + " " + value.user_lastname +"</a><br><span class='postSince'>"+ value.post_created +"</span></div></div><div id='status_content'><p>"+ value.post_content +"</p></div><div id='status_footer'><div id='comment'></div><img alt='me'><textarea placeholder='Leave a comment...'></textarea></div></div>").appendTo("#posts").hide().fadeIn();
+				$("<div id='status' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer'><div><a href='profile/id'>"+ value.user_firstname + " " + value.user_lastname +"</a><br><span class='postSince'>"+ value.post_created +"</span></div></div><div id='status_content'><p>"+ value.post_content +"</p></div><div id='status_footer'><div id='comment'></div><img alt='me'><textarea placeholder='Leave a comment...'></textarea></div></div>").appendTo("#posts").hide().fadeIn();
 			} );
 			if( response.length < 3 ){
 				$( "#loadMorePosts" ).remove();
