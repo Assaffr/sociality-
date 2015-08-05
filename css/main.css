@@ -382,6 +382,9 @@ aside {
 	z-index: 1000;
 }
 
+fieldset{
+	border: none;
+}
 
 
 
