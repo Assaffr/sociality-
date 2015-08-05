@@ -12,4 +12,6 @@
 						$("#loader").fadeOut("slow");
 					});
 					
+					getSixPack(2) // add the 6 friend to the home page
+					
 	});

@@ -307,3 +307,22 @@ function loadMorePosts(){
 		}
 	});
 }
+
+function getSixPack($userId) {
+	
+	$.ajax({
+		url: "api/friends/rndSix/"+$userId,
+		type: "GET",
+		dataType: "JSON",
+		success: function ( sixPack ){
+			$.each( sixPack, function(key, v){
+				//console.log( v );
+			$('<div class="friendPic"><a href="profile.php?id='+v.user_friend_id+'"><img alt="" src="'+v.user_profile_picture+'"><span class="friendlabel">'+v.user_firstname + v.user_lastname+'</span></a></div>').appendTo("#myFriends_content");
+			});
+		}
+		
+	});
+	
+	
+
+}

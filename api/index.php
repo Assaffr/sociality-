@@ -164,9 +164,9 @@ $app->get( '/post/', function() {
 });
 
 //ASSAF'S FRIEND
-$app->get('/friends/:myId/', function ($myId) use ( $friends ) {
-    	$users = $friends->getAllfriends($myId);
-    	echo json_encode($users);  // this is the response to the http:
+$app->get('/friends/rndSix/:myId', function ($myId) use ( $friends ) { // the :myId is temp till we use a SESSION["uesrId"]
+    	$sixPack = $friends->getSixRndFriends($myId);
+    	echo json_encode($sixPack);  // this is the response to the http:
     }
 );
 

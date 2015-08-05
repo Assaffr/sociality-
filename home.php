@@ -76,6 +76,8 @@ require_once dirname(__FILE__).'/inc/header.php';
 				
 				<div id="myFriends" class="box">
 					<div id="myFriends_head" class="divHead"><span>My Friends</span> (<span id="numFriends"></span>)</div>
+					<div id="myFriends_content" class="loading">
+					</div>
 				</div>
 			
 			</aside>

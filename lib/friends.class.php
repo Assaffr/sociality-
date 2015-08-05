@@ -47,6 +47,31 @@ class Friends {
 		return $friends;
 	}
 	
+	public function getSixRndFriends ( $id ){
+		
+		$query = "(SELECT friends.user_friend_id, users_info.user_firstname, users_info.user_lastname, users_info.user_profile_picture
+					FROM users_info 
+					INNER JOIN friends 
+					ON users_info.user_id = friends.user_friend_id
+					WHERE friends.user_id = $id)
+					UNION
+					(SELECT friends.user_id, users_info.user_firstname, users_info.user_lastname, users_info.user_profile_picture
+					FROM users_info 
+					INNER JOIN friends 
+					ON users_info.user_id = friends.user_id
+					WHERE friends.user_friend_id = $id)
+					ORDER BY RAND()
+					LIMIT 6;";
+		$results = $this->_db->query($query);
+		
+		$sixPack = array();
+		
+		while ( $row = $results->fetch_assoc() ){
+			$sixPack[] = $row;
+		}
+		return $sixPack;
+	}
+	
 	
 	
 	
