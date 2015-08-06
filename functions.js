@@ -282,10 +282,6 @@ function showFirstPosts(){
 *	@return (type) (name) none
 */
 function loadMorePosts(){ //I think this doesn't work /=
-					// this works super well! when there are a lot of posts ;)
-					//needs fixing to figure out how many posts it recieves and how it'll react based on that
-	//IMPORTANT NOTE!!! when you try to click the button for load more posts, it tries to click on
-	//the footer. try to inspect element and you'll see what i mean!
 
 	$offset+= 3;
 	$.ajax({
