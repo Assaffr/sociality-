@@ -33,13 +33,30 @@ require_once dirname(__FILE__).'/inc/header.php';
 				<p> <label class="line" for="aboutMe">About me &nbsp </label><textarea id="aboutMe"></textarea><br><span>About you (160 characters or less)</span></p>
 				<p> <label class="line" for="secretAbout">Secret about &nbsp </label><textarea id="secretAbout"></textarea></textarea><br><span>About you (160 characters or less)</span></p>
 			</div>
+			
+			<div id="myAccount_footer">
+				<button type="button">Save Changes</button>
+			
+			</div>
 		</div>
 	</div>
 
 	<aside>
 	
-	
+		<div id="settings" class="box">
+			<div id="" class="divHead"><span>Settings</span></div>
+			<div id="settings_content">
+				<section><span><strong>General</strong></span></section>
+				<section><a href="images.php"><span>Profile Picture</span></a></section>
+				<section><a href="notifications.php"><span>Notifications</span></a></section>
+				<section><a href="password.php"><span>Password</span></a></section>
+			</div>
+		</div>
+				
+			
 	</aside>
 
-
 </main>
+<?php 
+require_once dirname(__FILE__).'/inc/footer.php';
+?>
