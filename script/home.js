@@ -2,7 +2,7 @@
 					verifyLogin();
 					$( "#logout" ).click(logOut);
 					$("button[name=finishPost]").on( "click", function(){
-						publishPost(  $("#postContent").val(), login.userID );
+						publishPost( $("#postContent").val() );
 					});	
 					
 					showFirstPosts();

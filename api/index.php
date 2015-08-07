@@ -131,30 +131,37 @@ $app->put( '/user/:id', function( $id ) {
 });
 
 //publish post
+//includes server-side check that content isn't empty
 $app->post( '/post/', function() {
 	global $post, $app;
 	$jsonDetails = json_decode( $app->request->getBody(), true );
-	echo ( $post->publishPost( $jsonDetails ) );
-	// $user->updateUser($jsonUser);
+	if ( $jsonDetails['post_content'] )
+		echo ( $post->publishPost( $jsonDetails ) );
+
 });
 
 //show first posts
 $app->get( '/post/', function() {
 	global $post, $app;
 	$posts = $post->showFirstPosts();
+	$postsWithTimeAgo = false;
 
 	foreach($posts as $value){
 		$value['post_created'] = $post->timeAgo($value['post_created']);
 		$postsWithTimeAgo[] = $value;
 	}
 	
-	echo ( json_encode ( $postsWithTimeAgo ) );
+	if ($postsWithTimeAgo)
+		echo ( json_encode ( $postsWithTimeAgo ) );
+
 });
 
 //show more posts
 	$app->get( '/postmore/:offset', function($offset) {
 		global $post, $app;
 		$posts = $post->showMorePosts($offset);
+		$postsWithTimeAgo = false;
+		
 		foreach($posts as $value){
 			$value['post_created'] = $post->timeAgo($value['post_created']);
 			$postsWithTimeAgo[] = $value;

@@ -223,27 +223,30 @@ function logOut(){
 *	publishPost
 *
 *	publishes a post
-*
+*	if content is empty - does nothing!!!
+* 	^ALSO WORKS SERVER-SIDE
 *	@param (string) (postContent) post content
 *	@return (type) (name) none
 */
 function publishPost($postContent){
-	$.ajax({
-			url: "api/post",
-			type: "POST",
-			dataType: "TEXT",
-			data: JSON.stringify({
-				user_id: $("#myDetails").attr("data-id"),
-				post_content:$postContent}),
-			success: function( response ) {
-				if(response = 1){
-					$("<div id='status' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer'><div><a href='profile/id'>"+ $("span[class=fullName]").text() +"</a><br><span class='postSince'>Just Now</span></div></div><div id='status_content'><p>"+ $postContent +"</p></div><div id='status_footer'><div id='comment'></div><img alt='me'><textarea placeholder='Leave a comment...'></textarea></div></div>").prependTo("#posts").hide().fadeIn();
-					$("#postContent").val("");
-					$("#status img").attr("src", "pics/user.png");
+	if ( $postContent ) {
+		$.ajax({
+				url: "api/post",
+				type: "POST",
+				dataType: "TEXT",
+				data: JSON.stringify({
+					user_id: $("#myDetails").attr("data-id"),
+					post_content:$postContent}),
+				success: function( response ) {
+					if( response ){
+						$("<div id='status' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer'><div><a href='profile/id'>"+ $("span[class=fullName]").text() +"</a><br><span class='postSince'>Just Now</span></div></div><div id='status_content'><p>"+ $postContent +"</p></div><div id='status_footer'><div id='comment'></div><img alt='me'><textarea placeholder='Leave a comment...'></textarea></div></div>").prependTo("#posts").hide().fadeIn();
+						$("#postContent").val("");
+						$("#status img").attr("src", "pics/user.png");
+					}
+					
 				}
-				
-			}
 		});
+	}
 }
 /**
 *	showFirstPosts
@@ -260,14 +263,11 @@ function showFirstPosts(){
 			dataType: "JSON",
 			success: function( response ) {
 				$.each( response, function(key, value){
-					// we are manually appending html with the right data for each post
-					// "posted at" currently presents full datetime, will change to "time ago" when we have that function
-					$("<div id='"+response[0].post_id+"' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer'><div><a href='profile/id'>"+ value.user_firstname + " " + value.user_lastname +"</a><br><span class='postSince'>"+ value.post_created +"</span></div></div><div id='status_content'><p>"+ value.post_content +"</p></div><div id='status_footer'><div id='comment'></div><img alt='me'><textarea placeholder='Leave a comment...'></textarea></div></div>").appendTo("#posts").hide().fadeIn();
+					$("<div id='"+value.post_id+"' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer'><div><a href='profile/id'>"+ value.user_firstname + " " + value.user_lastname +"</a><br><span class='postSince'>"+ value.post_created +"</span></div></div><div id='status_content'><p>"+ value.post_content +"</p></div><div id='status_footer'><div id='comment'></div><img alt='me'><textarea placeholder='Leave a comment...'></textarea></div></div>").appendTo("#posts").hide().fadeIn();
 				} );
 				$("#wall").append(
 							" <br> <input type='button' value='Load More Posts' id='loadMorePosts'>"
 					);
-				$("#status img").attr("src", "pics/user.png");
 				$("#loadMorePosts").on("click", loadMorePosts);
 			}
 		});
@@ -281,33 +281,32 @@ function showFirstPosts(){
 *	@param
 *	@return (type) (name) none
 */
-function loadMorePosts(){ //I think this doesn't work /=
-					// this works super well! when there are a lot of posts ;)
-					//needs fixing to figure out how many posts it recieves and how it'll react based on that
-	//IMPORTANT NOTE!!! when you try to click the button for load more posts, it tries to click on
-	//the footer. try to inspect element and you'll see what i mean!
-
+function loadMorePosts(){ 
 	$offset+= 3;
 	$.ajax({
 		url: "api/postmore/" + $offset,
 		type: "GET",
 		dataType: "JSON",
 		success: function( response ) {
-			$.each( response, function(key, value){
-				$( "#loadMorePosts" ).remove();
-				console.log(value);
-				$("<div id='status' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer'><div><a href='profile/id'>"+ value.user_firstname + " " + value.user_lastname +"</a><br><span class='postSince'>"+ value.post_created +"</span></div></div><div id='status_content'><p>"+ value.post_content +"</p></div><div id='status_footer'><div id='comment'></div><img alt='me'><textarea placeholder='Leave a comment...'></textarea></div></div>").appendTo("#posts").hide().fadeIn();
-			} );
-			if( response.length < 3 ){
-				$( "#loadMorePosts" ).remove();
-				$("#wall").append("<br> No more posts!");
-				
+			if ( response ){
+				$.each( response, function(key, value){
+					$( "#loadMorePosts" ).remove();
+					$("<div id='"+value.post_id+"' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer'><div><a href='profile/id'>"+ value.user_firstname + " " + value.user_lastname +"</a><br><span class='postSince'>"+ value.post_created +"</span></div></div><div id='status_content'><p>"+ value.post_content +"</p></div><div id='status_footer'><div id='comment'></div><img alt='me'><textarea placeholder='Leave a comment...'></textarea></div></div>").appendTo("#posts").hide().fadeIn();
+				} );
+				if( response.length < 3 ){
+					$( "#loadMorePosts" ).remove();
+					$("#wall").append("<br> No more posts!");
+					
+				}
+				else{
+					$("#wall").append(" <br> <input type='button' value='Load More Posts' id='loadMorePosts'>");
+				}
+				$("#loadMorePosts").on("click", loadMorePosts);
 			}
 			else{
-				$("#wall").append(" <br> <input type='button' value='Load More Posts' id='loadMorePosts'>");
+				$( "#loadMorePosts" ).remove();
+				$("#wall").append("<br> No more posts!");
 			}
-			$("#status img").attr("src", "pics/user.png");
-			$("#loadMorePosts").on("click", loadMorePosts);
 		}
 	});
 }
