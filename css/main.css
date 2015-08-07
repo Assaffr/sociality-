@@ -401,11 +401,16 @@ aside {
 	z-index: 1000;
 }
 
+<<<<<<< HEAD
 #myAccount{
 	width: 670px;
 	height: 800px;
 	
 	
+=======
+fieldset{
+	border: none;
+>>>>>>> origin/master
 }
 
 #subLine {
