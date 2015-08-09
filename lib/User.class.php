@@ -74,16 +74,7 @@
 			return $users;
 		}
 		
-		public function addUserInfo($details){
 
-			$insert = $this->_db->query("
-						INSERT INTO socialityplus.users_info 
-						(user_id, user_nickname, user_firstname, user_lastname, user_about, user_secret_about, user_birthdate, user_created)
-						VALUES ('$details[id]', '$details[nickname]', '$details[firstName]', '$details[lastName]', '$details[about]', '$details[secretAbout]', '$details[birthday]', CURRENT_TIMESTAMP);
-					");
-				return $insert;	
-			
-		}
 		
 		////allready have "updateUser()" on line 37
 		

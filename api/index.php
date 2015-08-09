@@ -29,7 +29,6 @@ $app->post( '/login', function() {
 	global $login, $app;
 	$details = json_decode( $app->request->getBody(), true );
 	$result = $login->match( $details['email'], $details['password'] ) ;
-	//var_dump($result);
 	
 	//The test here is incorrect try to use this -> http://php.net/manual/en/mysqli-result.num-rows.php
 	//ok we need to talk about this cause the REASON i did it like this was because
@@ -90,14 +89,7 @@ $app->post( '/user/', function() {
 	
 });
 
-//Adding user info
-$app->post( '/user/:id', function( $id ) {
-	global $user, $app;
-	$details = json_decode( $app->request->getBody(), true );
-	$add = $user->addUserInfo($details);
-	$boolString = ($add) ? 'true' : 'false';
-	echo $boolString;
-});
+
 
 //Display All Users:
 $app->get( '/user/', function() {
