@@ -311,10 +311,10 @@ function loadMorePosts(){
 	});
 }
 
-function getSixPack($userId) {
+function getSixPack() {
 	
 	$.ajax({
-		url: "api/friends/rndSix/"+$userId,
+		url: "api/friends/rndSix",
 		type: "GET",
 		dataType: "JSON",
 		success: function ( sixPack ){

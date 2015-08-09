@@ -140,8 +140,8 @@ $app->get( '/post/', function() {
 });
 
 //ASSAF'S FRIEND
-$app->get('/friends/rndSix/:myId', function ($myId) use ( $friends ) { // the :myId is temp till we use a SESSION["uesrId"]
-    	$sixPack = $friends->getSixRndFriends($myId);
+$app->get('/friends/rndSix', function () use ( $friends ) { 
+    	$sixPack = $friends->getSixRndFriends($_SESSION["user_id"]); // I dont know what is the SESSION["key"] for user ID
     	echo json_encode($sixPack);  // this is the response to the http:
     }
 );
