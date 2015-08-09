@@ -29,30 +29,7 @@ $app->post( '/login', function() {
 	global $login, $app;
 	$details = json_decode( $app->request->getBody(), true );
 	$result = $login->match( $details['email'], $details['password'] ) ;
-	
-	//The test here is incorrect try to use this -> http://php.net/manual/en/mysqli-result.num-rows.php
-	//ok we need to talk about this cause the REASON i did it like this was because
-	//i wanted to get back the userID or nothing, i need to have the id here also
-	//do you want me to use another function to fetch the id and have this be with numrows
-	//and only return 0 or 1??
-	
-	if (empty($result)){
-		$_SESSION['login'] = false;
-		echo 0;
-	}
-	else {
-		$_SESSION['login'] = true;
-		$_SESSION['userID'] = $result [0]['user_id'];
-		$moreDetails = $login->addUserInfoToSession( $_SESSION['userID'] );
-		$_SESSION['user_email'] = $moreDetails[0]['user_email'];
-		$_SESSION['user_firstname'] = $moreDetails[0]['user_firstname'];
-		$_SESSION['user_lastname'] = $moreDetails[0]['user_lastname'];
-		
-		echo 1;
-	}
-	//okay so, if $result is empty it returns 0, otherwise it returns 1, NOT the userID
-	//but that one is already in the session, we can change it if you want!!!
-	//echo $result [0]['user_id'];
+	echo $result;
 });
 
 
