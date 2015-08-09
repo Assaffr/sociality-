@@ -18,7 +18,7 @@ require_once dirname(__FILE__).'/inc/header.php';
 				<span>Change your account picture</span>
 			</div>
 			
-			<section id="profile">
+			<section id="profile_pic">
 				<div id="pic"><img alt="profile pic" src=""></div>
 				<div class="pic_field">
 					<form action="" method="post" enctype="multipart/form-data">

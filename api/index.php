@@ -38,9 +38,9 @@ $app->get( '/login/', function() {
 	echo (json_encode ($_SESSION));
 	});
 
-$app->get( '/logout/', function() {
-	global $login, $app;
+$app->get( '/logout', function() {
 	session_destroy();
+	var_dump($_SESSION);
 	header('Location: index.php');
 	});	
 	
@@ -101,7 +101,7 @@ $app->put( '/user/:id', function( $id ) {
 
 //publish post
 //includes server-side check that content isn't empty
-$app->post( '/post/', function() {
+$app->post( '/post', function() {
 	global $post, $app;
 	$jsonDetails = json_decode( $app->request->getBody(), true );
 	if ( $jsonDetails['post_content'] )

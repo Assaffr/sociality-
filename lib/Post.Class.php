@@ -11,7 +11,7 @@
 		//i can't get this to show the last post id :((
 		public function publishPost($details){
 			$post = $this->_db->query("
-					INSERT INTO socialityplus.posts (post_id, user_id, post_content, post_created) VALUES (NULL, '$details[user_id]', '$details[post_content]', CURRENT_TIME());
+					INSERT INTO socialityplus.posts (post_id, user_id, post_content, post_created) VALUES (NULL, '$_SESSION[user_id]', '$details[post_content]', CURRENT_TIME());
 					");
 			return $post;		
 		}
