@@ -33,7 +33,7 @@ function login($email, $password){
 					window.location.href = "home.php";
 					}
 				else {
-					//error message TODO
+					alert("WRONG!");
 				}
 			}
 		});
@@ -210,10 +210,10 @@ function verifyLogin(){
  */
 function logOut(){
 	$.ajax({
-			url: "api/logout/",
+			url: "api/logout",
 			type: "GET",
 			complete: function(response) {
-					
+				//window.location.href = "index.php";
 				}
 	});
 }
@@ -235,7 +235,6 @@ function publishPost($postContent){
 				type: "POST",
 				dataType: "TEXT",
 				data: JSON.stringify({
-					user_id: $("#myDetails").attr("data-id"),
 					post_content:$postContent}),
 				success: function( response ) {
 					if( response ){

@@ -25,7 +25,6 @@ $app->post( '/upload', function() {
 
 //LOGIN
 $app->post( '/login', function() {
-	
 	global $login, $app;
 	$details = json_decode( $app->request->getBody(), true );
 	$result = $login->match( $details['email'], $details['password'] ) ;
@@ -40,8 +39,6 @@ $app->get( '/login/', function() {
 
 $app->get( '/logout', function() {
 	session_destroy();
-	var_dump($_SESSION);
-	header('Location: index.php');
 	});	
 	
 
