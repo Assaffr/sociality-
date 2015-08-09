@@ -14,7 +14,7 @@ require_once dirname(__FILE__).'/inc/header.php';
 				<img src="pics/user.png" alt="Me">
 				<span>General Settings</span>
 			</div>
-			<div id="subLine">
+			<div class="subLine">
 				<span>Edit your profile information</span>
 			</div>
 			<div id=field>
