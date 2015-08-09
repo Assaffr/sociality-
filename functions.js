@@ -29,12 +29,11 @@ function login($email, $password){
 				email: $email,
 				password: $password}),
 			success: function( response ) {
-				console.log(response);
-				if (response == 0){
-					//error message - add later
+				if (response == 1){
+					window.location.href = "home.php";
 					}
 				else {
-					//window.location.href = "home.php";
+					//error message TODO
 				}
 			}
 		});
