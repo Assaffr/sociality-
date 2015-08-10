@@ -143,4 +143,23 @@ $app->get('/friends/rndSix', function () use ( $friends ) {
     }
 );
 
+$app->get('/userInfo', function () use ($user) {
+	echo $user->getUserInfo( $_SESSION['user_id'] );
+	
+	
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 $app->run();

@@ -322,9 +322,40 @@ function getSixPack() {
 			$('<div class="friendPic"><a href="profile.php?id='+v.user_friend_id+'"><img alt="" src="'+v.user_profile_picture+'"><span class="friendlabel">'+v.user_firstname + " " + v.user_lastname+'</span></a></div>').appendTo("#myFriends_content");
 			});
 		}
+	});
+}
+
+
+function putUserInfo(){
+	
+	$.ajax({
+		url: "api/userInfo",
+		type:"GET",
+		dataType: "JSON",
+		success: function ( R ){
+			console.log( R );
+			$("input[name=firstName]").val(R.user_firstname);
+			$("input[name=lastName]").val(R.user_lastname);
+			$("input[name=bornDate]").val(R.user_birthdate)
+			$("#aboutMe").val(R.user_about)
+			$("#secretAbout").val(R.user_secret_about)
+		}
 		
 	});
 	
-	
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
