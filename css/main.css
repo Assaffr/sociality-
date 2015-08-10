@@ -3,9 +3,8 @@
  	margin:0px;
  	padding: 0px;
 	background-color:#e9eaed;
-	font-family: 'Arial Narrow', Arial, sans-serif;
+	font-family: 'Segoe UI', Arial, sans-serif;
 	position: relative;
-	/* temp, i just couldn't look at that disgusting font lol' */
 }
 
 
@@ -74,6 +73,7 @@ main {
 }
 
 #topBarNav img:nth-child(2){
+	border-radius: 4px;
 	width:28px;
 	height:28px;
 	
@@ -383,6 +383,10 @@ aside {
 
 #coverPhoto{
 	height:210px;
+	background-color: #c4c4c4;
+	background-image: url("../pics/user.png");
+	background-repeat: no-repeat;
+	background-position: center;
 	
 	
 }

@@ -7,12 +7,12 @@ require_once dirname(__FILE__).'/inc/header.php';
 	<main>
 		<div id="coverWrapper">
 			<div id="coverPhoto">
-			 <img alt="Cover Photo" src="">
+			 <img alt="Cover Photo" src="pics/user.png">
 			</div>
 				
 			<div id="coverBottomLine">
 				<div id="profilePhoto"><img alt="Profile Photo" src=""></div>
-				<span id="fullName">Omer Morad</span>
+				<span id="fullName"><?php echo @$_SESSION["user_firstname"] . "&nbsp" . @$_SESSION["user_lastname"]?></span>
 			</div>
 		
 		</div>
@@ -32,13 +32,16 @@ require_once dirname(__FILE__).'/inc/header.php';
 					</div>
 				</div>
 			</div>	
+			
 			<aside>
 			
 				<div id="myBar" class="box">
-					<div id="myBar_head" class="divHead"><span>About <a href="account.php">(Edit)</a></span></div>
+					<div id="myBar_head" class="divHead"><span>Welcome</span></div>
 					<div id="myBar_content">
+						<img src="pics/user.png" alt="Me">
 						<div id="myBar_content_text">
-							My Friends (<span id="numFriends">46</span>)<br>
+							<span class="firstname"></span><br>
+							<a href="account.php">Edit profile</a>
 						</div>
 					
 					</div>
@@ -47,9 +50,10 @@ require_once dirname(__FILE__).'/inc/header.php';
 				<div id="myDetails" class="box">
 					<div id="myDetails_head" class="divHead"><span>My details</span></div>
 					<div id="myDetails_content">
-						<span id="fullName">Omerico</span><br>
-						<span id="dateOfBirth">01/01/1970</span> (<span id="age">40</span>)<br>
-						<span id="email">Omer@morad.com</span>
+						<span class="fullName"></span><br>
+					<!--  	<span id="dateOfBirth">01/01/1970</span> (<span id="age">40</span>)<br> -->
+					<!--  	only to be added when user adds it -->
+						<span id="email"></span>
 						</div>
 					
 					
@@ -57,7 +61,9 @@ require_once dirname(__FILE__).'/inc/header.php';
 				
 				
 				<div id="myFriends" class="box">
-					<div id="myFriends_head" class="divHead"><span>My Friends</span> (<span id="numFriends">46</span>)</div>
+					<div id="myFriends_head" class="divHead"><span>My Friends</span> (<span id="numFriends"></span>)</div>
+					<div id="myFriends_content" class="loading">
+					</div>
 				</div>
 			
 			</aside>
