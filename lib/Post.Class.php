@@ -20,19 +20,62 @@
 		//note: this still isn't filtering by friends!!
 		//LIMITING POSTS will be used via "LIMIT" and "OFFSET" (skips to next x number of posts)
 		//ORDER BY puts latest posts on top
-		public function showFirstPosts(){
+		public function showFirstPosts($id){
 			$post = $this->_db->query("
-					SELECT posts.post_id, posts.post_content, posts.post_created, posts.user_id, users_info.user_firstname, users_info.user_lastname FROM users_info INNER JOIN posts WHERE posts.user_id = users_info.user_id ORDER BY posts.post_created DESC LIMIT 3;
-					");
+					(SELECT users_info.user_id, users_info.user_firstname, users_info.user_lastname, users_info.user_profile_picture, posts.post_created, posts.post_content, posts.post_id
+					FROM users_info 
+					INNER JOIN friends 
+					ON users_info.user_id = friends.user_friend_id
+					INNER JOIN posts
+					ON users_info.user_id = posts.user_id
+					WHERE friends.user_id = $id
+					)
+					UNION
+					(SELECT users_info.user_id, users_info.user_firstname, users_info.user_lastname, users_info.user_profile_picture, posts.post_created, posts.post_content, posts.post_id
+					FROM users_info 
+					INNER JOIN friends 
+					ON users_info.user_id = friends.user_id
+					INNER JOIN posts
+					ON users_info.user_id = posts.user_id
+					WHERE friends.user_friend_id = $id)
+					UNION
+					(SELECT users_info.user_id, users_info.user_firstname, users_info.user_lastname, users_info.user_profile_picture, posts.post_created, posts.post_content, posts.post_id
+					FROM users_info
+					INNER JOIN posts
+					ON users_info.user_id = posts.user_id
+					WHERE posts.user_id = $id ) 
+					ORDER BY post_created DESC LIMIT 3");
 			$posts = array();
 			while ($row = mysqli_fetch_assoc ($post))
 				$posts[] = $row;
 			return $posts;		
 		}
 
-		public function showMorePosts($offset){
+		public function showMorePosts($offset, $id){
 			$post = $this->_db->query("
-					SELECT posts.post_id, posts.post_content, posts.post_created, posts.user_id, users_info.user_firstname, users_info.user_lastname FROM users_info INNER JOIN posts WHERE posts.user_id = users_info.user_id ORDER BY posts.post_created DESC LIMIT 3 OFFSET " . $offset . ";
+					(SELECT users_info.user_id, users_info.user_firstname, users_info.user_lastname, users_info.user_profile_picture, posts.post_created, posts.post_content, posts.post_id
+					FROM users_info 
+					INNER JOIN friends 
+					ON users_info.user_id = friends.user_friend_id
+					INNER JOIN posts
+					ON users_info.user_id = posts.user_id
+					WHERE friends.user_id = $id
+					)
+					UNION
+					(SELECT users_info.user_id, users_info.user_firstname, users_info.user_lastname, users_info.user_profile_picture, posts.post_created, posts.post_content, posts.post_id
+					FROM users_info 
+					INNER JOIN friends 
+					ON users_info.user_id = friends.user_id
+					INNER JOIN posts
+					ON users_info.user_id = posts.user_id
+					WHERE friends.user_friend_id = $id)
+					UNION
+					(SELECT users_info.user_id, users_info.user_firstname, users_info.user_lastname, users_info.user_profile_picture, posts.post_created, posts.post_content, posts.post_id
+					FROM users_info
+					INNER JOIN posts
+					ON users_info.user_id = posts.user_id
+					WHERE posts.user_id = $id ) 
+					ORDER BY post_created DESC LIMIT 3 OFFSET " . $offset . ";
 					");
 			$posts = array();
 			while ($row = mysqli_fetch_assoc ($post))
@@ -44,21 +87,27 @@
 		//sets timezone to israel, then takes the string of time in parm and turns it into epoch time
 		//$diff = the difference between current epoch time to the param epoch one.
 		//then it just figures out how long it's been and echoes the correct difference. (hopefully)
-		public function timeAgo($postTimeinString){
-			date_default_timezone_set('Israel');
-			$epoch = strtotime($postTimeinString);
+		public function timeAgo( $postTimeinString ) {
+			date_default_timezone_set( 'Israel' );
+			$epoch = strtotime( $postTimeinString );
 			$diff = time() - $epoch;
 			$diffMin = $diff / 60;
 			$diffHour = $diffMin / 60;
 			$diffDay = $diffHour / 24;
 			
-			if ($diff <= 60)
-				return (int) ($diff)." seconds ago";
-			if ($diff <= 3600 && $diff >= 60)
+			if ( $diff <= 60 )
+				return (int)( $diff ) . " seconds ago";
+			if ( $diff <= 3600 && $diff >= 60 )
 				return (int) ($diffMin)." minutes ago";
 			if ($diff <= 86400 && $diff >= 3600)
 				return (int) ($diffHour)." hours ago";
 			if ($diff < 604800 && $diff >= 86400)
 				return (int) ($diffDay)." days ago";
 		}
+		
+		// public function getFeed( $user_id ) {
+			// $feed = array(
+				// "comments" => $this->getComments();
+			// );
+		// }
 	}

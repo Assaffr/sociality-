@@ -20,7 +20,7 @@ require_once dirname(__FILE__).'/inc/header.php';
 			<div id=field>
 				<p> <label class="line" for="firstName">First Name &nbsp </label> <input type="text" name="firstName" id="firstName"><br><span>Enter your first name</span></p>
 				<p> <label class="line" for="lastName">Last Name &nbsp </label> <input type="text" name="lastName" id="lastName"><br><span>Enter your last name</span></p>
-				<p> <label class="line" for="email">Email &nbsp </label> <input type="text" name="email" id="email"><br><span>E-mail will not be displayed</span></p>
+				<p> <label class="line" for="email">Email &nbsp </label> <input type="text" name="email" id="email" disabled><br><span>E-mail will not be displayed</span></p>
 				<p> <label class="line" for="bornDate">Born Date &nbsp </label> <input type="date" name="bornDate" id="bornDate"><br><span>Select the date you were born</span></p>
 				<p> <label class="line" for="gender">Gender &nbsp </label>
 					 <select id="gender">

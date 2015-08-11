@@ -31,10 +31,17 @@ $app->post( '/login', function() {
 	echo $result;
 });
 
-
+//VERIFY LOGIN BY ECHOING SESSION
 $app->get( '/login/', function() {
-	global $login, $app;
+	// global $friends;
+	// $info = array(
+		// 'session' => $_SESSION,
+		// 'numFriends' => $friends->getNumberOfFriends($_SESSION['user_id'])
+	// );
+	// echo (json_encode ($info));
+	
 	echo (json_encode ($_SESSION));
+
 	});
 
 $app->get( '/logout', function() {
@@ -109,7 +116,7 @@ $app->post( '/post', function() {
 //show first posts
 $app->get( '/post/', function() {
 	global $post, $app;
-	$posts = $post->showFirstPosts();
+	$posts = $post->showFirstPosts($_SESSION['user_id']);
 	$postsWithTimeAgo = false;
 
 	foreach($posts as $value){
@@ -125,7 +132,7 @@ $app->get( '/post/', function() {
 //show more posts
 	$app->get( '/postmore/:offset', function($offset) {
 		global $post, $app;
-		$posts = $post->showMorePosts($offset);
+		$posts = $post->showMorePosts($offset, $_SESSION['user_id']);
 		$postsWithTimeAgo = false;
 		
 		foreach($posts as $value){
@@ -142,5 +149,24 @@ $app->get('/friends/rndSix', function () use ( $friends ) {
     	echo json_encode($sixPack);  // this is the response to the http:
     }
 );
+
+$app->get('/userInfo', function () use ($user) {
+	echo $user->getUserInfo( $_SESSION['user_id'] );
+	
+	
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 $app->run();

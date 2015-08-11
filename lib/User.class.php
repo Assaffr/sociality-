@@ -96,18 +96,6 @@
 					");
 		}
 		
-		public function getUserForList($ID){
-			$result = $this->_db->query("
-						SELECT users.user_id, users.user_email,users.user_password,users_info.user_nickname, users_info.user_firstname, users_info.user_lastname, users_info.user_about, users_info.user_secret_about, users_info.user_created, users_info.user_birthdate FROM users INNER JOIN users_info ON users.user_id=users_info.user_id AND users_info.user_id = $ID
-					");
-			$users = array();
-			while ($row = mysqli_fetch_assoc ($result))
-				$users[] = $row;
-			return $users;
-		}
-		
-
-		
 		
 		public function checkEmailExists($email){
 			$result = $this->_db->query("
@@ -116,5 +104,33 @@
 			return $result->num_rows;
 		}
 		
-	
+		public function getUserInfo( $id ){
+			
+			$query = "SELECT user_firstname, user_lastname, user_about, user_secret_about, user_birthdate FROM users_info WHERE user_id = $id";
+			$result = $this->_db->query( $query );
+			return json_encode( $result->fetch_assoc());
+		}
+		
+		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

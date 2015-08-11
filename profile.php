@@ -7,11 +7,11 @@ require_once dirname(__FILE__).'/inc/header.php';
 	<main>
 		<div id="coverWrapper">
 			<div id="coverPhoto">
-			 <img alt="Cover Photo" src="pics/user.png">
+			 <img alt="Cover Photo" src="">
 			</div>
 				
 			<div id="coverBottomLine">
-				<div id="profilePhoto"><img alt="Profile Photo" src=""></div>
+				<div id="profilePhoto"><img alt="Profile Photo" src="pics/user.png"></div>
 				<span id="fullName"><?php echo @$_SESSION["user_firstname"] . "&nbsp" . @$_SESSION["user_lastname"]?></span>
 			</div>
 		

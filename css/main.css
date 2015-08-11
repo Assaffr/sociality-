@@ -44,7 +44,7 @@ main {
 
 
 #topBarContent{
-	position:relativ;
+	position:relative;
 	width:940px;
 	height:44px;
 	margin:0 auto;
@@ -133,7 +133,6 @@ h1, h3 {
 }
 
 footer{
-	position: absolute;
 	bottom:0;
 	margin-left:120px;
 	
@@ -394,8 +393,26 @@ aside {
 #profilePhoto{
 	float:left;
 	margin-top:-25px;
+	border-radius: 40px;
 	
 }
+
+#profilePhoto img{
+	position: absolute;
+	border-radius: 100px;
+	border-style: solid;
+	border-color: white;
+	box-shadow: 1px 1px 1px gray;
+	
+}
+
+#fullName{
+	margin-left: 100px;
+	margin-top: 5px;
+	display: inline-block;
+
+}
+
 .status{
     width: 670px;
     min-height: 160px;
