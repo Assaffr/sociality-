@@ -11,7 +11,7 @@ require_once dirname(__FILE__).'/inc/header.php';
 		<div id="myAccount_pic" class="box">
 		
 			<div id="myAccount_head" class="divHead">
-				<img src="pics/user.png" alt="Me">
+				<img src="pics/user.png" alt="Me" class="profile-photo">
 				<span>Profile Settings</span>
 			</div>
 			<div class="subLine">
@@ -19,7 +19,7 @@ require_once dirname(__FILE__).'/inc/header.php';
 			</div>
 			
 			<section id="profile_pic">
-				<div id="pic"><img alt="profile pic" src=""></div>
+				<div id="pic"><img alt="profile pic" src="" class="profile-photo"></div>
 				<div class="pic_field">
 					<form action="" method="post" enctype="multipart/form-data">
      				   <input type="file" name="upload"/><br>

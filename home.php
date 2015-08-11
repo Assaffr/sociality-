@@ -10,7 +10,7 @@ require_once dirname(__FILE__).'/inc/header.php';
 			
 				<div id="newStatus" class="box">
 					<div id="newStatus_head" class="divHead">
-						<img src="pics/user.png" alt="Me">
+						<img src="pics/user.png" alt="Me" class="profile-photo">
 						<span class="firstname"></span>, update your status
 					</div>
 					<div id="newStatus_content">
@@ -29,7 +29,7 @@ require_once dirname(__FILE__).'/inc/header.php';
 				<div id="myBar" class="box">
 					<div id="myBar_head" class="divHead"><span>Welcome</span></div>
 					<div id="myBar_content">
-						<img src="pics/user.png" alt="Me">
+						<img src="pics/user.png" alt="Me" class="profile-photo">
 						<div id="myBar_content_text">
 							<span class="firstname"></span><br>
 							<a href="account.php">Edit profile</a>

@@ -383,9 +383,6 @@ aside {
 #coverPhoto{
 	height:210px;
 	background-color: #c4c4c4;
-	background-image: url("../pics/user.png");
-	background-repeat: no-repeat;
-	background-position: center;
 	
 	
 }
@@ -398,6 +395,8 @@ aside {
 }
 
 #profilePhoto img{
+	height: 80px;
+	width: 80px;
 	position: absolute;
 	border-radius: 100px;
 	border-style: solid;

@@ -11,7 +11,7 @@ require_once dirname(__FILE__).'/inc/header.php';
 		<div id="myAccount" class="box">
 		
 			<div id="myAccount_head" class="divHead">
-				<img src="pics/user.png" alt="Me">
+				<img src="pics/user.png" alt="Me" class="profile-photo">
 				<span>General Settings</span>
 			</div>
 			<div class="subLine">

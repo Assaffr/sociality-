@@ -24,14 +24,11 @@
 					(user_email , user_password)
 					VALUES 
 					('".$userDetails['user_email']."', '". md5 ( $userDetails['user_password'] ). "');
-					INSERT INTO users_info ( user_id, user_firstname, user_lastname )
-					VALUES (LAST_INSERT_ID(),'".$userDetails['user_firstname']."','".$userDetails['user_lastname']."');" ;
+					INSERT INTO users_info ( user_id, user_firstname, user_lastname, user_profile_picture, user_secret_picture )
+					VALUES (LAST_INSERT_ID(),'".$userDetails['user_firstname']."','".$userDetails['user_lastname']."', 'nopicture.png', 'nocover.jpg');" ;
 		
 			$results = $this->_db->multi_query($query); 
-			
-		// VERY IMPORTANT NOTE - this only works because we changed the database
-		// M U S T FORCE OMER TO CHANGE DATABASE BEFORE END OR THIS WON'T WORK!!!!!!!!~!~!~!~!~!
-		// please make sure to annoy him as much as possible to do it ;)
+
 		return $results;
 		}
 

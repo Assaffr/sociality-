@@ -11,7 +11,7 @@ require_once dirname(__FILE__).'/inc/header.php';
 			</div>
 				
 			<div id="coverBottomLine">
-				<div id="profilePhoto"><img alt="Profile Photo" src="pics/user.png"></div>
+				<div id="profilePhoto"><img alt="Profile Photo" class="profile-photo" src="pics/user.png"></div>
 				<span id="fullName"><?php echo @$_SESSION["user_firstname"] . "&nbsp" . @$_SESSION["user_lastname"]?></span>
 			</div>
 		
@@ -21,7 +21,7 @@ require_once dirname(__FILE__).'/inc/header.php';
 			
 				<div id="newStatus" class="box">
 					<div id="newStatus_head" class="divHead">
-						<img alt="Me">
+						<img alt="Me" class="profile-photo">
 						 Update your status
 					</div>
 					<div id="newStatus_content">
@@ -38,7 +38,7 @@ require_once dirname(__FILE__).'/inc/header.php';
 				<div id="myBar" class="box">
 					<div id="myBar_head" class="divHead"><span>Welcome</span></div>
 					<div id="myBar_content">
-						<img src="pics/user.png" alt="Me">
+						<img src="pics/user.png" class="profile-photo" alt="Me">
 						<div id="myBar_content_text">
 							<span class="firstname"></span><br>
 							<a href="account.php">Edit profile</a>
