@@ -47,6 +47,12 @@ class Friends {
 		return $friends;
 	}
 	
+	public function getNumberOfFriends($id){
+		$query = "(SELECT user_friend_id FROM friends WHERE user_id = $id) UNION (SELECT user_id FROM friends WHERE user_friend_id = $id)";
+		$results = $this->_db->query($query);
+		return $results->num_rows;
+	}
+	
 	public function getSixRndFriends ( $id ){
 		
 		$query = "(SELECT friends.user_friend_id, users_info.user_firstname, users_info.user_lastname, users_info.user_profile_picture
