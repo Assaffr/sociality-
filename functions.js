@@ -196,9 +196,6 @@ function verifyLogin(){
 				$("span[class=firstname]").html(response.user_firstname);
 				$("span[id=email]").html(response.user_email);
 				$("span[class=fullName]").html(response.user_firstname + " " + response.user_lastname);
-				$("#newStatus_head img").attr("src", response.user_profile_picture )
-				$("#myBar_content img").attr("src", response.user_profile_picture )
-				$("#topBarNav img:nth(0)").attr("src", response.user_profile_picture )
 				$("#myDetails").attr("data-id", response.userID);
 			}
 		});
@@ -241,8 +238,9 @@ function publishPost($postContent){
 					post_content:$postContent}),
 				success: function( response ) {
 					if( response ){
-						$("<div id='status' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='"+$("#myBar_content img").attr("src")+"'><div><a href='profile/id'>"+ $("span[class=fullName]").text() +"</a><br><span class='postSince'>Just Now</span></div></div><div id='status_content'><p>"+ $postContent +"</p></div><div id='status_footer'><div id='comment'></div><img alt='me' src='"+$("#myBar_content img").attr("src")+"'><textarea placeholder='Leave a comment...'></textarea></div></div>").prependTo("#posts").hide().fadeIn();
+						$("<div id='status' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer'><div><a href='profile/id'>"+ $("span[class=fullName]").text() +"</a><br><span class='postSince'>Just Now</span></div></div><div id='status_content'><p>"+ $postContent +"</p></div><div id='status_footer'><div id='comment'></div><img alt='me'><textarea placeholder='Leave a comment...'></textarea></div></div>").prependTo("#posts").hide().fadeIn();
 						$("#postContent").val("");
+						$("#status img").attr("src", "pics/user.png");
 					}
 					
 				}
@@ -264,7 +262,7 @@ function showFirstPosts(){
 			dataType: "JSON",
 			success: function( response ) {
 				$.each( response, function(key, value){
-					$("<div id='"+value.post_id+"' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='"+ value.user_profile_picture +"'><div><a href='profile.php?id="+ value.user_id +"'>"+ value.user_firstname + " " + value.user_lastname +"</a><br><span class='postSince'>"+ value.post_created +"</span></div></div><div id='status_content'><p>"+ value.post_content +"</p></div><div id='status_footer'><div id='comment'></div><img alt='me' src='"+ $("#myBar_content img").attr("src") +"'><textarea placeholder='Leave a comment...'></textarea></div></div>").appendTo("#posts").hide().fadeIn();
+					$("<div id='"+value.post_id+"' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer'><div><a href='profile/id'>"+ value.user_firstname + " " + value.user_lastname +"</a><br><span class='postSince'>"+ value.post_created +"</span></div></div><div id='status_content'><p>"+ value.post_content +"</p></div><div id='status_footer'><div id='comment'></div><img alt='me'><textarea placeholder='Leave a comment...'></textarea></div></div>").appendTo("#posts").hide().fadeIn();
 				} );
 				$("#wall").append(
 							" <br> <input type='button' value='Load More Posts' id='loadMorePosts'>"
@@ -292,7 +290,7 @@ function loadMorePosts(){
 			if ( response ){
 				$.each( response, function(key, value){
 					$( "#loadMorePosts" ).remove();
-					$("<div id='"+value.post_id+"' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='"+ value.user_profile_picture +"'><div><a href='profile/id'>"+ value.user_firstname + " " + value.user_lastname +"</a><br><span class='postSince'>"+ value.post_created +"</span></div></div><div id='status_content'><p>"+ value.post_content +"</p></div><div id='status_footer'><div id='comment'></div><img alt='me'><textarea placeholder='Leave a comment...'></textarea></div></div>").appendTo("#posts").hide().fadeIn();
+					$("<div id='"+value.post_id+"' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer'><div><a href='profile/id'>"+ value.user_firstname + " " + value.user_lastname +"</a><br><span class='postSince'>"+ value.post_created +"</span></div></div><div id='status_content'><p>"+ value.post_content +"</p></div><div id='status_footer'><div id='comment'></div><img alt='me'><textarea placeholder='Leave a comment...'></textarea></div></div>").appendTo("#posts").hide().fadeIn();
 				} );
 				if( response.length < 3 ){
 					$( "#loadMorePosts" ).remove();
@@ -320,42 +318,13 @@ function getSixPack() {
 		dataType: "JSON",
 		success: function ( sixPack ){
 			$.each( sixPack, function(key, v){
+				//console.log( v );
 			$('<div class="friendPic"><a href="profile.php?id='+v.user_friend_id+'"><img alt="" src="'+v.user_profile_picture+'"><span class="friendlabel">'+v.user_firstname + " " + v.user_lastname+'</span></a></div>').appendTo("#myFriends_content");
 			});
-		}
-	});
-}
-
-
-function putUserInfo(){
-	
-	$.ajax({
-		url: "api/userInfo",
-		type:"GET",
-		dataType: "JSON",
-		success: function ( R ){
-			$("input[name=firstName]").val(R.user_firstname);
-			$("input[name=lastName]").val(R.user_lastname);
-			$("input[name=bornDate]").val(R.user_birthdate)
-			$("#aboutMe").val(R.user_about)
-			$("#secretAbout").val(R.user_secret_about)
 		}
 		
 	});
 	
+	
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

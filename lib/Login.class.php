@@ -34,7 +34,7 @@
 		public function setSession($id){
 			$_SESSION['user_id'] = $id;
 			$resultSet = $this->_db->query("
-					SELECT user_email, user_firstname, user_lastname, user_profile_picture FROM users, users_info WHERE users_info.user_id = $id AND users.user_id = $id
+					SELECT user_email, user_firstname, user_lastname FROM users, users_info WHERE users_info.user_id = $id AND users.user_id = $id
 					");
 		
 			$results = array();
