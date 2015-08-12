@@ -158,9 +158,11 @@ $app->get('/userInfo', function () use ($user) {
 
 
 
+$app->get('/profile', function () {
+	global $user;
 
-
-
+}
+);
 
 
 

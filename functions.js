@@ -343,7 +343,22 @@ function putUserInfo(){
 }
 
 
-
+function buildProfile(){
+	$path = window.location.href;
+	$pathSplit = $path.split("=");
+	$url = $pathSplit[1];
+	$.ajax({
+		url: "api/profile",
+		type:"GET",
+		dataType: "JSON",
+		success: function (  ){
+			
+		}
+		
+	});
+	
+	
+}
 
 
 

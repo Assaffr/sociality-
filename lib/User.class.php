@@ -109,6 +109,17 @@
 		}
 		
 		
+		public function buildProfile( $id = "2" ){
+			echo $id;
+			/*$result = $this->_db->query("
+						SELECT * FROM users_info WHERE user_id = $id;
+					");
+			$users = array();
+			while ($row = mysqli_fetch_assoc ($result))
+				$users[] = $row;
+			return $users;*/
+		}
+		
 	}
 	
 	
