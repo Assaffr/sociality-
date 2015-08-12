@@ -333,9 +333,11 @@ function putUserInfo(){
 		success: function ( R ){
 			$("input[name=firstName]").val(R.user_firstname);
 			$("input[name=lastName]").val(R.user_lastname);
-			$("input[name=bornDate]").val(R.user_birthdate)
-			$("#aboutMe").val(R.user_about)
-			$("#secretAbout").val(R.user_secret_about)
+			$("input[name=email]").val(R.user_email);
+			$("input[name=bornDate]").val(R.user_birthdate);
+			$("#aboutMe").val(R.user_about);
+			$("#secretAbout").val(R.user_secret_about);
+			console.log(R.user_email)
 		}
 		
 	});
@@ -383,6 +385,27 @@ function buildProfilebyId( $id ){
 		
 	});
 	
+}
+
+
+function sendMyDetails(){
+	
+	$.ajax({
+		url:"api/user",
+		type:"PUT",
+		dataType: "JSON",
+		data:JSON.stringify({
+			 user_firstname:$("input[name=firstName]").val(),
+			 user_lastname:$("input[name=lastName]").val(),
+			 user_email:$("input[name=email]").val(),
+			 user_about:$("#aboutMe").val(),
+			 user_secret_about:$("#secretAbout").val(),
+			 user_birthdate:$("input[name=bornDate]").val()
+				}),
+		success: function ( ){}
+		
+	
+	});
 }
 
 

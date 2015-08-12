@@ -95,12 +95,12 @@ $app->delete( '/user/:id', function( $id ) {
 });
 
 //Update User
-$app->put( '/user/:id', function( $id ) {
+$app->put( '/user', function( ) {
 	global $user, $app;
 	//var_dump($app->request->getBody());
 	$jsonUser = json_decode( $app->request->getBody(), true );
-	var_dump ($jsonUser);
-	$user->updateUser($jsonUser);
+	echo $user->updateUser($_SESSION['user_id'] , $jsonUser);
+	
 });
 
 //publish post

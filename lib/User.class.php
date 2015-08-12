@@ -34,12 +34,12 @@
 
 		
 		
-		//ASSAF'S - NEEDS FIXING
+		//ASSAF'S - NEEDS FIXING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! with the keys!
 			public function updateUser ($userID , $newDetails){
 			
-			$query = "UPDATE users_info SET user_nickname = '".$newDetails['user_nickname']."', user_firstname = '".$newDetails['user_firstname']."',
-					user_lastname = '".$newDetails['user_lastname']."', user_about = '".$newDetails['user_about']."',
-					user_secret_about = '".$newDetails['user_secret_about']."', user_birthdate = '".$newDetails['user_birthdate']."' 
+			$query = "UPDATE users_info SET user_firstname = $newDetails[user_firstname],
+					user_lastname = $newDetails[user_lastname], user_about = $newDetails[user_about],
+					user_secret_about =$newDetails[user_secret_about], user_birthdate = $newDetails[user_birthdate] 
 					WHERE user_id = $userID;";
 			
 			$results = $this->_db->query($query); 
@@ -101,11 +101,13 @@
 			return $result->num_rows;
 		}
 		
-		public function getUserInfo( $id ){
+			public function getUserInfo( $id ){
 			
 			$query = "SELECT user_firstname, user_lastname, user_about, user_secret_about, user_birthdate FROM users_info WHERE user_id = $id";
 			$result = $this->_db->query( $query );
-			return json_encode( $result->fetch_assoc());
+			$result = $result->fetch_assoc();
+			$result["user_email"] = $_SESSION["user_email"];
+			return json_encode( $result );
 		}
 		
 		//sends all the user info for a user, for building a profile page
