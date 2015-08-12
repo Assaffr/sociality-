@@ -363,8 +363,11 @@ function buildMyProfile(){
 		url: "api/profile",
 		type:"GET",
 		dataType: "JSON",
-		success: function (  ){
-			
+		success: function ( response ){
+			$("span[id=profilePageFullName]").html(response[0].user_firstname + " " + response[0].user_lastname);
+			$("#profilePhoto img").attr("src", "user-pics/"+response[0].user_profile_picture );
+			$("#coverPhoto img").attr("src", "cover-pics/"+response[0].user_secret_picture );
+			$("#writePostProfileTitle").html("Update your status");
 		}
 		
 	});
@@ -381,6 +384,7 @@ function buildProfilebyId( $id ){
 			$("span[id=profilePageFullName]").html(response[0].user_firstname + " " + response[0].user_lastname);
 			$("#profilePhoto img").attr("src", "user-pics/"+response[0].user_profile_picture );
 			$("#coverPhoto img").attr("src", "cover-pics/"+response[0].user_secret_picture );
+			$("#writePostProfileTitle").html("Write on " + response[0].user_firstname + "'s wall!");
 		}
 		
 	});

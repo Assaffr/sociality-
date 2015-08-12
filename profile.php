@@ -11,8 +11,8 @@ require_once dirname(__FILE__).'/inc/header.php';
 			</div>
 				
 			<div id="coverBottomLine">
-				<div id="profilePhoto"><img alt="Profile Photo" class="profile-photo" src="pics/user.png"></div>
-				<span id="profilePageFullName"><?php echo @$_SESSION["user_firstname"] . "&nbsp" . @$_SESSION["user_lastname"]?></span>
+				<div id="profilePhoto"><img alt="Profile Photo" src="pics/user.png"></div>
+				<span id="profilePageFullName"></span>
 			</div>
 		
 		</div>
@@ -22,7 +22,7 @@ require_once dirname(__FILE__).'/inc/header.php';
 				<div id="newStatus" class="box">
 					<div id="newStatus_head" class="divHead">
 						<img alt="Me" class="profile-photo">
-						 Update your status
+						 <span id="writePostProfileTitle">
 					</div>
 					<div id="newStatus_content">
 						<textarea placeholder="What's on your mind?" autocomplete="off" aria-expanded="true"></textarea>
@@ -36,23 +36,22 @@ require_once dirname(__FILE__).'/inc/header.php';
 			<aside>
 			
 				<div id="myBar" class="box">
-					<div id="myBar_head" class="divHead"><span>Welcome</span></div>
+					<div id="myBar_head" class="divHead"><span>About</span></div>
 					<div id="myBar_content">
-						<img src="pics/user.png" class="profile-photo" alt="Me">
-						<div id="myBar_content_text">
-							<span class="firstname"></span><br>
-							<a href="account.php">Edit profile</a>
-						</div>
+						Location: NotInSqlLand<br>
+						Born:<br>
+						Gender: Yes<br>
+						Homepage: notinsql.com<br>
+						Facebook: Notin Sql<br>
+						About:<br>
 					
 					</div>
 				</div>
 				
 				<div id="myDetails" class="box">
-					<div id="myDetails_head" class="divHead"><span>My details</span></div>
+					<div id="myDetails_head" class="divHead"><span>Fliter Posts</span></div>
 					<div id="myDetails_content">
 						<span class="fullName"></span><br>
-					<!--  	<span id="dateOfBirth">01/01/1970</span> (<span id="age">40</span>)<br> -->
-					<!--  	only to be added when user adds it -->
 						<span id="email"></span>
 						</div>
 					
