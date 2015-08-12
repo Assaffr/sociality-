@@ -13,6 +13,6 @@
 					});
 					
 					getSixPack() // add the 6 friend to the home page
-					buildProfile();
+					checkIfMyProfile();
 					
 	});

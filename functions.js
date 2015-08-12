@@ -343,10 +343,20 @@ function putUserInfo(){
 }
 
 
-function buildProfile(){
+//Checks if you are on your profile or someone else's
+//by splitting the current href, then builds the profile based on that answer
+function checkIfMyProfile(){
 	$path = window.location.href;
 	$pathSplit = $path.split("=");
 	$url = $pathSplit[1];
+	if ( typeof($url) == 'string' )
+		buildProfilebyId( $url );
+	if ( typeof($url) == 'undefined' )
+		buildMyProfile();
+}
+
+//builds your own profile
+function buildMyProfile(){
 	$.ajax({
 		url: "api/profile",
 		type:"GET",
@@ -357,11 +367,23 @@ function buildProfile(){
 		
 	});
 	
-	
 }
 
-
-
+//builds someone else's profile
+function buildProfilebyId( $id ){
+	$.ajax({
+		url: "api/profile/" + $id,
+		type:"GET",
+		dataType: "JSON",
+		success: function ( response ){
+			$("span[id=profilePageFullName]").html(response[0].user_firstname + " " + response[0].user_lastname);
+			$("#profilePhoto img").attr("src", "user-pics/"+response[0].user_profile_picture );
+			$("#coverPhoto img").attr("src", "cover-pics/"+response[0].user_secret_picture );
+		}
+		
+	});
+	
+}
 
 
 

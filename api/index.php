@@ -157,14 +157,19 @@ $app->get('/userInfo', function () use ($user) {
 });
 
 
-
+//builds your own profile page
 $app->get('/profile', function () {
 	global $user;
-
+	echo json_encode( $user->buildProfile( $_SESSION['user_id'] ) );
 }
 );
 
-
+//builds someone else's profile page
+$app->get('/profile/:id', function ( $id ) {
+	global $user;
+	echo json_encode( $user->buildProfile( $id ) );
+}
+);
 
 
 

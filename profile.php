@@ -12,7 +12,7 @@ require_once dirname(__FILE__).'/inc/header.php';
 				
 			<div id="coverBottomLine">
 				<div id="profilePhoto"><img alt="Profile Photo" class="profile-photo" src="pics/user.png"></div>
-				<span id="fullName"><?php echo @$_SESSION["user_firstname"] . "&nbsp" . @$_SESSION["user_lastname"]?></span>
+				<span id="profilePageFullName"><?php echo @$_SESSION["user_firstname"] . "&nbsp" . @$_SESSION["user_lastname"]?></span>
 			</div>
 		
 		</div>

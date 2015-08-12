@@ -387,6 +387,13 @@ aside {
 	
 }
 
+#coverPhoto img{
+	height: 210px;
+	width: 940px;
+	
+	
+}
+
 #profilePhoto{
 	float:left;
 	margin-top:-25px;

@@ -108,16 +108,15 @@
 			return json_encode( $result->fetch_assoc());
 		}
 		
-		
-		public function buildProfile( $id = "2" ){
-			echo $id;
-			/*$result = $this->_db->query("
+		//sends all the user info for a user, for building a profile page
+		public function buildProfile( $id ){
+			$result = $this->_db->query("
 						SELECT * FROM users_info WHERE user_id = $id;
 					");
 			$users = array();
 			while ($row = mysqli_fetch_assoc ($result))
 				$users[] = $row;
-			return $users;*/
+			return $users;
 		}
 		
 	}
