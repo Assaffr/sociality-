@@ -78,9 +78,11 @@
 					ORDER BY post_created DESC LIMIT 3 OFFSET " . $offset . ";
 					");
 			$posts = array();
-			while ($row = mysqli_fetch_assoc ($post))
+			while ($row = mysqli_fetch_assoc ($post)){
+				$row['comments'] = $this->getComments($row["post_id"]);
 				$posts[] = $row;
-				//$posts['comments'] = $this->getComments(1);
+				
+			}
 			return $posts;
 		}
 		
