@@ -139,7 +139,7 @@ $app->get( '/post/', function() {
 			$value['post_created'] = $post->timeAgo($value['post_created']);
 			$postsWithTimeAgo[] = $value;
 		}
-		
+		var_dump($posts);
 		echo ( json_encode ( $postsWithTimeAgo ) );
 });
 
@@ -172,8 +172,18 @@ $app->get('/profile/:id', function ( $id ) {
 );
 
 
+//just for Testing
+
+	$app->get('/12345', function() use ($app ,$post){
+		var_dump($post->getComments("1"));
+		
+		
+	});
 
 
+			
+			
+			
 
 
 $app->run();

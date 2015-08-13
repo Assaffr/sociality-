@@ -1,4 +1,16 @@
 //explains function//
+/**
+*	ucFirst
+*
+*	make the first letter to Uppercase
+*
+*	@param (string) (string) about this param
+*	@return (string) (name)
+*/
+
+function ucFirst (string){
+	return string[0].toUpperCase() + string.slice(1);
+}
 
 /**
 *	Function name

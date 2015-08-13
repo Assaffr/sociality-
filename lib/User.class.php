@@ -34,17 +34,16 @@
 
 		
 		
-		//ASSAF'S - NEEDS FIXING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! with the keys!
 			public function updateUser ($userID , $newDetails){
 			
-			$query = "UPDATE users_info SET user_firstname = $newDetails[user_firstname],
-					user_lastname = $newDetails[user_lastname], user_about = $newDetails[user_about],
-					user_secret_about =$newDetails[user_secret_about], user_birthdate = $newDetails[user_birthdate] 
+			$query = "UPDATE users_info SET user_firstname = '$newDetails[user_firstname]',
+					user_lastname = '$newDetails[user_lastname]', user_about = '$newDetails[user_about]',
+					user_secret_about = '$newDetails[user_secret_about]', user_birthdate = '$newDetails[user_birthdate]' 
 					WHERE user_id = $userID;";
 			
 			$results = $this->_db->query($query); 
-			
-			return $results;
+			// need to add ( updatethesessionfunction() )
+			return $results	;
 		}
 		
 		

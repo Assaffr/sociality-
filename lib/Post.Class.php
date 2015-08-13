@@ -11,7 +11,7 @@
 		//i can't get this to show the last post id :((
 		public function publishPost($details){
 			$post = $this->_db->query("
-					INSERT INTO socialityplus.posts (post_id, user_id, post_content, post_created) VALUES (NULL, '$_SESSION[user_id]', '$details[post_content]', CURRENT_TIME());
+					INSERT INTO socialityplus.posts ( user_id, post_content, post_created) VALUES ('$_SESSION[user_id]', '$details[post_content]', CURRENT_TIME());
 					");
 			return $post;		
 		}
@@ -80,6 +80,7 @@
 			$posts = array();
 			while ($row = mysqli_fetch_assoc ($post))
 				$posts[] = $row;
+				//$posts['comments'] = $this->getComments(1);
 			return $posts;
 		}
 		
@@ -110,4 +111,33 @@
 				// "comments" => $this->getComments();
 			// );
 		// }
+		
+		
+		public function getComments($post_id){
+			$qurey = "SELECT comments.comment_id, comments.comment_content, comments.comment_time, comments.user_id, users_info.user_firstname ,users_info.user_lastname, users_info.user_profile_picture
+					FROM comments
+					INNER JOIN users_info
+					ON users_info.user_id = comments.user_id
+					WHERE comments.post_id = $post_id";
+			
+			$results = $this->_db->query($qurey);
+			$comments = array ( );
+			
+			while ( $row = $results->fetch_assoc() ){
+				$comments[] = $row;
+			}
+			return $comments;
+			
+			
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	}
