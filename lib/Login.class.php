@@ -4,6 +4,7 @@
 		
 		private $_db;
 		
+		
 		public function __construct(){
 			$this->_db = DB::getResource();
 		}
@@ -44,6 +45,7 @@
 			foreach($results[0] as $key => $value){
 				$_SESSION[$key] = $value;
 			}
+			
 		}
 		
 		

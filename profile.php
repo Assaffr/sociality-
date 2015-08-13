@@ -31,6 +31,8 @@ require_once dirname(__FILE__).'/inc/header.php';
 						<button type="button">Post</button>
 					</div>
 				</div>
+					<div id="posts">
+			</div>
 			</div>	
 			
 			<aside>

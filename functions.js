@@ -215,7 +215,7 @@ function verifyLogin(){
 /**
  *	logOut()
  *
- *	sends an ajax request that destroys the session and kicks the user to the index page
+ *	sends an ajax request that destroys the session
  *
  *	@param (type) (name) about this param - none
  *	@return (type) (name) - none
@@ -223,11 +223,28 @@ function verifyLogin(){
 function logOut(){
 	$.ajax({
 			url: "api/logout",
-			type: "GET",
-			complete: function(response) {
-				//window.location.href = "index.php";
-				}
+			type: "GET"
 	});
+}
+
+/**
+ *	checkAmILoggedIn
+ *
+ *	sends an ajax request that checks if the user is logged in
+ *
+ *	@param (type) (name) about this param - none
+ *	@return (type) (name) - none
+ */
+function checkAmILoggedIn(){
+	$.ajax({
+		url: "api/login/",
+		type: "GET",
+		dataType: "JSON",
+		success: function(response) {
+				if (response.login)
+					window.location.href = "home.php";
+			}
+		});
 }
 
 
@@ -273,7 +290,7 @@ function showFirstPosts(){
 			dataType: "JSON",
 			success: function( response ) {
 				$.each( response, function(key, value){
-					$("<div id='"+value.post_id+"' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='user-pics/"+ value.user_profile_picture +"'><div><a href='profile.php?id="+ value.user_id +"'>"+ value.user_firstname + " " + value.user_lastname +"</a><br><span class='postSince'>"+ value.post_created +"</span></div></div><div id='status_content'><p>"+ value.post_content +"</p></div><div id='status_footer'><div id='comment'></div><img alt='me' src='"+ $("#myBar_content img").attr("src") +"'><textarea placeholder='Leave a comment...'></textarea></div></div>").appendTo("#posts").hide().fadeIn();
+					$("<div id='"+value.post_id+"' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='user-pics/"+ value.user_profile_picture +"'><div><a href='profile.php?id="+ value.user_id +"'>"+ value.user_firstname + " " + value.user_lastname +"</a><br><span class='postSince'>"+ value.post_created +"</span></div></div><div id='status_content'><p>"+ value.post_content +"</p></div><div id='status_footer'><div id='comment'></div><img alt='me' class='profile-photo'><textarea placeholder='Leave a comment...'></textarea></div></div>").appendTo("#posts").hide().fadeIn();
 				} );
 				$("#wall").append(
 							" <br> <input type='button' value='Load More Posts' id='loadMorePosts'>"
@@ -301,7 +318,7 @@ function loadMorePosts(){
 			if ( response ){
 				$.each( response, function(key, value){
 					$( "#loadMorePosts" ).remove();
-					$("<div id='"+value.post_id+"' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='user-pics/"+ value.user_profile_picture +"'><div><a href='profile/id'>"+ value.user_firstname + " " + value.user_lastname +"</a><br><span class='postSince'>"+ value.post_created +"</span></div></div><div id='status_content'><p>"+ value.post_content +"</p></div><div id='status_footer'><div id='comment'></div><img alt='me' src='"+ $("#myBar_content img").attr("src") +"'><textarea placeholder='Leave a comment...'></textarea></div></div>").appendTo("#posts").hide().fadeIn();
+					$("<div id='"+value.post_id+"' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='user-pics/"+ value.user_profile_picture +"'><div><a href='profile.php?id="+ value.user_id +"'>"+ value.user_firstname + " " + value.user_lastname +"</a><br><span class='postSince'>"+ value.post_created +"</span></div></div><div id='status_content'><p>"+ value.post_content +"</p></div><div id='status_footer'><div id='comment'></div><img alt='me' class='profile-photo' src='"+ $("#status_footer img").attr("src") +"'><textarea placeholder='Leave a comment...'></textarea></div></div>").appendTo("#posts").hide().fadeIn();
 				} );
 				if( response.length < 3 ){
 					$( "#loadMorePosts" ).remove();
@@ -358,15 +375,27 @@ function putUserInfo(){
 
 
 //Checks if you are on your profile or someone else's
-//by splitting the current href, then builds the profile based on that answer
+//by splitting the current href and returns it
 function checkIfMyProfile(){
 	$path = window.location.href;
 	$pathSplit = $path.split("=");
 	$url = $pathSplit[1];
-	if ( typeof($url) == 'string' )
+	return $url;
+	
+}
+
+//gets url from checkIfMyProfile() and builds profile based on that answer
+function buildMyProfileOrOther( $url ){
+	if ( typeof($url) == 'string' ){
 		buildProfilebyId( $url );
-	if ( typeof($url) == 'undefined' )
+		showFirstPostsById( $url );
+		getSixPackbyId( $url );
+	}
+	if ( typeof($url) == 'undefined' ){
 		buildMyProfile();
+		showFirstPosts();
+		getSixPack();
+	}
 }
 
 //builds your own profile
@@ -380,6 +409,7 @@ function buildMyProfile(){
 			$("#profilePhoto img").attr("src", "user-pics/"+response[0].user_profile_picture );
 			$("#coverPhoto img").attr("src", "cover-pics/"+response[0].user_secret_picture );
 			$("#writePostProfileTitle").html("Update your status");
+			$("#numFriends").html(response[0].user_num_friends);
 		}
 		
 	});
@@ -397,6 +427,7 @@ function buildProfilebyId( $id ){
 			$("#profilePhoto img").attr("src", "user-pics/"+response[0].user_profile_picture );
 			$("#coverPhoto img").attr("src", "cover-pics/"+response[0].user_secret_picture );
 			$("#writePostProfileTitle").html("Write on " + response[0].user_firstname + "'s wall!");
+			$("#numFriends").html(response[0].user_num_friends);
 		}
 		
 	});
@@ -424,11 +455,87 @@ function sendMyDetails(){
 	});
 }
 
+/**
+*	showFirstPosts
+*
+*	shows the first posts that will be on the page without clicking load more
+*	based on user id and not that of current user
+*
+*	@param
+*	@return (type) (name) none
+*/
+function showFirstPostsById( $id ){
+	$.ajax({
+			url: "api/post/" + $id,
+			type: "GET",
+			dataType: "JSON",
+			success: function( response ) {
+				$.each( response, function(key, value){
+					$("<div id='"+value.post_id+"' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='user-pics/"+ value.user_profile_picture +"'><div><a href='profile.php?id="+ value.user_id +"'>"+ value.user_firstname + " " + value.user_lastname +"</a><br><span class='postSince'>"+ value.post_created +"</span></div></div><div id='status_content'><p>"+ value.post_content +"</p></div><div id='status_footer'><div id='comment'></div><img alt='me' class='profile-photo'><textarea placeholder='Leave a comment...'></textarea></div></div>").appendTo("#posts").hide().fadeIn();
+				} );
+				$("#wall").append(
+							" <br> <input type='button' value='Load More Posts' id='loadMorePosts'>"
+					);
+				$("#loadMorePosts").on("click", function(){
+					loadMorePostsbyId( $id );
+				});
+			}
+		});
+}
+
+/**
+*	loadMorePostsbyId
+*
+*	inserts more posts into page, based on user id and not that of current user
+*
+*	@param
+*	@return (type) (name) none
+*/
+function loadMorePostsbyId( $id ){ 
+	$offset+= 3;
+	$.ajax({
+		url: "api/postmore/" + $id + "/" + $offset,
+		type: "GET",
+		dataType: "JSON",
+		success: function( response ) {
+			if ( response ){
+				$.each( response, function(key, value){
+					$( "#loadMorePosts" ).remove();
+					$("<div id='"+value.post_id+"' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='user-pics/"+ value.user_profile_picture +"'><div><a href='profile.php?id="+ value.user_id +"'>"+ value.user_firstname + " " + value.user_lastname +"</a><br><span class='postSince'>"+ value.post_created +"</span></div></div><div id='status_content'><p>"+ value.post_content +"</p></div><div id='status_footer'><div id='comment'></div><img alt='me' src='"+ $("#status_footer img").attr("src") +"'><textarea placeholder='Leave a comment...'></textarea></div></div>").appendTo("#posts").hide().fadeIn();
+				} );
+				if( response.length < 3 ){
+					$( "#loadMorePosts" ).remove();
+					$("#wall").append("<br> No more posts!");
+					
+				}
+				else{
+					$("#wall").append(" <br> <input type='button' value='Load More Posts' id='loadMorePosts'>");
+				}
+				$("#loadMorePosts").on("click", function(){
+					loadMorePostsbyId( $id );
+				});
+			}
+			else{
+				$( "#loadMorePosts" ).remove();
+				$("#wall").append("<br> No more posts!");
+			}
+		}
+	});
+}
 
 
-
-
-
-
+//builds six random friends BY ID
+function getSixPackbyId( $id ) {
+	$.ajax({
+		url: "api/friends/rndSix/" + $id,
+		type: "GET",
+		dataType: "JSON",
+		success: function ( sixPack ){
+			$.each( sixPack, function(key, v){
+			$('<div class="friendPic"><a href="profile.php?id='+v.user_friend_id+'"><img alt="" src="user-pics/'+v.user_profile_picture+'"><span class="friendlabel">'+v.user_firstname + " " + v.user_lastname+'</span></a></div>').appendTo("#myFriends_content");
+			});
+		}
+	});
+}
 
 

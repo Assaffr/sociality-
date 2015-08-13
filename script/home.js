@@ -12,6 +12,6 @@
 						$("#loader").fadeOut("slow");
 					});
 					
-					getSixPack() // add the 6 friend to the home page
-					
+					getSixPack(); // add the 6 friend to the home page
+					verifyLogin(); //some pics don't load unless this is both at start and end - todo fix
 	});

@@ -1,4 +1,5 @@
 	$(document).ready(function(){
+				
 					$("#loginButton").on( "click", function(){
 					login( $("input[id=email].login").val(), $("input[id=password].login").val() )
 					});	
@@ -10,5 +11,5 @@
 					$("span[id=x]").on( "click", function(){
 						$("#errorBox").fadeOut();
 					});	
-
+					checkAmILoggedIn();
 			});

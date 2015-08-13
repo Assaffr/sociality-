@@ -142,10 +142,10 @@ $app->get( '/post/', function() {
 		echo ( json_encode ( $postsWithTimeAgo ) );
 });
 
-//ASSAF'S FRIEND
+//GET SIX RANDOM FRIENDS
 $app->get('/friends/rndSix', function () use ( $friends ) { 
-    	$sixPack = $friends->getSixRndFriends($_SESSION["user_id"]); // I dont know what is the SESSION["key"] for user ID
-    	echo json_encode($sixPack);  // this is the response to the http:
+    	$sixPack = $friends->getSixRndFriends($_SESSION["user_id"]);
+    	echo json_encode($sixPack);
     }
 );
 
@@ -158,15 +158,19 @@ $app->get('/userInfo', function () use ($user) {
 
 //builds your own profile page
 $app->get('/profile', function () {
-	global $user;
-	echo json_encode( $user->buildProfile( $_SESSION['user_id'] ) );
+	global $user, $friends;
+	$users = $user->buildProfile( $_SESSION['user_id'] );
+	$users[0]['user_num_friends'] = $friends->getNumberOfFriends( $_SESSION['user_id'] );
+	echo json_encode( $users );
 }
 );
 
 //builds someone else's profile page
 $app->get('/profile/:id', function ( $id ) {
-	global $user;
-	echo json_encode( $user->buildProfile( $id ) );
+	global $user, $friends;
+	$users = $user->buildProfile( $id );
+	$users[0]['user_num_friends'] = $friends->getNumberOfFriends( $id );
+	echo json_encode( $users );
 }
 );
 
@@ -180,9 +184,40 @@ $app->get('/profile/:id', function ( $id ) {
 	});
 
 
-			
-			
-			
+//show first posts by id
+$app->get( '/post/:id/', function( $id ) {
+	global $post, $app;
+	$posts = $post->showFirstPosts( $id );
+	$postsWithTimeAgo = false;
+
+	foreach($posts as $value){
+		$value['post_created'] = $post->timeAgo($value['post_created']);
+		$postsWithTimeAgo[] = $value;
+	}
+
+	if ($postsWithTimeAgo)
+		echo ( json_encode ( $postsWithTimeAgo ) );
+
+});
+
+//show more posts by id
+$app->get( '/postmore/:id/:offset', function( $id, $offset ) {
+	global $post, $app;
+	$posts = $post->showMorePosts($offset, $id);
+	$postsWithTimeAgo = false;
+
+	foreach($posts as $value){
+		$value['post_created'] = $post->timeAgo($value['post_created']);
+		$postsWithTimeAgo[] = $value;
+	}
+	echo ( json_encode ( $postsWithTimeAgo ) );
+});			
+		
+$app->get('/friends/rndSix/:id', function ( $id ) use ( $friends ) {
+	$sixPack = $friends->getSixRndFriends( $id ); // I dont know what is the SESSION["key"] for user ID
+	echo json_encode($sixPack);  // this is the response to the http:
+}
+);			
 
 
 $app->run();
