@@ -133,14 +133,13 @@ $app->get( '/post/', function() {
 	$app->get( '/postmore/:offset', function($offset) {
 		global $post, $app;
 		$posts = $post->showMorePosts($offset, $_SESSION['user_id']);
-		/*$postsWithTimeAgo = false;   SHANI pleas make this work... <- \/
+		$postsWithTimeAgo = false; 
 		
 		foreach($posts as $value){
 			$value['post_created'] = $post->timeAgo($value['post_created']);
 			$postsWithTimeAgo[] = $value;
-		}*/
-		var_dump($posts);
-		echo ( json_encode ( $posts ) );
+		}
+		echo ( json_encode ( $postsWithTimeAgo ) );
 });
 
 //ASSAF'S FRIEND
