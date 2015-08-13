@@ -77,9 +77,73 @@ class Friends {
 		}
 		return $sixPack;
 	}
+	//check if you are friends with user. IF NOT - checks for a friend request.
+	public function checkIfFriends( $id ){
+		$query = "
+				(SELECT user_friend_id FROM friends WHERE user_id = $id AND user_friend_id = ". $_SESSION['user_id']. ") 
+				UNION 
+				(SELECT user_id FROM friends WHERE user_friend_id = $id AND user_id = ". $_SESSION['user_id']. ")";
+		$results = $this->_db->query($query);
+		if(!$results->num_rows){
+			return $this->checkFriendRequest( $id );
+		}
+		return $results->num_rows;
+	}
 	
+	//checks and responds whether they sent a request or i sent one or none
+	private function checkFriendRequest( $id ){
+		$queryDidISend = "SELECT * FROM friend_request WHERE user_id = ". $_SESSION['user_id']. " AND user_friend_id = $id
+		";
+		$results = $this->_db->query($queryDidISend);
+		if ($results->num_rows)
+			return array('iSent' => '1');
+		if (!$results->num_rows){
+			$queryDidTheySend = "SELECT * FROM friend_request WHERE user_id = $id AND user_friend_id = ". $_SESSION['user_id']. "
+			";
+			$results = $this->_db->query($queryDidTheySend);
+			if ($results->num_rows)
+				return array('theySent' => '1');
+			if (!$results->num_rows)
+				return 0;
+			}
+	}
 	
-	
+public function sendFriendRequest( $id ){
+	$query = "
+		INSERT INTO friend_request
+		(user_id, user_friend_id, request_created) 
+		VALUES ('". $_SESSION['user_id'] ."', '$id', CURRENT_TIME());
+			";
+	$results = $this->_db->query($query);
+	return $results;
+}	
+
+public function acceptFriendRequest( $id ){
+	$query = "
+		INSERT INTO friends (user_id, user_friend_id, friendship_created) 
+		VALUES ('". $_SESSION['user_id'] ."', '$id', CURRENT_TIME());
+		DELETE FROM friend_request WHERE user_id = $id AND user_friend_id = '". $_SESSION['user_id'] ."';
+		";
+	$results = $this->_db->multi_query($query);
+	return $results;
+}
+
+public function rejectFriendRequest( $id ){
+	$query = "
+		DELETE FROM friend_request WHERE user_id = $id AND user_friend_id = '". $_SESSION['user_id'] ."';
+		";
+	$results = $this->_db->query($query);
+	return $results;
+}
+
+public function unFriend( $id ){
+	$query = "
+	DELETE FROM friends WHERE user_id = $id AND user_friend_id = '". $_SESSION['user_id'] ."';
+	DELETE FROM friends WHERE user_id = '". $_SESSION['user_id'] ."' AND user_friend_id = $id ;
+		";
+	$results = $this->_db->multi_query($query);
+	return $results;
+}
 	
 	
 };

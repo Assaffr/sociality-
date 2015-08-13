@@ -13,6 +13,7 @@ require_once dirname(__FILE__).'/inc/header.php';
 			<div id="coverBottomLine">
 				<div id="profilePhoto"><img alt="Profile Photo" src="pics/user.png"></div>
 				<span id="profilePageFullName"></span>
+				
 			</div>
 		
 		</div>

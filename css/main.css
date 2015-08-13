@@ -568,5 +568,7 @@ fieldset{
 }
 
 
-
-
+.friend-button{
+	width: 30px;
+	height: 30px;
+}

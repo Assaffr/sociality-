@@ -220,4 +220,34 @@ $app->get('/friends/rndSix/:id', function ( $id ) use ( $friends ) {
 );			
 
 
+//checks if you're friends with user
+$app->get( '/checkfriendstatus/:id', function( $id ) {
+	global $friends;
+	echo json_encode ( $friends->checkIfFriends( $id ) );
+	});
+	
+
+$app->post( '/sendfriendrequest', function() {
+	global $app, $friends;
+	echo $friends->sendFriendRequest ( $app->request->getBody() );
+	
+});
+
+$app->post( '/acceptfriendrequest', function() {
+	global $app, $friends;
+	echo $friends->acceptFriendRequest ( $app->request->getBody() );
+});
+
+$app->delete( '/rejecttfriendrequest', function() {
+	global $app, $friends;
+	echo $friends->rejectFriendRequest ( $app->request->getBody() );
+});
+
+$app->delete( '/unfriend', function() {
+	global $app, $friends;
+	echo $friends->unFriend( $app->request->getBody() );
+});
+	
+
+
 $app->run();

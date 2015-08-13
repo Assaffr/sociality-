@@ -224,6 +224,7 @@ function logOut(){
 	$.ajax({
 			url: "api/logout",
 			type: "GET"
+				
 	});
 }
 
@@ -390,6 +391,7 @@ function buildMyProfileOrOther( $url ){
 		buildProfilebyId( $url );
 		showFirstPostsById( $url );
 		getSixPackbyId( $url );
+		amIFriendsWithUser( $url );
 	}
 	if ( typeof($url) == 'undefined' ){
 		buildMyProfile();
@@ -538,4 +540,99 @@ function getSixPackbyId( $id ) {
 	});
 }
 
+//checks whether you're friends with a user - creates add/delete friend button according to answer
+function amIFriendsWithUser( $id ){
+	$.ajax({
+		url: "api/checkfriendstatus/" + $id,
+		type:"GET",
+		dataType: "JSON",
+		success: function ( response ){
+			console.log(response);
+			if ( response == 0 ){
+				$("#coverBottomLine").append("<span id='friendStatus'><a onclick='sendFriendRequest("+ $id +");'><img class='friend-button' src='pics/addfriend.png'></a></span>");
+			}
+			if ( response == 1 ){
+				$("#coverBottomLine").append("<span id='friendStatus'><a onclick='unFriend("+ $id +");'><img class='friend-button' src='pics/unfriend.png'></a></span");
+			}
+			if ( response.iSent == 1 ){
+				$("#coverBottomLine").append("<span id='friendStatus'> - Friend request sent </span>");
+			}
+			if ( response.theySent == 1 ){
+				$("#coverBottomLine").append("<span id='friendStatus'> sent you a friend request! <a onclick='acceptFriendRequest("+ $id +");'>Accept</a> / <a onclick='rejectFriendRequest("+ $id +");'>Reject</a> </span>");
+			}
+		}
+		
+	});
+}
 
+function acceptFriendRequest( $id ){
+	$.ajax({
+		url: "api/acceptfriendrequest",
+		data: $id + "",
+		type:"POST",
+		dataType: "JSON",
+		success: function ( response ){
+			if ( response == 1 ){
+				$("#friendStatus").html("<a onclick='unFriend("+ $id +");'><img class='friend-button' src='pics/unfriend.png'></a>");
+			}
+			if ( response == 0 ){
+				$("#friendStatus").html(" Oops! Something went wrong, refresh the page and try again");
+			}
+			}
+		});
+		
+}
+
+function rejectFriendRequest( $id ){
+	$.ajax({
+		url: "api/rejecttfriendrequest",
+		data: $id + "",
+		type:"DELETE",
+		dataType: "JSON",
+		success: function ( response ){
+			if ( response == 1 ){
+				$("#friendStatus").html(" You have rejected the friend request.");
+			}
+			if ( response == 0 ){
+				$("#friendStatus").html(" Oops! Something went wrong, refresh the page and try again");
+			}
+			}
+		});
+}
+
+//delete the friendship you have with a friend
+function unFriend( $id ){
+	$.ajax({
+		url: "api/unfriend",
+		data: $id + "",
+		type:"DELETE",
+		dataType: "JSON",
+		success: function ( response ){
+			if ( response == 1 ){
+				$("#friendStatus").html("<a onclick='sendFriendRequest("+ $id +");'><img class='friend-button' src='pics/addfriend.png'></a>");
+			}
+			if ( response == 0 ){
+				$("#friendStatus").html(" Oops! Something went wrong, refresh the page and try again");
+			}
+			}
+		});
+}
+
+//send a friend request to a user you are not friends with already
+function sendFriendRequest( $id ){
+	$.ajax({
+		url: "api/sendfriendrequest",
+		data: $id + "",
+		type:"POST",
+		dataType: "JSON",
+		success: function ( response ){
+			if ( response == 1 ){
+				$("#friendStatus").html(" - Friend request sent");
+			}
+			if ( response == 0 ){
+				$("#friendStatus").html(" Oops! Something went wrong, refresh the page and try again");
+			}
+		}
+		
+	});
+}
