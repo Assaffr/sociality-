@@ -211,17 +211,40 @@ fieldset p {
 	
 }
 
-#settings_content section{
+#settings_content section , #comments-head{
 	height:26px;
 	border-bottom: 1px solid #e5e6e9;
 	color:#A4A4A4;
 }
 
+#comments-head{
+	padding:2px;
+	
+}
+
 #settings_content section span{
 	display:block;
 	margin:10px;
+
 	
 }
+#comments-head span{
+	margin:8px;
+	cursor: pointer;
+}
+
+#comments-head img{
+	width:20px !important; 
+	height:20px !important;
+	margin:2px !important;
+	
+}
+
+#the-likes{
+	float:right;
+	
+}
+
 #myAccount_footer{
 	border-top: 1px solid #e5e6e9;
 	position: absolute;
@@ -571,4 +594,10 @@ fieldset{
 .friend-button{
 	width: 30px;
 	height: 30px;
+}
+
+#comments-head{
+	
+	
+	
 }

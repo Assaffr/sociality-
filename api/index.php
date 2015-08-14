@@ -185,9 +185,9 @@ $app->get('/profile/:id', function ( $id ) {
 
 
 //show first posts by id
-$app->get( '/post/:id/', function( $id ) {
+$app->get( '/post', function( ) {
 	global $post, $app;
-	$posts = $post->showFirstPosts( $id );
+	$posts = $post->showFirstPosts( $_SESSION['user_id'] );
 	$postsWithTimeAgo = false;
 
 	foreach($posts as $value){
@@ -201,9 +201,9 @@ $app->get( '/post/:id/', function( $id ) {
 });
 
 //show more posts by id
-$app->get( '/postmore/:id/:offset', function( $id, $offset ) {
+$app->get( '/postmore/:offset', function( $offset ) {
 	global $post, $app;
-	$posts = $post->showMorePosts($offset, $id);
+	$posts = $post->showMorePosts($offset, $_SESSION['user_id']);
 	$postsWithTimeAgo = false;
 
 	foreach($posts as $value){
@@ -213,9 +213,9 @@ $app->get( '/postmore/:id/:offset', function( $id, $offset ) {
 	echo ( json_encode ( $postsWithTimeAgo ) );
 });			
 		
-$app->get('/friends/rndSix/:id', function ( $id ) use ( $friends ) {
-	$sixPack = $friends->getSixRndFriends( $id ); // I dont know what is the SESSION["key"] for user ID
-	echo json_encode($sixPack);  // this is the response to the http:
+$app->get('/friends/rndSix', function ( ) use ( $friends ) {
+	$sixPack = $friends->getSixRndFriends( $_SESSION['user_id'] );
+	echo json_encode($sixPack);  
 }
 );			
 

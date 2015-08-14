@@ -46,8 +46,11 @@
 					WHERE posts.user_id = $id ) 
 					ORDER BY post_created DESC LIMIT 3");
 			$posts = array();
-			while ($row = mysqli_fetch_assoc ($post))
+			while ($row = mysqli_fetch_assoc ($post)){
+				$row['comments'] = $this->getComments($row["post_id"]);
+				$row['likes'] = $this->getLikes($row["post_id"]);
 				$posts[] = $row;
+			}
 			return $posts;		
 		}
 
@@ -80,6 +83,7 @@
 			$posts = array();
 			while ($row = mysqli_fetch_assoc ($post)){
 				$row['comments'] = $this->getComments($row["post_id"]);
+				//$row['likes'] = $this->getLikes($row["post_id"]);
 				$posts[] = $row;
 				
 			}
@@ -115,20 +119,39 @@
 		// }
 		
 		
-		public function getComments($post_id){
+		public function getComments( $post_id ){
 			$qurey = "SELECT comments.comment_id, comments.comment_content, comments.comment_time, comments.user_id, users_info.user_firstname ,users_info.user_lastname, users_info.user_profile_picture
 					FROM comments
 					INNER JOIN users_info
 					ON users_info.user_id = comments.user_id
 					WHERE comments.post_id = $post_id";
 			
-			$results = $this->_db->query($qurey);
+			$results = $this->_db->query( $qurey );
 			$comments = array ( );
 			
 			while ( $row = $results->fetch_assoc() ){
 				$comments[] = $row;
 			}
 			return $comments;
+			
+			
+		}
+		
+		public function getLikes( $post_id ) {
+			$qurey = "SELECT likes.like_id, likes.user_id, likes.like_created, likes.post_id, users_info.user_firstname, users_info.user_lastname, users_info.user_profile_picture
+						FROM likes
+						INNER JOIN users_info
+						ON likes.user_id = users_info.user_id
+						WHERE likes.post_id = $post_id;";
+			
+			$results = $this->_db->query( $qurey );
+			$likes = array ( );
+				
+			while ( $row = $results->fetch_assoc() ){
+				$likes[] = $row;
+			}
+			return $likes;
+			
 			
 			
 		}
