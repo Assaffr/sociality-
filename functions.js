@@ -547,7 +547,10 @@ function getSixPackbyId( $id ) {
 	});
 }
 
-//checks whether you're friends with a user - creates add/delete friend button according to answer
+//checks your friend status with another user
+//there are several possible options: whether you are friends, not friends, whether one of you
+//sent a friend request or if one of you blocked the other.
+//if the user blocked you - it displays nothing because you cannot add them.
 function amIFriendsWithUser( $id ){
 	$.ajax({
 		url: "api/checkfriendstatus/" + $id,
@@ -567,10 +570,13 @@ function amIFriendsWithUser( $id ){
 			if ( response.theySent == 1 ){
 				$("#coverBottomLine").append("<span id='friendStatus'> sent you a friend request! <a onclick='acceptFriendRequest("+ $id +");'>Accept</a> / <a onclick='rejectFriendRequest("+ $id +");'>Reject</a> </span>");
 			}
+			if ( response.iBlocked == 1 ){
+				$("#coverBottomLine").append("<span id='friendStatus'> - You have blocked this user. </span>");
+			}
+			
 		}
 		
 	});
-}
 
 function acceptFriendRequest( $id ){
 	$.ajax({
