@@ -91,23 +91,41 @@ class Friends {
 	}
 	
 	//checks and responds whether they sent a request or i sent one or none
-	private function checkFriendRequest( $id ){
-		$queryDidISend = "SELECT * FROM friend_request WHERE user_id = ". $_SESSION['user_id']. " AND user_friend_id = $id
+private function checkFriendRequest( $id ){
+	$queryDidISend = "SELECT * FROM friend_request WHERE user_id = ". $_SESSION['user_id']. " AND user_friend_id = $id
+	";
+	$results = $this->_db->query($queryDidISend);
+	if ($results->num_rows)
+		return array('iSent' => '1');
+	if (!$results->num_rows){
+		$queryDidTheySend = "SELECT * FROM friend_request WHERE user_id = $id AND user_friend_id = ". $_SESSION['user_id']. "
 		";
-		$results = $this->_db->query($queryDidISend);
+		$results = $this->_db->query($queryDidTheySend);
 		if ($results->num_rows)
-			return array('iSent' => '1');
-		if (!$results->num_rows){
-			$queryDidTheySend = "SELECT * FROM friend_request WHERE user_id = $id AND user_friend_id = ". $_SESSION['user_id']. "
-			";
-			$results = $this->_db->query($queryDidTheySend);
-			if ($results->num_rows)
-				return array('theySent' => '1');
-			if (!$results->num_rows)
-				return 0;
-			}
+			return array('theySent' => '1');
+		if (!$results->num_rows)
+			return $this->checkFriendBlock( $id );
+		}
 	}
 	
+	
+private function checkFriendBlock ( $id ){
+	$queryDidIBlcok = "SELECT * FROM blocks WHERE user_id = ". $_SESSION['user_id']. " AND user_friend_id = $id
+	";
+	$results = $this->_db->query($queryDidIBlcok);
+	if ($results->num_rows)
+		return array('iBlocked' => '1');
+	if (!$results->num_rows){
+		$queryDidTheyBlock = "SELECT * FROM blocks WHERE user_id = $id AND user_friend_id = ". $_SESSION['user_id']. "
+		";
+		$results = $this->_db->query($queryDidTheyBlock);
+		if ($results->num_rows)
+			return array('theyBlocked' => '1');
+		if (!$results->num_rows)
+			return 0;
+	}
+}
+
 public function sendFriendRequest( $id ){
 	$query = "
 		INSERT INTO friend_request
@@ -131,8 +149,9 @@ public function acceptFriendRequest( $id ){
 public function rejectFriendRequest( $id ){
 	$query = "
 		DELETE FROM friend_request WHERE user_id = $id AND user_friend_id = '". $_SESSION['user_id'] ."';
+		INSERT INTO blocks (user_id, user_friend_id, block_created) VALUES ('". $_SESSION['user_id'] ."', '$id', CURRENT_TIME());
 		";
-	$results = $this->_db->query($query);
+	$results = $this->_db->multi_query($query);
 	return $results;
 }
 
