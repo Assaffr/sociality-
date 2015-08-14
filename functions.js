@@ -577,6 +577,7 @@ function amIFriendsWithUser( $id ){
 		}
 		
 	});
+}
 
 function acceptFriendRequest( $id ){
 	$.ajax({
