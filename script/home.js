@@ -4,9 +4,10 @@
 					$("button[name=finishPost]").on( "click", function(){
 						publishPost( $("#postContent").val() );
 					});	
+					$offset = -3;
 					
-					showFirstPosts();
-					$offset = 0;
+					showPosts( $offset );
+
 					//quick loader
 					$(window).load(function() {
 						$("#loader").fadeOut("slow");

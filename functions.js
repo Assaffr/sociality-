@@ -277,56 +277,32 @@ function publishPost($postContent){
 	}
 }
 /**
-*	showFirstPosts
+*	showPosts
 *
-*	shows the first posts that will be on the page without clicking load more
+*	shows posts
 *
 *	@param
 *	@return (type) (name) none
 */
-function showFirstPosts(){
+function showPosts(){
+	$offset+= 3;
 	$.ajax({
-			url: "api/post",
+			url: "api/post/" + $offset,
 			type: "GET",
 			dataType: "JSON",
 			success: function( response ) {
-				$.each( response, function(key, value){
-					$("<div id=status-id_"+value.post_id+" class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='user-pics/"+ value.user_profile_picture +"'><div><a href='profile.php?id="+ value.user_id +"'>"+ value.user_firstname + " " + value.user_lastname +"</a><br><span class='postSince'>"+ value.post_created +"</span></div></div><div id='status_content'><p>"+ value.post_content +"</p></div><div id='status_footer'>" +
-						"<div id='comments-head'><span id='like' data-id='"+value.post_id+"'>Like</span>-<span>Comments</span><div id='the-likes'><img src='pics/like_n.PNG'></div></div>" +
-						"<div id='comments'></div><div><img alt='me' class='profile-photo'><textarea placeholder='Leave a comment...'></textarea></div></div></div>").appendTo("#posts").hide().fadeIn();
-						$.each( value.likes, function(key, like){
-							$("<img src="+like.user_profile_picture+">").appendTo("#the-likes");
-							console.log(key, like.user_profile_picture);
-						});
-								console.log(key, value);
-				} );
-				$("#wall").append(
-							" <br> <input type='button' value='Load More Posts' id='loadMorePosts'>"
-					);
-				$("#loadMorePosts").on("click", loadMorePosts);
-			}
-		});
-}
-
-/**
-*	loadMorePosts
-*
-*	inserts more posts into page
-*
-*	@param
-*	@return (type) (name) none
-*/
-function loadMorePosts(){ 
-	$offset+= 3;
-	$.ajax({
-		url: "api/postmore/" + $offset,
-		type: "GET",
-		dataType: "JSON",
-		success: function( response ) {
-			if ( response ){
-				$.each( response, function(key, value){
-					$( "#loadMorePosts" ).remove();
-					$("<div id='"+value.post_id+"' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='user-pics/"+ value.user_profile_picture +"'><div><a href='profile.php?id="+ value.user_id +"'>"+ value.user_firstname + " " + value.user_lastname +"</a><br><span class='postSince'>"+ value.post_created +"</span></div></div><div id='status_content'><p>"+ value.post_content +"</p></div><div id='status_footer'><div id='comment'></div><div><img alt='me' class='profile-photo' src='"+ $("#status_footer img").attr("src") +"'><textarea placeholder='Leave a comment...'></textarea></div></div></div>").appendTo("#posts").hide().fadeIn();
+				console.log(response);
+				if ( response ){
+					$.each( response, function(key, value){
+						$( "#loadMorePosts" ).remove();
+						$("<div id=status-id_"+value.post_id+" class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='user-pics/"+ value.user_profile_picture +"'><div><a href='profile.php?id="+ value.user_id +"'>"+ value.user_firstname + " " + value.user_lastname +"</a><br><span class='postSince'>"+ value.post_time_ago +"</span></div></div><div id='status_content'><p>"+ value.post_content +"</p></div><div id='status_footer'>" +
+							"<div id='comments-head'><span id='like' data-id='"+value.post_id+"'>Like</span>-<span>Comments</span><div id='the-likes'><img src='pics/like_n.PNG'></div></div>" +
+							"<div id='comments'></div><div><img alt='me' class='profile-photo'><textarea placeholder='Leave a comment...'></textarea></div></div></div>").appendTo("#posts").hide().fadeIn();
+							$.each( value.likes, function(key, like){
+								$("<img src="+like.user_profile_picture+">").appendTo("#the-likes");
+								console.log(key, like.user_profile_picture);
+							});
+									console.log(key, value);
 				} );
 				if( response.length < 3 ){
 					$( "#loadMorePosts" ).remove();
@@ -334,16 +310,15 @@ function loadMorePosts(){
 					
 				}
 				else{
-					$("#wall").append(" <br> <input type='button' value='Load More Posts' id='loadMorePosts'>");
+				$("#wall").append(
+							" <br> <input type='button' value='Load More Posts' id='loadMorePosts'>"
+					);
 				}
-				$("#loadMorePosts").on("click", loadMorePosts);
+				$("#loadMorePosts").on("click", function(){ showPosts( $offset ) } );
+				}
+				$(".profile-photo").attr("src", $("#myBar_content img").attr("src") );
 			}
-			else{
-				$( "#loadMorePosts" ).remove();
-				$("#wall").append("<br> No more posts!");
-			}
-		}
-	});
+		});
 }
 
 function getSixPack() {
@@ -396,7 +371,7 @@ function checkIfMyProfile(){
 function buildMyProfileOrOther( $url ){
 	if ( typeof($url) == 'string' ){
 		buildProfilebyId( $url );
-		showFirstPostsById( $url );
+		showPostsbyId( $url );
 		getSixPackbyId( $url );
 		amIFriendsWithUser( $url );
 	}
@@ -465,52 +440,31 @@ function sendMyDetails(){
 }
 
 /**
-*	showFirstPosts
+*	showPostsbyId
 *
-*	shows the first posts that will be on the page without clicking load more
-*	based on user id and not that of current user
+*	shows posts by id not session id
 *
 *	@param
 *	@return (type) (name) none
 */
-function showFirstPostsById( $id ){
+function showPostsbyId($id ){
+	$offset+= 3;
 	$.ajax({
-			url: "api/post/" + $id,
+			url: "api/post/" + $id + "/" + $offset,
 			type: "GET",
 			dataType: "JSON",
 			success: function( response ) {
-				$.each( response, function(key, value){
-					$("<div id='"+value.post_id+"' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='user-pics/"+ value.user_profile_picture +"'><div><a href='profile.php?id="+ value.user_id +"'>"+ value.user_firstname + " " + value.user_lastname +"</a><br><span class='postSince'>"+ value.post_created +"</span></div></div><div id='status_content'><p>"+ value.post_content +"</p></div><div id='status_footer'><div id='comment'></div><img alt='me' class='profile-photo'><textarea placeholder='Leave a comment...'></textarea></div></div>").appendTo("#posts").hide().fadeIn();
-				} );
-				$("#wall").append(
-							" <br> <input type='button' value='Load More Posts' id='loadMorePosts'>"
-					);
-				$("#loadMorePosts").on("click", function(){
-					loadMorePostsbyId( $id );
-				});
-			}
-		});
-}
-
-/**
-*	loadMorePostsbyId
-*
-*	inserts more posts into page, based on user id and not that of current user
-*
-*	@param
-*	@return (type) (name) none
-*/
-function loadMorePostsbyId( $id ){ 
-	$offset+= 3;
-	$.ajax({
-		url: "api/postmore/" + $id + "/" + $offset,
-		type: "GET",
-		dataType: "JSON",
-		success: function( response ) {
-			if ( response ){
-				$.each( response, function(key, value){
-					$( "#loadMorePosts" ).remove();
-					$("<div id='"+value.post_id+"' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='user-pics/"+ value.user_profile_picture +"'><div><a href='profile.php?id="+ value.user_id +"'>"+ value.user_firstname + " " + value.user_lastname +"</a><br><span class='postSince'>"+ value.post_created +"</span></div></div><div id='status_content'><p>"+ value.post_content +"</p></div><div id='status_footer'><div id='comment'></div><img alt='me' src='"+ $("#status_footer img").attr("src") +"'><textarea placeholder='Leave a comment...'></textarea></div></div>").appendTo("#posts").hide().fadeIn();
+				if ( response ){
+					$.each( response, function(key, value){
+						$( "#loadMorePosts" ).remove();
+						$("<div id=status-id_"+value.post_id+" class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='user-pics/"+ value.user_profile_picture +"'><div><a href='profile.php?id="+ value.user_id +"'>"+ value.user_firstname + " " + value.user_lastname +"</a><br><span class='postSince'>"+ value.post_time_ago +"</span></div></div><div id='status_content'><p>"+ value.post_content +"</p></div><div id='status_footer'>" +
+							"<div id='comments-head'><span id='like' data-id='"+value.post_id+"'>Like</span>-<span>Comments</span><div id='the-likes'><img src='pics/like_n.PNG'></div></div>" +
+							"<div id='comments'></div><div><img alt='me' class='profile-photo'><textarea placeholder='Leave a comment...'></textarea></div></div></div>").appendTo("#posts").hide().fadeIn();
+							$.each( value.likes, function(key, like){
+								$("<img src="+like.user_profile_picture+">").appendTo("#the-likes");
+								console.log(key, like.user_profile_picture);
+							});
+									console.log(key, value);
 				} );
 				if( response.length < 3 ){
 					$( "#loadMorePosts" ).remove();
@@ -518,18 +472,15 @@ function loadMorePostsbyId( $id ){
 					
 				}
 				else{
-					$("#wall").append(" <br> <input type='button' value='Load More Posts' id='loadMorePosts'>");
+				$("#wall").append(
+							" <br> <input type='button' value='Load More Posts' id='loadMorePosts'>"
+					);
 				}
-				$("#loadMorePosts").on("click", function(){
-					loadMorePostsbyId( $id );
-				});
+				$("#loadMorePosts").on("click", function(){ showPostsbyId( $id ) } );
+				$(".profile-photo").attr("src", $("#newStatus_head img").attr("src") );
+				}
 			}
-			else{
-				$( "#loadMorePosts" ).remove();
-				$("#wall").append("<br> No more posts!");
-			}
-		}
-	});
+		});
 }
 
 

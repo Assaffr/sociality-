@@ -17,44 +17,9 @@
 		}
 		
 		//this functions selects all the post info PLUS joins the users_info table in order to also fetch the name of the user who made the post
-		//note: this still isn't filtering by friends!!
 		//LIMITING POSTS will be used via "LIMIT" and "OFFSET" (skips to next x number of posts)
 		//ORDER BY puts latest posts on top
-		public function showFirstPosts($id){
-			$post = $this->_db->query("
-					(SELECT users_info.user_id, users_info.user_firstname, users_info.user_lastname, users_info.user_profile_picture, posts.post_created, posts.post_content, posts.post_id
-					FROM users_info 
-					INNER JOIN friends 
-					ON users_info.user_id = friends.user_friend_id
-					INNER JOIN posts
-					ON users_info.user_id = posts.user_id
-					WHERE friends.user_id = $id
-					)
-					UNION
-					(SELECT users_info.user_id, users_info.user_firstname, users_info.user_lastname, users_info.user_profile_picture, posts.post_created, posts.post_content, posts.post_id
-					FROM users_info 
-					INNER JOIN friends 
-					ON users_info.user_id = friends.user_id
-					INNER JOIN posts
-					ON users_info.user_id = posts.user_id
-					WHERE friends.user_friend_id = $id)
-					UNION
-					(SELECT users_info.user_id, users_info.user_firstname, users_info.user_lastname, users_info.user_profile_picture, posts.post_created, posts.post_content, posts.post_id
-					FROM users_info
-					INNER JOIN posts
-					ON users_info.user_id = posts.user_id
-					WHERE posts.user_id = $id ) 
-					ORDER BY post_created DESC LIMIT 3");
-			$posts = array();
-			while ($row = mysqli_fetch_assoc ($post)){
-				$row['comments'] = $this->getComments($row["post_id"]);
-				$row['likes'] = $this->getLikes($row["post_id"]);
-				$posts[] = $row;
-			}
-			return $posts;		
-		}
-
-		public function showMorePosts($offset, $id){
+		public function showPosts($offset, $id){
 			$post = $this->_db->query("
 					(SELECT users_info.user_id, users_info.user_firstname, users_info.user_lastname, users_info.user_profile_picture, posts.post_created, posts.post_content, posts.post_id
 					FROM users_info 
@@ -79,17 +44,22 @@
 					ON users_info.user_id = posts.user_id
 					WHERE posts.user_id = $id ) 
 					ORDER BY post_created DESC LIMIT 3 OFFSET " . $offset . ";
-					");
+										");
 			$posts = array();
 			while ($row = mysqli_fetch_assoc ($post)){
 				$row['comments'] = $this->getComments($row["post_id"]);
-				//$row['likes'] = $this->getLikes($row["post_id"]);
+				$row['likes'] = $this->getLikes($row["post_id"]);
 				$posts[] = $row;
-				
 			}
-			return $posts;
+			
+			foreach($posts as $value){
+				$value['post_time_ago'] = $this->timeAgo($value['post_created']);
+				$postsWithTimeAgo[] = $value;
+			}
+			
+			return $postsWithTimeAgo;		
 		}
-		
+
 		
 		//sets timezone to israel, then takes the string of time in parm and turns it into epoch time
 		//$diff = the difference between current epoch time to the param epoch one.

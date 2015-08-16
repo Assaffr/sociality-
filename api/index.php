@@ -113,33 +113,12 @@ $app->post( '/post', function() {
 
 });
 
-//show first posts
-$app->get( '/post/', function() {
+//show posts
+$app->get( '/post/:offset', function( $offset ) {
 	global $post, $app;
-	$posts = $post->showFirstPosts($_SESSION['user_id']);
-	$postsWithTimeAgo = false;
+	$posts = $post->showPosts($offset, $_SESSION['user_id']);
+	echo ( json_encode ( $posts ) );
 
-	foreach($posts as $value){
-		$value['post_created'] = $post->timeAgo($value['post_created']);
-		$postsWithTimeAgo[] = $value;
-	}
-	
-	if ($postsWithTimeAgo)
-		echo ( json_encode ( $postsWithTimeAgo ) );
-
-});
-
-//show more posts
-	$app->get( '/postmore/:offset', function($offset) {
-		global $post, $app;
-		$posts = $post->showMorePosts($offset, $_SESSION['user_id']);
-		$postsWithTimeAgo = false; 
-		
-		foreach($posts as $value){
-			$value['post_created'] = $post->timeAgo($value['post_created']);
-			$postsWithTimeAgo[] = $value;
-		}
-		echo ( json_encode ( $postsWithTimeAgo ) );
 });
 
 //GET SIX RANDOM FRIENDS
@@ -148,6 +127,13 @@ $app->get('/friends/rndSix', function () use ( $friends ) {
     	echo json_encode($sixPack);
     }
 );
+
+//GET SIX RANDOM FRIENDS BY ID
+$app->get('/friends/rndSix/:id', function ( $id ) use ( $friends ) {
+	$sixPack = $friends->getSixRndFriends( $id );
+	echo json_encode($sixPack);
+}
+	);
 
 $app->get('/userInfo', function () use ($user) {
 	echo $user->getUserInfo( $_SESSION['user_id'] );
@@ -185,33 +171,13 @@ $app->get('/profile/:id', function ( $id ) {
 
 
 //show first posts by id
-$app->get( '/post', function( ) {
+$app->get( '/post/:id/:offset', function( $id, $offset ) {
 	global $post, $app;
-	$posts = $post->showFirstPosts( $_SESSION['user_id'] );
-	$postsWithTimeAgo = false;
-
-	foreach($posts as $value){
-		$value['post_created'] = $post->timeAgo($value['post_created']);
-		$postsWithTimeAgo[] = $value;
-	}
-
-	if ($postsWithTimeAgo)
-		echo ( json_encode ( $postsWithTimeAgo ) );
+	$posts = $post->showPosts($offset, $id);
+	echo ( json_encode ( $posts ) );
 
 });
 
-//show more posts by id
-$app->get( '/postmore/:offset', function( $offset ) {
-	global $post, $app;
-	$posts = $post->showMorePosts($offset, $_SESSION['user_id']);
-	$postsWithTimeAgo = false;
-
-	foreach($posts as $value){
-		$value['post_created'] = $post->timeAgo($value['post_created']);
-		$postsWithTimeAgo[] = $value;
-	}
-	echo ( json_encode ( $postsWithTimeAgo ) );
-});			
 		
 $app->get('/friends/rndSix', function ( ) use ( $friends ) {
 	$sixPack = $friends->getSixRndFriends( $_SESSION['user_id'] );

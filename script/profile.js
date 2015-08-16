@@ -5,7 +5,7 @@
 					});	
 					
 					
-					$offset = 0;
+					$offset = -3;
 					//quick loader
 					$(window).load(function() {
 						$("#loader").fadeOut("slow");
