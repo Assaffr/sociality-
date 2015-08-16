@@ -16,7 +16,7 @@
 main {
 	margin:0 auto;
 	width:960px;	
-	height:800px;
+	min-height:800px;
 }
 
 .C-B{
@@ -194,7 +194,7 @@ fieldset p {
 }
 
 #newStatus{
-	
+	float:none;
 	width:670px;
 	height:160px;
 
