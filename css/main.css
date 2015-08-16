@@ -19,6 +19,11 @@ main {
 	height:800px;
 }
 
+.C-B{
+	clear:both;
+	
+}
+
 #index main {
 	width:100%;
 	height:600px;
@@ -445,6 +450,7 @@ aside {
 .status{
     width: 670px;
     min-height: 160px;
+    float:none;
 }
 #Status_head{
 	padding: 10px;
