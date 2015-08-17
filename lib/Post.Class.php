@@ -127,9 +127,30 @@
 		}
 		
 		
+		public function toggleLike ( $post_id ){
+			
+			if ( !$this->chackLike ( $post_id ) ){
+			
+			$qurey = "INSERT INTO likes ( user_id, like_created, post_id )
+					VALUES ( '".$_SESSION['user_id']."', CURRENT_TIME(), $post_id )";
+			}else{
+			$qurey = "DELETE FROM likes WHERE like_id = ".$this->chackLike ( $post_id );
+			}
+			return  $this->_db->query( $qurey );
+		}
 		
 		
-		
+		public function chackLike ( $post_id ){
+			
+			$qurey = "SELECT like_id FROM likes WHERE user_id = $_SESSION[user_id]  AND post_id = $post_id ;";
+			
+			$result = $this->_db->query( $qurey );
+			
+				
+				return $result->fetch_assoc()['like_id'];
+			
+
+		}
 		
 		
 		

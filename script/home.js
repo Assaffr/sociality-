@@ -21,7 +21,7 @@
 					
 					
 					$("#wall").on("keypress","#posts textarea" , function(){ 
-							if (event.which == 13){
+							if (event.which == 13 &&  $(this).val() ){
 								event.preventDefault();
 								console.log( $(this).data().stid );
 								console.log( $(this).val() )
@@ -29,5 +29,10 @@
 								
 							}
 						});
+					
+					$("#wall").on( "click", "#like", function(){
+						toggleLike( this )
+						
+					});
 					
 	});

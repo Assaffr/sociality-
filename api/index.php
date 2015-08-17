@@ -10,10 +10,13 @@ require_once dirname( __FILE__ ) . "/../lib/User.class.php";
 require_once dirname( __FILE__ ) . "/../lib/Login.class.php";
 require_once dirname( __FILE__ ) . "/../lib/Post.class.php";
 require_once dirname( __FILE__ ) . "/../lib/friends.class.php";
+
 $user = new User();
 $login = new Login();
 $post = new Post();
 $friends = new Friends();
+
+
 
 //UPLOAD PHOTO
 $app->post( '/upload', function() {
@@ -121,19 +124,23 @@ $app->get( '/post/:offset', function( $offset ) {
 
 });
 
+//set a new like by user_id and post_id
+$app->post('/like/:post_id', function ( $post_id ) use ( $post ){
+ echo $post->toggleLike( $post_id );
+	
+});
+
 //GET SIX RANDOM FRIENDS
 $app->get('/friends/rndSix', function () use ( $friends ) { 
     	$sixPack = $friends->getSixRndFriends($_SESSION["user_id"]);
     	echo json_encode($sixPack);
-    }
-);
+    });
 
 //GET SIX RANDOM FRIENDS BY ID
 $app->get('/friends/rndSix/:id', function ( $id ) use ( $friends ) {
 	$sixPack = $friends->getSixRndFriends( $id );
 	echo json_encode($sixPack);
-}
-	);
+});
 
 $app->get('/userInfo', function () use ($user) {
 	echo $user->getUserInfo( $_SESSION['user_id'] );
@@ -148,8 +155,7 @@ $app->get('/profile', function () {
 	$users = $user->buildProfile( $_SESSION['user_id'] );
 	$users[0]['user_num_friends'] = $friends->getNumberOfFriends( $_SESSION['user_id'] );
 	echo json_encode( $users );
-}
-);
+});
 
 //builds someone else's profile page
 $app->get('/profile/:id', function ( $id ) {
@@ -157,8 +163,7 @@ $app->get('/profile/:id', function ( $id ) {
 	$users = $user->buildProfile( $id );
 	$users[0]['user_num_friends'] = $friends->getNumberOfFriends( $id );
 	echo json_encode( $users );
-}
-);
+});
 
 
 //just for Testing
@@ -182,8 +187,7 @@ $app->get( '/post/:id/:offset', function( $id, $offset ) {
 $app->get('/friends/rndSix', function ( ) use ( $friends ) {
 	$sixPack = $friends->getSixRndFriends( $_SESSION['user_id'] );
 	echo json_encode($sixPack);  
-}
-);			
+});			
 
 
 //checks if you're friends with user
@@ -212,6 +216,12 @@ $app->delete( '/rejecttfriendrequest', function() {
 $app->delete( '/unfriend', function() {
 	global $app, $friends;
 	echo $friends->unFriend( $app->request->getBody() );
+});
+
+
+$app->get( '/chack/:id', function( $id ) use ( $post ) {
+	echo $post->chackLike( $id , $_SESSION['user_id'] );
+	
 });
 	
 

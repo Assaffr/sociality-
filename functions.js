@@ -296,7 +296,7 @@ function showPosts(){
 						
 						$( "#loadMorePosts" ).remove();
 						$("<div id=status-id_"+value.post_id+" class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='user-pics/"+ value.user_profile_picture +"'><div><a href='profile.php?id="+ value.user_id +"'>"+ value.user_firstname + " " + value.user_lastname +"</a><br><span class='postSince'>"+ value.post_time_ago +"</span></div></div><div id='status_content'><p>"+ value.post_content +"</p></div><div id='status_footer'>" +
-							"<div id='comments-head'><span id='like' data-id='"+value.post_id+"'>Like</span>-<span>Comments</span><div id='the-likes'></div></div>" +
+							"<div id='comments-head'><span id='like' data-id='"+value.post_id+"' class='like'>Like</span>-<span>Comments</span><div id='the-likes'></div></div>" +
 							"<div id='comments'></div><div id='comment-area'><img alt='me' class='profile-photo'><textarea placeholder='Leave a comment...' data-stid='"+value.post_id+"'></textarea></div></div></div>").appendTo("#posts").hide().fadeIn();
 						
 							$.each( value.likes, function(key, like){
@@ -612,4 +612,36 @@ function sendFriendRequest( $id ){
 		}
 		
 	});
+	
 }
+
+function toggleLike ( element ) {
+		$.ajax({
+			url: "api/like/"+ $(element).data().id,
+			type: "POST",
+			dataType: "JSON",
+			success: function ( response ){
+				if ( response ){
+					
+					$(element).toggleClass( "unlike" )
+					$(element).toggleClass( "like" )
+
+					
+					if ($(element).hasClass("like"))
+						$(element).html("Like")
+					else if ($(element).hasClass("unlike"))
+						$(element).html("Unlike")
+
+					//$(element).attr("id", "unlike")
+				}
+			}
+		});
+	
+}	
+
+
+	
+
+
+	
+
