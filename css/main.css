@@ -219,13 +219,15 @@ fieldset p {
 #settings_content section , #comments-head{
 	height:26px;
 	border-bottom: 1px solid #e5e6e9;
-	color:#A4A4A4;
+	color:#9197a3;
 }
 
 #comments-head{
 	padding:2px;
 	
 }
+
+
 
 #settings_content section span{
 	display:block;
@@ -365,7 +367,6 @@ a{
 
 aside {
 	width:270px;
-	height:500px;
 	float:right;
 	
 	
@@ -448,6 +449,7 @@ aside {
 }
 
 .status{
+	color:#848484;
     width: 670px;
     min-height: 160px;
     float:none;
@@ -492,6 +494,12 @@ aside {
 
 .status p {
 	margin:0px;
+	
+}
+
+#status_footer{
+	background-color:#f6f7f8;
+	font-size:14px;
 	
 }
 
@@ -602,8 +610,20 @@ fieldset{
 	height: 30px;
 }
 
-#comments-head{
+.comment{
+	border-bottom: 1px solid #e5e6e9;
+	padding:3px;
+
+}
+
+#comment-content{
+	float:right;
+	width:614px;
 	
+}
+
+#comment-content span:nth-child(5){
+	color:#BDBDBD;
 	
 	
 }

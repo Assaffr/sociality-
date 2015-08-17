@@ -1,9 +1,12 @@
 	$(document).ready(function(){					
 					verifyLogin();
+					
 					$( "#logout" ).click(logOut);
+					
 					$("button[name=finishPost]").on( "click", function(){
 						publishPost( $("#postContent").val() );
 					});	
+					
 					$offset = -3;
 					
 					showPosts( $offset );
@@ -19,7 +22,8 @@
 					
 					$("#wall").on("keypress","#posts textarea" , function(){ 
 							if (event.which == 13){
-								console.log( $(this).data().comId );
+								event.preventDefault();
+								console.log( $(this).data().stid );
 								console.log( $(this).val() )
 								$(this).val(null)
 								
