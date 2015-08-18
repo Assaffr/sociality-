@@ -34,6 +34,12 @@ $app->post( '/login', function() {
 	echo $result;
 });
 
+//LOGOUT
+$app->delete( '/logout', function() {
+	echo session_destroy();
+});
+
+
 //VERIFY LOGIN BY ECHOING SESSION
 $app->get( '/login/', function() {
 	// global $friends;
@@ -47,10 +53,7 @@ $app->get( '/login/', function() {
 
 	});
 
-$app->get( '/logout', function() {
-	session_destroy();
-	});	
-	
+
 
 
 

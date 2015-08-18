@@ -220,11 +220,15 @@ function verifyLogin(){
  *	@param (type) (name) about this param - none
  *	@return (type) (name) - none
  */
-function logOut(){
+function logout() {
 	$.ajax({
-			url: "api/logout",
-			type: "GET"
-				
+		url: "api/logout",
+		type: "DELETE",
+		success: function( response ){
+			if ( response )
+			window.location.href = "index.php";
+			
+		}	
 	});
 }
 
@@ -247,6 +251,8 @@ function checkAmILoggedIn(){
 			}
 		});
 }
+
+
 
 
 /**
@@ -646,6 +652,14 @@ function toggleLike ( element ) {
 	
 }	
 
+$(document).ready(function(){
+	$("#logout").on("click", function(){
+		logout();
+		
+		
+	})
+
+});
 
 	
 
