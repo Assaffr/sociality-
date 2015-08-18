@@ -22,6 +22,8 @@ include_once dirname(__FILE__).'/inc/header.php';
 						<input type="text" class="login" id="email" placeholder="Email">
 						<input type="password" class="login" id="password" placeholder="Password">
 						<button type="button" id="loginButton">LOGIN</button>
+						<div id="errorBox"><h3>Error</h3><span id="x">x</span><br><span id="errorReg"></span></div>
+						
 					
 					</div>
 					<div id="registration">

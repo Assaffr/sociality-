@@ -45,7 +45,9 @@ function login($email, $password){
 					window.location.href = "home.php";
 					}
 				else {
-					alert("WRONG!");
+					//console.log("gg");
+					$("#login #errorReg").html("Incorrect details.");
+					$("#login #errorBox").fadeIn();
 				}
 			}
 		});
@@ -208,7 +210,7 @@ function verifyLogin(){
 				$("span[id=email]").html(response.user_email);
 				$("span[class=fullName]").html(response.user_firstname + " " + response.user_lastname);
 				$(".profile-photo").attr("src", "user-pics/"+response.user_profile_picture );
-				$("#myDetails").attr("data-id", response.userID);
+				$("#myDetails").attr("data-id", response.user_id);
 			}
 		});
 }
@@ -402,7 +404,7 @@ function buildMyProfileOrOther( $url ){
 	}
 	if ( typeof($url) == 'undefined' ){
 		buildMyProfile();
-		showFirstPosts();
+		showPosts();
 		getSixPack();
 	}
 }
