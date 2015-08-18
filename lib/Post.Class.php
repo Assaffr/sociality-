@@ -112,7 +112,7 @@
 						FROM likes
 						INNER JOIN users_info
 						ON likes.user_id = users_info.user_id
-						WHERE likes.post_id = $post_id;";
+						WHERE likes.post_id = $post_id ORDER BY like_created ASC;";
 			
 			$results = $this->_db->query( $qurey );
 			$likes = array ( );

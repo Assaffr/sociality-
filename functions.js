@@ -299,11 +299,18 @@ function showPosts(){
 							"<div id='comments-head'><span id='like' data-id='"+value.post_id+"' class='like'>Like</span>-<span>Comments</span><div id='the-likes'></div></div>" +
 							"<div id='comments'></div><div id='comment-area'><img alt='me' class='profile-photo'><textarea placeholder='Leave a comment...' data-stid='"+value.post_id+"'></textarea></div></div></div>").appendTo("#posts").hide().fadeIn();
 						
-							$.each( value.likes, function(key, like){
-								$("<img src='user-pics/"+like.user_profile_picture+"'>").appendTo("#the-likes");
-								
+						var counter = 0;
+						
+							$.each( value.likes, function(key, like){  // the likes append
+								$("<img src='user-pics/"+like.user_profile_picture+"' title='"+like.user_firstname +" " +like.user_lastname+"'>").appendTo("#status-id_"+value.post_id+" #the-likes");
+								counter ++;
+								if( counter == 5 )
+									return false;
 							});
+							// The number of likes append
+							$("<span>("+$(value.likes).size()+")</span>").appendTo("#status-id_"+value.post_id+" #the-likes")
 							
+							// the comment append
 							$.each( value.comments, function(key, comment){
 							$("<div class='comment' data-comId='"+comment.comment_id+"'><img src='user-pics/"+comment.user_profile_picture+"'>" +
 									"<div id='comment-content'>" +
@@ -474,7 +481,7 @@ function showPostsbyId($id ){
 							"<div id='comments'></div><div><img alt='me' class='profile-photo'><textarea placeholder='Leave a comment...'></textarea></div></div></div>").appendTo("#posts").hide().fadeIn();
 							$.each( value.likes, function(key, like){
 								$("<img src="+like.user_profile_picture+">").appendTo("#the-likes");
-								console.log(key, like.user_profile_picture);
+								console.log(key, like);
 							});
 									console.log(key, value);
 				} );
