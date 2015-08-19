@@ -327,7 +327,7 @@ function showPosts(){
 							$.each( value.likes, function(key, like){
 								
 								if (like.user_id == user_id){
-									console.log(like.user_id)
+									
 								$("<img src='user-pics/"+like.user_profile_picture+"' title='"+like.user_firstname +" " +like.user_lastname+"' class='my-like'>").appendTo("#status-id_"+value.post_id+" #the-likes");
 								}else{
 								$("<img src='user-pics/"+like.user_profile_picture+"' title='"+like.user_firstname +" " +like.user_lastname+"'>").appendTo("#status-id_"+value.post_id+" #the-likes");
@@ -350,7 +350,7 @@ function showPosts(){
 							$.each( value.comments, function(key, comment){
 							$("<div class='comment' data-comId='"+comment.comment_id+"'><img src='user-pics/"+comment.user_profile_picture+"'>" +
 									"<div id='comment-content'>" +
-									"<span><a href='profile.php?id="+comment.user_id+"'>"+comment.user_firstname + comment.user_lastname+"</a></span><br>" +
+									"<span><a href='profile.php?id="+comment.user_id+"'>"+comment.user_firstname +" "+ comment.user_lastname+"</a></span><br>" +
 									"<span>"+comment.comment_content+"</span><br>" +
 									"<span>1 Day ago</span>" +
 									"</div><div class='C-B'></div></div>").appendTo("#status-id_"+value.post_id+" #comments");
@@ -660,35 +660,69 @@ function sendFriendRequest( $id ){
 
 function toggleLike ( element ) {
 		$.ajax({
-			url: "api/like/"+ $(element).data().id,
+			url: "api/like/"+ $( element ).data().id,
 			type: "POST",
 			dataType: "JSON",
 			success: function ( response ){
 				if ( response ){
 					
-					var post_id = $(element).data().id;
+					var post_id = $( element ).data().id;
 		
 		
-					$(element).toggleClass( "unlike" )
-					$(element).toggleClass( "like" )
+					$( element ).toggleClass( "unlike" )
+					$( element ).toggleClass( "like" )
 
 					
-					if ($(element).hasClass("like")){
+					if ( $(element).hasClass("like") ){
 						
 						$(element).html("Like")
 						
 						$("#status-id_"+post_id+" .my-like").fadeOut();
 						
-					}else if ($(element).hasClass("unlike")){
-					$(element).html("Unlike");
-					$("#status-id_"+post_id+" #the-likes").prepend( $("<img src='pics/like_n.png' class='my-like'>") );
+					}else if ( $(element).hasClass("unlike") ){
+					$( element ).html( "Unlike" );
+					$( "#status-id_"+post_id+" #the-likes" ).prepend( $("<img src='pics/like_n.png' class='my-like'>") );
 					}
-					//$(element).attr("id", "unlike")
 				}
 			}
 		});
-	
 }	
+
+function setComment ( element, details){
+	
+	if ( event.which == 13 ){
+		
+		event.preventDefault();	
+		
+		if ( $(element).val() ){
+			var content = $(element).val();
+			
+			$.ajax({
+				url: "api/comment",
+				type: "POST",
+				dataType: "JSON",
+				data:JSON.stringify({
+					post_id: $(element).data().stid, 
+					comment_content: content
+					 }),
+				success: function ( comment_id ){
+					if ( comment_id ){
+						console.log( content )
+						$("<div class='comment' data-comId='"+comment_id+"'><img src='"+$('.profile-photo').attr('src')+"'>" +
+								"<div id='comment-content'>" +
+								"<span><a href='profile.php'>"+$('#topBarNav strong').html()+"</a></span><br>" +
+								"<span>"+content+"</span><br>" +
+								"<span>Just Now</span>" +
+								"</div><div class='C-B'></div></div>").appendTo("#status-id_"+$(element).data().stid+" #comments");
+					};					
+				}
+			})
+			$(element).val(null)
+		}
+	}	
+	
+	
+}
 
 $(document).ready(function(){
 	$("#logout").on("click", function(){

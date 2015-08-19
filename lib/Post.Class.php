@@ -103,9 +103,22 @@
 				$comments[] = $row;
 			}
 			return $comments;
-			
-			
+
 		}
+		
+		
+		public function setComments( $details ){
+			$qurey = "INSERT INTO comments 
+			( comment_content, comment_time, user_id, post_id ) VALUES 
+			('$details[comment_content]', CURRENT_TIME(), '$_SESSION[user_id]', '$details[post_id]' );";
+			
+			$results = $this->_db->query( $qurey );
+			
+			if ( $results ){
+				return  $this->_db->insert_id;
+			}
+		}
+		
 		
 		public function getLikes( $post_id ) {
 			$qurey = "SELECT likes.like_id, likes.user_id, likes.like_created, likes.post_id, users_info.user_firstname, users_info.user_lastname, users_info.user_profile_picture
@@ -121,9 +134,7 @@
 				$likes[] = $row;
 			}
 			return $likes;
-			
-			
-			
+
 		}
 		
 		
@@ -140,7 +151,7 @@
 		}
 		
 		
-		public function chackLike ( $post_id ){
+		private function chackLike ( $post_id ){
 			
 			$qurey = "SELECT like_id FROM likes WHERE user_id = $_SESSION[user_id]  AND post_id = $post_id ;";
 			

@@ -133,6 +133,14 @@ $app->post('/like/:post_id', function ( $post_id ) use ( $post ){
 	
 });
 
+//set a new comment
+$app->post('/comment', function ( ) use ( $post, $app){
+	$details =  json_decode( $app->request->getBody(), true );
+	
+	echo $post->setComments( $details );
+	
+});
+
 //GET SIX RANDOM FRIENDS
 $app->get('/friends/rndSix', function () use ( $friends ) { 
     	$sixPack = $friends->getSixRndFriends($_SESSION["user_id"]);
