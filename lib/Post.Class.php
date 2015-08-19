@@ -13,7 +13,11 @@
 			$post = $this->_db->query("
 					INSERT INTO socialityplus.posts ( user_id, post_content, post_created) VALUES ('$_SESSION[user_id]', '$details[post_content]', CURRENT_TIME());
 					");
-			return $post;		
+			
+			if ( $post ){
+				return  $this->_db->insert_id;
+			}
+		
 		}
 		
 		//this functions selects all the post info PLUS joins the users_info table in order to also fetch the name of the user who made the post
@@ -52,12 +56,17 @@
 				$posts[] = $row;
 			}
 			
-			foreach($posts as $value){
-				$value['post_time_ago'] = $this->timeAgo($value['post_created']);
-				$postsWithTimeAgo[] = $value;
+			if ( $posts ){
+				foreach($posts as $value){
+					$value['post_time_ago'] = $this->timeAgo( $value['post_created'] );
+					$postsWithTimeAgo[] = $value;
+				}
+				return $postsWithTimeAgo;	
 			}
+			else return $posts;
 			
-			return $postsWithTimeAgo;		
+			
+
 		}
 
 		
@@ -78,7 +87,7 @@
 				return (int) ($diffMin)." minutes ago";
 			if ($diff <= 86400 && $diff >= 3600)
 				return (int) ($diffHour)." hours ago";
-			if ($diff < 604800 && $diff >= 86400)
+			if ($diff < 604800 || $diff >= 86400)
 				return (int) ($diffDay)." days ago";
 		}
 		

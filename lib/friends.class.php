@@ -97,7 +97,7 @@ private function checkFriendRequest( $id ){
 	$results = $this->_db->query($queryDidISend);
 	if ($results->num_rows)
 		return array('iSent' => '1');
-	if (!$results->num_rows){
+	if ( !$results->num_rows ){
 		$queryDidTheySend = "SELECT * FROM friend_request WHERE user_id = $id AND user_friend_id = ". $_SESSION['user_id']. "
 		";
 		$results = $this->_db->query($queryDidTheySend);
@@ -122,8 +122,16 @@ private function checkFriendBlock ( $id ){
 		if ($results->num_rows)
 			return array('theyBlocked' => '1');
 		if (!$results->num_rows)
-			return 0;
+			return $this->checkIfMe( $id );
 	}
+}
+
+public function checkIfMe ( $id ){
+	if ( $id == $_SESSION['user_id'] ){
+		return array('isMe' => '1');
+	}
+	else
+		return 0;
 }
 
 public function sendFriendRequest( $id ){
@@ -157,8 +165,8 @@ public function rejectFriendRequest( $id ){
 
 public function unFriend( $id ){
 	$query = "
-	DELETE FROM friends WHERE user_id = $id AND user_friend_id = '". $_SESSION['user_id'] ."';
-	DELETE FROM friends WHERE user_id = '". $_SESSION['user_id'] ."' AND user_friend_id = $id ;
+		DELETE FROM friends WHERE user_id = $id AND user_friend_id = '". $_SESSION['user_id'] ."';
+		DELETE FROM friends WHERE user_id = '". $_SESSION['user_id'] ."' AND user_friend_id = $id ;
 		";
 	$results = $this->_db->multi_query($query);
 	return $results;

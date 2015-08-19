@@ -3,6 +3,7 @@
 	class User{
 		
 		private $_db;
+
 		
 		public function __construct(){
 			$this->_db = DB::getResource();
@@ -46,14 +47,17 @@
 			return $results	;
 		}
 		
+		//split these in two - what if someone just wants to change ONE of these things? ;)
+		public function setProfileImage ($userID , $imgPath){
+			$query = "UPDATE users_info SET user_profile_picture = '".$imgPath."'  WHERE user_id = $userID;";
+			$results = $this->_db->query($query);
+			return $results;
+		}
 		
-		public function setimages ($userID , $imgPath){
-			
-		
-			$query = "UPDATE users_info SET user_profile_picture = '".$imgPath['user_profile_picture']."' , 
-					user_secret_picture = '".$imgPath['user_secret_picture']."' WHERE user_id = $userID;";
-			
-			return $query;
+		public function setCoverImage ($userID , $imgPath){
+			$query = "UPDATE users_info SET user_secret_picture = '".$imgPath."' WHERE user_id = $userID;";
+			$results = $this->_db->query($query);
+			return $results;
 		}
 		
 	

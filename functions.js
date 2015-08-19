@@ -209,7 +209,8 @@ function verifyLogin(){
 				$("span[class=firstname]").html(response.user_firstname);
 				$("span[id=email]").html(response.user_email);
 				$("span[class=fullName]").html(response.user_firstname + " " + response.user_lastname);
-				$(".profile-photo").attr("src", "user-pics/"+response.user_profile_picture );
+				$(".profile-photo").attr("src", "user-pics/" + response.user_profile_picture );
+				$("#cover_photo img").attr("src", "cover-pics/" + response.user_secret_picture );
 				$("#myDetails").attr("data-id", response.user_id);
 			}
 		});
@@ -276,6 +277,7 @@ function publishPost($postContent){
 					post_content:$postContent}),
 				success: function( response ) {
 					if( response ){
+						//NOW HAS POST ID - WORK ON CHANGING DIV TODO
 						$("<div id='status' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='"+$("#myBar_content img").attr("src")+"'><div><a href='profile/id'>"+ $("span[class=fullName]").text() +"</a><br><span class='postSince'>Just Now</span></div></div><div id='status_content'><p>"+ $postContent +"</p></div><div id='status_footer'><div id='comment'></div><img alt='me' src='"+$("#myBar_content img").attr("src")+"'><textarea placeholder='Leave a comment...'></textarea></div></div>").prependTo("#posts").hide().fadeIn();
 						$("#postContent").val("");
 					}
@@ -579,6 +581,9 @@ function amIFriendsWithUser( $id ){
 			if ( response.iBlocked == 1 ){
 				$("#coverBottomLine").append("<span id='friendStatus'> - You have blocked this user. </span>");
 			}
+			if ( response.isMe == 1 ){
+				window.location.href = "profile.php";
+			}			
 			
 		}
 		
@@ -723,6 +728,55 @@ function setComment ( element, details){
 	
 	
 }
+//upload profile image - THESE ARE SPLIT BECAUSE WE DON'T WANT TO FORCE THEM TO CHANGE BOTH AT ONCE. CHILL.
+function uploadProfileImage(){
+	event.preventDefault();
+	var fd = new FormData();
+	var input = $("#profileImageFile")[0];
+	var file = input.files[0];
+	fd.append("pic", file);
+	$.ajax({
+		url: "api/upload/profile",
+		processData: false,
+		contentType: false,
+		type: "POST",
+		data: fd,
+		success: function( response ) {
+			if (!response == "0"){
+				$("#profile_pic .pic_field").html("Uploaded picture successfully");
+				$(".profile-photo").attr("src", "user-pics/" + response );
+			}
+			else
+				$(".pic_field").html("Oops! Something went wrong, try refreshing the page.");
+		}
+	})
+}
+
+//upload cover image - THESE ARE SPLIT BECAUSE WE DON'T WANT TO FORCE THEM TO CHANGE BOTH AT ONCE. CHILL.
+function uploadCoverImage(){
+	event.preventDefault();
+	var fd = new FormData();
+	var input = $("#coverImageFile")[0];
+	var file = input.files[0];
+	fd.append("cover", file);
+	$.ajax({
+		url: "api/upload/cover",
+		processData: false,
+		contentType: false,
+		type: "POST",
+		data: fd,
+		success: function( response ) {
+			if (!response == "0"){
+				$("#cover_photo .pic_field").html("Uploaded picture successfully");
+				$("#cover_photo img").attr("src", "cover-pics/" + response );
+			}
+			else
+				$(".pic_field").html("Oops! Something went wrong, try refreshing the page.");
+		}
+	})
+}
+
+//what is happening here???
 
 $(document).ready(function(){
 	$("#logout").on("click", function(){

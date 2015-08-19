@@ -18,12 +18,29 @@ $friends = new Friends();
 
 
 
-//UPLOAD PHOTO
-$app->post( '/upload', function() {
+//UPLOAD PROFILE PHOTO
+$app->post( '/upload/profile', function() {
 	global $user, $app;
 	$file = explode ( "/", $_FILES["pic"]["type"] );
-	echo ( move_uploaded_file($_FILES["pic"]["tmp_name"], "..\uploads\ " . $_FILES["pic"]["name"] . "." . $file[1]) );
-		 
+	move_uploaded_file($_FILES["pic"]["tmp_name"], "../user-pics/" . $_FILES["pic"]["name"] );
+	$_SESSION['user_profile_picture'] = $_FILES["pic"]["name"]; //refreshes session profile pic
+	if ( $user->setProfileImage($_SESSION['user_id'] , $_FILES["pic"]["name"]) )
+		echo $_FILES["pic"]["name"];
+	else
+		echo 0;
+});
+
+//UPLOAD COVER PHOTO
+//this doesn't work with jpg and i;ll work on that tomorrow lol
+$app->post( '/upload/cover', function() {
+	global $user, $app;
+	$file = explode ( "/", $_FILES["cover"]["type"] );
+	move_uploaded_file($_FILES["cover"]["tmp_name"], "../cover-pics/" . $_FILES["cover"]["name"] );
+	$_SESSION['user_secret_picture'] = $_FILES["cover"]["name"]; //refreshes session cover pic
+	if ( $user->setCoverImage($_SESSION['user_id'] , $_FILES["cover"]["name"]) )
+		echo $_FILES["cover"]["name"];
+	else
+		echo 0;
 });
 
 //LOGIN

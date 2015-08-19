@@ -3,7 +3,7 @@
 	class Login{
 		
 		private $_db;
-		
+		//private $friends;		
 		
 		public function __construct(){
 			$this->_db = DB::getResource();
@@ -46,6 +46,7 @@
 				$_SESSION[$key] = $value;
 			}
 			
+			//$_SESSION['user_num_friends'] = $this->friends->getNumberOfFriends( $_SESSION['user_id'] );
 		}
 		
 		

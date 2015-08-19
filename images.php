@@ -21,9 +21,9 @@ require_once dirname(__FILE__).'/inc/header.php';
 			<section id="profile_pic">
 				<div id="pic"><img alt="profile pic" src="" class="profile-photo"></div>
 				<div class="pic_field">
-					<form action="" method="post" enctype="multipart/form-data">
-     				   <input type="file" name="upload"/><br>
-     				   <input type="submit" value="Upload Photo">
+					<form id="profilePhotoForm" action="" method="post" enctype="multipart/form-data">
+     				   <input type="file" id="profileImageFile" name="upload"/><br>
+     				   <input type="submit" value="Upload Photo" id='uploadPhotoButton'>
 					</form>
 				
 				</div>
@@ -37,9 +37,9 @@ require_once dirname(__FILE__).'/inc/header.php';
 					<img alt="Cover Photo" src="">
 				</div>
 				<div class="pic_field">
-					<form action="" method="post" enctype="multipart/form-data">
-     				   <input type="file" name="upload"/><br>
-     				   <input type="submit" value="Upload Photo">
+					<form id="coverPhotoForm" action="" method="post" enctype="multipart/form-data">
+     				   <input type="file" id="coverImageFile" name="upload"/><br>
+     				   <input type="submit" value="Upload Photo" id='uploadPhotoButton'>
 					</form>
 				
 				</div>
