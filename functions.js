@@ -300,23 +300,51 @@ function showPosts(){
 			dataType: "JSON",
 			success: function( response ) {
 				if ( response ){
+					
+					var user_id = $("#myDetails").data().id;
+					
 					$.each( response, function(key, value){
 						
+						//Builds the post
 						$( "#loadMorePosts" ).remove();
 						$("<div id=status-id_"+value.post_id+" class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='user-pics/"+ value.user_profile_picture +"'><div><a href='profile.php?id="+ value.user_id +"'>"+ value.user_firstname + " " + value.user_lastname +"</a><br><span class='postSince'>"+ value.post_time_ago +"</span></div></div><div id='status_content'><p>"+ value.post_content +"</p></div><div id='status_footer'>" +
 							"<div id='comments-head'><span id='like' data-id='"+value.post_id+"' class='like'>Like</span>-<span>Comments</span><div id='the-likes'></div></div>" +
 							"<div id='comments'></div><div id='comment-area'><img alt='me' class='profile-photo'><textarea placeholder='Leave a comment...' data-stid='"+value.post_id+"'></textarea></div></div></div>").appendTo("#posts").hide().fadeIn();
 						
-						var counter = 0;
 						
-							$.each( value.likes, function(key, like){  // the likes append
+						// chack if *I* liked and append(...) if true
+						
+						$.each( value.likes, function(key, like){
+							if ( like.user_id  == user_id ){
+								$("#status-id_"+like.post_id+" #like").html("Unlike").removeClass("like").addClass("unlike");
+								$("<img src='pics/like_n.png' class='my-like'>").appendTo( $("#status-id_"+like.post_id+" #the-likes") )
+							}
+
+							
+						});
+						var counter = 0;
+						// the likes append
+							$.each( value.likes, function(key, like){
+								
+								if (like.user_id == user_id){
+									console.log(like.user_id)
+								$("<img src='user-pics/"+like.user_profile_picture+"' title='"+like.user_firstname +" " +like.user_lastname+"' class='my-like'>").appendTo("#status-id_"+value.post_id+" #the-likes");
+								}else{
 								$("<img src='user-pics/"+like.user_profile_picture+"' title='"+like.user_firstname +" " +like.user_lastname+"'>").appendTo("#status-id_"+value.post_id+" #the-likes");
+								}
+							
 								counter ++;
+								if (like.user_id = user_id)
+									
+									
 								if( counter == 5 )
 									return false;
 							});
 							// The number of likes append
-							$("<span>("+$(value.likes).size()+")</span>").appendTo("#status-id_"+value.post_id+" #the-likes")
+							if ( $(value.likes).size() )
+							$("<span>("+$(value.likes).size()+")</span>").appendTo("#status-id_"+value.post_id+" #the-likes");
+							
+							
 							
 							// the comment append
 							$.each( value.comments, function(key, comment){
@@ -638,15 +666,23 @@ function toggleLike ( element ) {
 			success: function ( response ){
 				if ( response ){
 					
+					var post_id = $(element).data().id;
+		
+		
 					$(element).toggleClass( "unlike" )
 					$(element).toggleClass( "like" )
 
 					
-					if ($(element).hasClass("like"))
+					if ($(element).hasClass("like")){
+						
 						$(element).html("Like")
-					else if ($(element).hasClass("unlike"))
-						$(element).html("Unlike")
-
+						
+						$("#status-id_"+post_id+" .my-like").fadeOut();
+						
+					}else if ($(element).hasClass("unlike")){
+					$(element).html("Unlike");
+					$("#status-id_"+post_id+" #the-likes").prepend( $("<img src='pics/like_n.png' class='my-like'>") );
+					}
 					//$(element).attr("id", "unlike")
 				}
 			}
