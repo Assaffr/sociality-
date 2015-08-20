@@ -217,13 +217,13 @@ fieldset p {
 	
 }
 
-#settings_content section , #comments-head{
+#settings_content section , .comments-head{
 	height:26px;
 	border-bottom: 1px solid #e5e6e9;
 	color:#9197a3;
 }
 
-#comments-head{
+.comments-head{
 	padding:2px;
 	
 }
@@ -236,15 +236,20 @@ fieldset p {
 
 	
 }
-#comments-head span{
+.comments-head span{
 	margin:8px;
 	cursor: pointer;
 }
 
-#comments-head img{
+.comments-head img{
 	width:20px !important; 
 	height:20px !important;
 	margin:2px !important;
+	
+}
+
+#view-more{
+	text-align:center;
 	
 }
 

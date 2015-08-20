@@ -1,12 +1,25 @@
-1. ADD NUM FRIENDS TO SESSION IN ORDER TO ADD TO HOME PAGE - need your help on this
+1. --DONE -- ADD NUM FRIENDS TO SESSION IN ORDER TO ADD TO HOME PAGE - need your help on this 
+
 3. ACCOUNT + ADD IMAGES - WORKING ON IT RIGHT NOW!!
-4. FIX EPOCH TIME --DONE --
+
+4. --DONE -- FIX EPOCH TIME
+
 6. NOTIFICATIONS
+
 7. WRITE ON OTHER PERSON'S PAGE
-8. FINISH LIKES
+
+8. --DONE -- FINISH LIKES
+
 9. DESIGN PROFILE PAGE ASIDE AREA
-10. REJECT REQUEST -> BLOCK // why is this here? it's already done  --DONE --
-11. IF YOU ARE ON YOUR OWN PROFILE IT KICKS YOU TO PROFILE PAGE  --DONE --
+
+10. --DONE -- REJECT REQUEST -> BLOCK // why is this here? it's already done  
+
+11. --DONE -- IF YOU ARE ON YOUR OWN PROFILE IT KICKS YOU TO PROFILE PAGE 
+ 
 11. REDSIGN DIV FOR JUST PUBLISHED POST - INCLUDE LIKES AND COMMENTS
-12. holy shit put documentation on fucking every function lol
+
+12. holy shit put documentation on fucking every function lol <^^>
+
 13. there is a weird gap when you click on read more posts?
+
+14. look at page 5 on the PDF - some shit omer throw on us.. )=

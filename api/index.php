@@ -58,14 +58,14 @@ $app->delete( '/logout', function() {
 
 
 //VERIFY LOGIN BY ECHOING SESSION
-$app->get( '/login/', function() {
-	// global $friends;
+$app->get( '/login/', function() use( $friends ) {
+	
 	// $info = array(
 		// 'session' => $_SESSION,
 		// 'numFriends' => $friends->getNumberOfFriends($_SESSION['user_id'])
 	// );
 	// echo (json_encode ($info));
-	
+	$_SESSION['num_friends'] = $friends->getNumberOfFriends( $_SESSION['user_id']);
 	echo (json_encode ($_SESSION));
 
 	});
@@ -248,7 +248,6 @@ $app->delete( '/unfriend', function() {
 
 
 $app->get( '/chack/:id', function( $id ) use ( $post ) {
-	echo $post->chackLike( $id , $_SESSION['user_id'] );
 	
 });
 	
