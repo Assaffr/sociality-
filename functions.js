@@ -280,7 +280,6 @@ function publishPost($postContent){
 					post_content:$postContent}),
 				success: function( response ) {
 					if( response ){
-						//NOW HAS POST ID - WORK ON CHANGING DIV TODO
 						$("<div id='status-id_"+response+"' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='"+$("#myBar_content img").attr("src")+"'><div><a href='profile.php'>"+ $("span[class=fullName]").text() +"</a><br><span class='postSince'>Just Now</span></div></div><div id='status_content'><p>"+ $postContent +"</p></div><div id='status_footer'>" +
 								"<div class='comments-head'><span id='like' data-id='"+response+"' class='like'>Like</span>-<span>Comments</span><div id='the-likes'></div></div>" +
 								"<div id='comments'></div><img alt='me' src='"+$("#myBar_content img").attr("src")+"'><textarea placeholder='Leave a comment...' data-stid='"+response+"'></textarea></div></div>").prependTo("#posts").hide().fadeIn();
@@ -308,9 +307,12 @@ function showPosts(){
 			success: function( response ) {
 				if ( response ){
 					
+					
 					var user_id = $("#myDetails").data().id;
 					
 					$.each( response, function(key, value){
+						
+						var num_comments = value.comments.num_comments;
 						
 						//Builds the post
 						$( "#loadMorePosts" ).remove();
@@ -352,9 +354,13 @@ function showPosts(){
 							$("<span>("+$(value.likes).size()+")</span>").appendTo("#status-id_"+value.post_id+" #the-likes");
 							
 							
+							if( value.comments.num_comments > 5 ){
+								$("<div id='view-more' class='comments-head'><span>View more comments</span></div>").insertAfter("#status-id_"+value.post_id+" .comments-head")
+							}
+								
 							
 							// the comment append
-							$.each( value.comments, function(key, comment){
+							$.each( value.comments.the_comments, function(key, comment){
 							$("<div class='comment' data-comId='"+comment.comment_id+"'><img src='user-pics/"+comment.user_profile_picture+"'>" +
 									"<div id='comment-content'>" +
 									"<span><a href='profile.php?id="+comment.user_id+"'>"+comment.user_firstname +" "+ comment.user_lastname+"</a></span><br>" +
@@ -362,7 +368,7 @@ function showPosts(){
 									"<span>1 Day ago</span>" +
 									"</div><div class='C-B'></div></div>").appendTo("#status-id_"+value.post_id+" #comments");
 							});
-					});
+					});// END EACH POST
 					
 					
 					

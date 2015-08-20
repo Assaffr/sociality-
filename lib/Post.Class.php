@@ -53,7 +53,7 @@
 										");
 			$posts = array();
 			while ($row = mysqli_fetch_assoc ($post)){
-				$row['comments'] = $this->getComments($row["post_id"]);
+				$row['comments'] = $this->getFirstComments($row["post_id"]);
 				$row['likes'] = $this->getLikes($row["post_id"]);
 				$posts[] = $row;
 			}
@@ -95,12 +95,12 @@
 		
 		// public function getFeed( $user_id ) {
 			// $feed = array(
-				// "comments" => $this->getComments();
+				// "comments" => $this->getFirstComments();
 			// );
 		// }
 		
 		
-		public function getComments( $post_id ){
+		public function getFirstComments( $post_id ){
 			$qurey = "SELECT comments.comment_id, comments.comment_content, comments.comment_time, comments.user_id, users_info.user_firstname ,users_info.user_lastname, users_info.user_profile_picture
 					FROM comments
 					INNER JOIN users_info
@@ -109,12 +109,28 @@
 			
 			$results = $this->_db->query( $qurey );
 			$comments = array ( );
+			$comments = array ( "the_comments" => array ( ) );
+			$comments['num_comments'] = $results->num_rows;
 			
-			while ( $row = $results->fetch_assoc() ){
-				$comments[] = $row;
-			}
+			if( $comments['num_comments'] <= 5 ){
+			
+				while ( $row = $results->fetch_assoc() ){
+					$comments["the_comments"][] = $row;
+				}
+			}else{
+				$qurey = "SELECT comments.comment_id, comments.comment_content, comments.comment_time, comments.user_id, users_info.user_firstname ,users_info.user_lastname, users_info.user_profile_picture
+				FROM comments
+				INNER JOIN users_info
+				ON users_info.user_id = comments.user_id
+				WHERE comments.post_id = $post_id
+				ORDER BY comments.comment_time ASC LIMIT 3 OFFSET ".($comments['num_comments']-3);
+				
+				$results = $this->_db->query( $qurey );
+				while ( $row = $results->fetch_assoc() ){
+					$comments["the_comments"][] = $row;
+				}
+			};
 			return $comments;
-
 		}
 		
 		
