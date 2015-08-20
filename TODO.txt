@@ -1,5 +1,5 @@
 1. ADD NUM FRIENDS TO SESSION IN ORDER TO ADD TO HOME PAGE - need your help on this
-3. ACCOUNT + ADD IMAGES - WORKING ON IT RIGHT NOW!!
+3. ACCOUNT + ADD IMAGES - adding images works, account doesn't
 4. FIX EPOCH TIME --DONE --
 6. NOTIFICATIONS
 7. WRITE ON OTHER PERSON'S PAGE
@@ -10,3 +10,5 @@
 11. REDSIGN DIV FOR JUST PUBLISHED POST - INCLUDE LIKES AND COMMENTS
 12. holy shit put documentation on fucking every function lol
 13. there is a weird gap when you click on read more posts?
+14. password page
+15. error registers box - shows up on top, where the login error should be

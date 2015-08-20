@@ -17,7 +17,7 @@
 					});
 					
 					getSixPack(); // add the 6 friend to the home page
-					verifyLogin(); //some pics don't load unless this is both at start and end - todo fix
+					verifyLogin();
 					
 					
 					$("#wall").on("keypress","#posts textarea" , function(){ 
