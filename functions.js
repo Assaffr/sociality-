@@ -210,6 +210,7 @@ function verifyLogin(){
 					window.location.href = "index.php";
 				$("span[class=firstname]").html(response.user_firstname);
 				$("span[id=email]").html(response.user_email);
+				$("#numFriends").html(response.num_friends);
 				$("span[class=fullName]").html(response.user_firstname + " " + response.user_lastname);
 				$(".profile-photo").attr("src", "user-pics/" + response.user_profile_picture );
 				$("#cover_photo img").attr("src", "cover-pics/" + response.user_secret_picture );
@@ -280,7 +281,9 @@ function publishPost($postContent){
 				success: function( response ) {
 					if( response ){
 						//NOW HAS POST ID - WORK ON CHANGING DIV TODO
-						$("<div id='status' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='"+$("#myBar_content img").attr("src")+"'><div><a href='profile.php'>"+ $("span[class=fullName]").text() +"</a><br><span class='postSince'>Just Now</span></div></div><div id='status_content'><p>"+ $postContent +"</p></div><div id='status_footer'><div id='comment'></div><img alt='me' src='"+$("#myBar_content img").attr("src")+"'><textarea placeholder='Leave a comment...'></textarea></div></div>").prependTo("#posts").hide().fadeIn();
+						$("<div id='status-id_"+response+"' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='"+$("#myBar_content img").attr("src")+"'><div><a href='profile.php'>"+ $("span[class=fullName]").text() +"</a><br><span class='postSince'>Just Now</span></div></div><div id='status_content'><p>"+ $postContent +"</p></div><div id='status_footer'>" +
+								"<div class='comments-head'><span id='like' data-id='"+response+"' class='like'>Like</span>-<span>Comments</span><div id='the-likes'></div></div>" +
+								"<div id='comments'></div><img alt='me' src='"+$("#myBar_content img").attr("src")+"'><textarea placeholder='Leave a comment...' data-stid='"+response+"'></textarea></div></div>").prependTo("#posts").hide().fadeIn();
 						$("#postContent").val("");
 					}
 					
@@ -793,6 +796,7 @@ function setComment ( element, details){
 				success: function ( comment_id ){
 					if ( comment_id ){
 						console.log( content )
+						console.log( $(element).data().stid )
 						$("<div class='comment' data-comId='"+comment_id+"'><img src='"+$('.profile-photo').attr('src')+"'>" +
 								"<div id='comment-content'>" +
 								"<span><a href='profile.php'>"+$('#topBarNav strong').html()+"</a></span><br>" +

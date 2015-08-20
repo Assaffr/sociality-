@@ -31,6 +31,7 @@ $app->post( '/upload/profile', function() {
 });
 
 //UPLOAD COVER PHOTO
+//this doesn't work with jpg and i;ll work on that tomorrow lol
 $app->post( '/upload/cover', function() {
 	global $user, $app;
 	$file = explode ( "/", $_FILES["cover"]["type"] );
@@ -169,7 +170,7 @@ $app->get('/friends/rndSix/:id', function ( $id ) use ( $friends ) {
 	echo json_encode($sixPack);
 });
 
-$app->get('/userInfo', function () use ( $user ) {
+$app->get('/userInfo', function () use ($user) {
 	echo $user->getUserInfo( $_SESSION['user_id'] );
 	
 	
@@ -195,7 +196,7 @@ $app->get('/profile/:id', function ( $id ) {
 
 //just for Testing
 
-	$app->get('/12345', function() use ( $app ,$post ){
+	$app->get('/12345', function() use ($app ,$post){
 		var_dump($post->getComments("1"));
 		
 		
@@ -205,7 +206,7 @@ $app->get('/profile/:id', function ( $id ) {
 //show first posts by id
 $app->get( '/post/:id/:offset', function( $id, $offset ) {
 	global $post, $app;
-	$posts = $post->showPosts( $offset, $id );
+	$posts = $post->showPosts($offset, $id);
 	echo ( json_encode ( $posts ) );
 
 });

@@ -10,13 +10,15 @@
 		
 		//i can't get this to show the last post id :((
 		public function publishPost($details){
-			$post = $this->_db->query("
-					INSERT INTO socialityplus.posts ( user_id, post_content, post_created) VALUES ('$_SESSION[user_id]', '$details[post_content]', CURRENT_TIME());
-					");
 			
-			if ( $post ){
+			$query = "INSERT INTO socialityplus.posts ( user_id, post_content, post_created) VALUES ('$_SESSION[user_id]', '$details[post_content]', CURRENT_TIME() );";
+			
+			$post = $this->_db->query( $query);
+
+			
+			if ( $post )
 				return  $this->_db->insert_id;
-			}
+			
 		
 		}
 		
