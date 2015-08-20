@@ -144,6 +144,12 @@ $app->get( '/post/:offset', function( $offset ) {
 
 });
 
+$app->get( '/comments/:offset', function( $offset ) use( $post ){
+	echo json_encode( $post->getMoreComments( $_GET['post_id'], $offset ) );
+	
+	
+});
+
 //set a new like by user_id and post_id
 $app->post('/like/:post_id', function ( $post_id ) use ( $post ){
  echo $post->toggleLike( $post_id );

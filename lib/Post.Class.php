@@ -105,7 +105,8 @@
 					FROM comments
 					INNER JOIN users_info
 					ON users_info.user_id = comments.user_id
-					WHERE comments.post_id = $post_id";
+					WHERE comments.post_id = $post_id
+					ORDER BY comments.comment_time DESC";
 			
 			$results = $this->_db->query( $qurey );
 			$comments = array ( );
@@ -123,13 +124,28 @@
 				INNER JOIN users_info
 				ON users_info.user_id = comments.user_id
 				WHERE comments.post_id = $post_id
-				ORDER BY comments.comment_time ASC LIMIT 3 OFFSET ".($comments['num_comments']-3);
+				ORDER BY comments.comment_time DESC LIMIT 3";
 				
 				$results = $this->_db->query( $qurey );
 				while ( $row = $results->fetch_assoc() ){
 					$comments["the_comments"][] = $row;
 				}
 			};
+			return $comments;
+		}
+		
+		public function getMoreComments( $post_id, $offset ){
+			$qurey = "SELECT comments.comment_id, comments.comment_content, comments.comment_time, comments.user_id, users_info.user_firstname ,users_info.user_lastname, users_info.user_profile_picture
+			FROM comments
+			INNER JOIN users_info
+			ON users_info.user_id = comments.user_id
+			WHERE comments.post_id = $post_id
+			ORDER BY comments.comment_time DESC LIMIT 5 OFFSET $offset";
+			
+			$results = $this->_db->query( $qurey );
+			while ( $row = $results->fetch_assoc() ){
+				$comments[] = $row;
+			}
 			return $comments;
 		}
 		

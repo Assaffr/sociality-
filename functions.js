@@ -355,18 +355,18 @@ function showPosts(){
 							
 							
 							if( value.comments.num_comments > 5 ){
-								$("<div id='view-more' class='comments-head'><span>View more comments</span></div>").insertAfter("#status-id_"+value.post_id+" .comments-head")
+								$("<div id='view-more' class='comments-head'><span data-id="+value.post_id+" data-num="+value.comments.num_comments+">View more comments</span></div>").insertAfter("#status-id_"+value.post_id+" .comments-head")
 							}
 								
 							
 							// the comment append
 							$.each( value.comments.the_comments, function(key, comment){
-							$("<div class='comment' data-comId='"+comment.comment_id+"'><img src='user-pics/"+comment.user_profile_picture+"'>" +
+							$("#status-id_"+value.post_id+" #comments").prepend("<div class='comment' data-comId='"+comment.comment_id+"'><img src='user-pics/"+comment.user_profile_picture+"'>" +
 									"<div id='comment-content'>" +
 									"<span><a href='profile.php?id="+comment.user_id+"'>"+comment.user_firstname +" "+ comment.user_lastname+"</a></span><br>" +
 									"<span>"+comment.comment_content+"</span><br>" +
 									"<span>1 Day ago</span>" +
-									"</div><div class='C-B'></div></div>").appendTo("#status-id_"+value.post_id+" #comments");
+									"</div><div class='C-B'></div></div>");
 							});
 					});// END EACH POST
 					
@@ -387,6 +387,28 @@ function showPosts(){
 				$(".profile-photo").attr("src", $("#myBar_content img").attr("src") );
 			}
 		});
+}
+
+function getMoreComments(post_id, offset){
+	$post_id = post_id
+	$offset = offset
+	$.ajax({
+		url:"api/comments/"+offset+"?post_id="+post_id,
+		type: "GET",
+		dataType: "JSON",
+		success: function( response ){
+			$.each( response, function(key, comment){
+				$("#status-id_"+$post_id+" #comments").prepend("<div class='comment' data-comId='"+comment.comment_id+"'><img src='user-pics/"+comment.user_profile_picture+"'>" +
+				"<div id='comment-content'>" +
+				"<span><a href='profile.php?id="+comment.user_id+"'>"+comment.user_firstname +" "+ comment.user_lastname+"</a></span><br>" +
+				"<span>"+comment.comment_content+"</span><br>" +
+				"<span>1 Day ago</span>" +
+				"</div><div class='C-B'></div></div>");
+			})
+		}
+	})
+	
+	
 }
 
 
