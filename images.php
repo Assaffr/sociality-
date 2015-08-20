@@ -1,5 +1,5 @@
 <?php
-$title = "user_name";
+$title = "Change your images";
 $bodyId = "account";
 require_once dirname(__FILE__).'/inc/header.php';
 

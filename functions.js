@@ -1,5 +1,16 @@
 //explains function//
 /**
+*	Function name
+*
+*	what the function does
+*
+*	@param (type) (name) about this param
+*	@return (type) (name)
+*/
+
+
+
+/**
 *	ucFirst
 *
 *	make the first letter to Uppercase
@@ -11,15 +22,6 @@
 function ucFirst (string){
 	return string[0].toUpperCase() + string.slice(1);
 }
-
-/**
-*	Function name
-*
-*	what the function does
-*
-*	@param (type) (name) about this param
-*	@return (type) (name)
-*/
 
 //INDEX PAGE//
 
@@ -278,7 +280,7 @@ function publishPost($postContent){
 				success: function( response ) {
 					if( response ){
 						//NOW HAS POST ID - WORK ON CHANGING DIV TODO
-						$("<div id='status' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='"+$("#myBar_content img").attr("src")+"'><div><a href='profile/id'>"+ $("span[class=fullName]").text() +"</a><br><span class='postSince'>Just Now</span></div></div><div id='status_content'><p>"+ $postContent +"</p></div><div id='status_footer'><div id='comment'></div><img alt='me' src='"+$("#myBar_content img").attr("src")+"'><textarea placeholder='Leave a comment...'></textarea></div></div>").prependTo("#posts").hide().fadeIn();
+						$("<div id='status' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='"+$("#myBar_content img").attr("src")+"'><div><a href='profile.php'>"+ $("span[class=fullName]").text() +"</a><br><span class='postSince'>Just Now</span></div></div><div id='status_content'><p>"+ $postContent +"</p></div><div id='status_footer'><div id='comment'></div><img alt='me' src='"+$("#myBar_content img").attr("src")+"'><textarea placeholder='Leave a comment...'></textarea></div></div>").prependTo("#posts").hide().fadeIn();
 						$("#postContent").val("");
 					}
 					
@@ -378,6 +380,15 @@ function showPosts(){
 		});
 }
 
+
+/**
+*	getSixPack
+*
+*	Adds six random friends to home page
+*
+*	@param (type) (name) about this param - none
+*	@return (type) (name)- none
+*/
 function getSixPack() {
 	
 	$.ajax({
@@ -414,8 +425,14 @@ function putUserInfo(){
 }
 
 
-//Checks if you are on your profile or someone else's
-//by splitting the current href and returns it
+/**
+*	checkIfMyProfile
+*
+*	Checks if you are on your profile or someone else's
+*	by splitting the current href and returns it
+*	@param (type) (name) about this param - none
+*	@return (string) ($url)- the id
+*/
 function checkIfMyProfile(){
 	$path = window.location.href;
 	$pathSplit = $path.split("=");
@@ -424,7 +441,15 @@ function checkIfMyProfile(){
 	
 }
 
-//gets url from checkIfMyProfile() and builds profile based on that answer
+
+/**
+*	buildMyProfileOrOther
+*
+*	gets url from checkIfMyProfile() and builds profile based on that answer
+*
+*	@param (string) ($url) the id from checkIfMyProfile
+*	@return (type) (name)- none
+*/
 function buildMyProfileOrOther( $url ){
 	if ( typeof($url) == 'string' ){
 		buildProfilebyId( $url );
@@ -439,7 +464,14 @@ function buildMyProfileOrOther( $url ){
 	}
 }
 
-//builds your own profile
+/**
+*	buildMyProfile
+*
+*	builds your own profile
+*
+*	@param (type) (name) about this param - none
+*	@return (type) (name)- none
+*/
 function buildMyProfile(){
 	$.ajax({
 		url: "api/profile",
@@ -457,7 +489,14 @@ function buildMyProfile(){
 	
 }
 
-//builds someone else's profile
+/**
+*	buildProfilebyId
+*
+*	builds someone else's profile
+*
+*	@param (string) ($id) the id of the profile
+*	@return (type) (name)- none
+*/
 function buildProfilebyId( $id ){
 	$.ajax({
 		url: "api/profile/" + $id,
@@ -475,7 +514,7 @@ function buildProfilebyId( $id ){
 	
 }
 
-
+//NEEDS DOCUMENTATION!!!
 function sendMyDetails(){
 	
 	$.ajax({
@@ -499,9 +538,9 @@ function sendMyDetails(){
 /**
 *	showPostsbyId
 *
-*	shows posts by id not session id
+*	shows posts by id not session id - for someone else's profile page
 *
-*	@param
+*	@param (string) ($id) the id of the profile
 *	@return (type) (name) none
 */
 function showPostsbyId($id ){
@@ -541,7 +580,14 @@ function showPostsbyId($id ){
 }
 
 
-//builds six random friends BY ID
+/**
+*	getSixPackbyId
+*
+*	Adds six random friends to someone's profile by id
+*
+*	@param (string) ($id) the id of the profile
+*	@return (type) (name)- none
+*/
 function getSixPackbyId( $id ) {
 	$.ajax({
 		url: "api/friends/rndSix/" + $id,
@@ -555,10 +601,15 @@ function getSixPackbyId( $id ) {
 	});
 }
 
-//checks your friend status with another user
-//there are several possible options: whether you are friends, not friends, whether one of you
-//sent a friend request or if one of you blocked the other.
-//if the user blocked you - it displays nothing because you cannot add them.
+
+/**
+*	amIFriendsWithUser
+*
+*	checks your friend/block status with another user - also checks if you're on your own profile
+*
+*	@param (string) ($id) the id of the profile
+*	@return (type) (name)- none
+*/
 function amIFriendsWithUser( $id ){
 	$.ajax({
 		url: "api/checkfriendstatus/" + $id,
@@ -590,6 +641,14 @@ function amIFriendsWithUser( $id ){
 	});
 }
 
+/**
+*	acceptFriendRequest
+*
+*	accept a friend request someone sent you
+*
+*	@param (string) ($id) the id of the profile
+*	@return (type) (name)- none
+*/
 function acceptFriendRequest( $id ){
 	$.ajax({
 		url: "api/acceptfriendrequest",
@@ -607,7 +666,14 @@ function acceptFriendRequest( $id ){
 		});
 		
 }
-
+/**
+*	rejectFriendRequest
+*
+*	reject a friend request someone sent you
+*
+*	@param (string) ($id) the id of the profile
+*	@return (type) (name)- none
+*/
 function rejectFriendRequest( $id ){
 	$.ajax({
 		url: "api/rejecttfriendrequest",
@@ -625,7 +691,14 @@ function rejectFriendRequest( $id ){
 		});
 }
 
-//delete the friendship you have with a friend
+/**
+*	unFriend
+*
+*	unfriend a friend
+*
+*	@param (string) ($id) the id of the profile
+*	@return (type) (name)- none
+*/
 function unFriend( $id ){
 	$.ajax({
 		url: "api/unfriend",
@@ -643,7 +716,14 @@ function unFriend( $id ){
 		});
 }
 
-//send a friend request to a user you are not friends with already
+/**
+*	sendFriendRequest
+*
+*	send a friend request to someone you are not friends with and who hasn't blocked you
+*
+*	@param (string) ($id) the id of the profile
+*	@return (type) (name)- none
+*/
 function sendFriendRequest( $id ){
 	$.ajax({
 		url: "api/sendfriendrequest",
@@ -662,7 +742,7 @@ function sendFriendRequest( $id ){
 	});
 	
 }
-
+//NEEDS DOCUMENTATION!!!
 function toggleLike ( element ) {
 		$.ajax({
 			url: "api/like/"+ $( element ).data().id,
@@ -692,7 +772,7 @@ function toggleLike ( element ) {
 			}
 		});
 }	
-
+//NEEDS DOCUMENTATION!!!
 function setComment ( element, details){
 	
 	if ( event.which == 13 ){
@@ -728,7 +808,14 @@ function setComment ( element, details){
 	
 	
 }
-//upload profile image - THESE ARE SPLIT BECAUSE WE DON'T WANT TO FORCE THEM TO CHANGE BOTH AT ONCE. CHILL.
+/**
+*	uploadProfileImage
+*
+*	upload a profile image - works via ajax and form data.
+*
+*	@param (type) (name)- none
+*	@return (type) (name)- none
+*/
 function uploadProfileImage(){
 	event.preventDefault();
 	var fd = new FormData();
@@ -743,7 +830,6 @@ function uploadProfileImage(){
 		data: fd,
 		success: function( response ) {
 			if (!response == "0"){
-				$("#profile_pic .pic_field").html("Uploaded picture successfully");
 				$(".profile-photo").attr("src", "user-pics/" + response );
 			}
 			else
@@ -752,7 +838,14 @@ function uploadProfileImage(){
 	})
 }
 
-//upload cover image - THESE ARE SPLIT BECAUSE WE DON'T WANT TO FORCE THEM TO CHANGE BOTH AT ONCE. CHILL.
+/**
+*	uploadCoverImage
+*
+*	upload a cover image - works via ajax and form data.
+*
+*	@param (type) (name)- none
+*	@return (type) (name)- none
+*/
 function uploadCoverImage(){
 	event.preventDefault();
 	var fd = new FormData();
@@ -767,7 +860,6 @@ function uploadCoverImage(){
 		data: fd,
 		success: function( response ) {
 			if (!response == "0"){
-				$("#cover_photo .pic_field").html("Uploaded picture successfully");
 				$("#cover_photo img").attr("src", "cover-pics/" + response );
 			}
 			else
@@ -776,8 +868,8 @@ function uploadCoverImage(){
 	})
 }
 
-//what is happening here???
 
+//NEEDS DOCUMENTATION!!!
 $(document).ready(function(){
 	$("#logout").on("click", function(){
 		logout();
