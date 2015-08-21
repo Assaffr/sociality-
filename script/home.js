@@ -30,15 +30,9 @@
 						
 					});
 					
-					var counter = ""
-					var offset
+					
 					$("#wall").on( "click", "#view-more span", function(){
-						counter ++;
-						offset = 3+(5*(counter-1));
-							getMoreComments( $(this).data().id, offset );
-						if ( (offset+5) >= $(this).data().num )
-							$("#status-id_"+$(this).data().id+" #view-more").fadeOut()
-						
+							getMoreComments( $(this) );
 					});
 					
 	});

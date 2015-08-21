@@ -355,7 +355,7 @@ function showPosts(){
 							
 							
 							if( value.comments.num_comments > 5 ){
-								$("<div id='view-more' class='comments-head'><span data-id="+value.post_id+" data-num="+value.comments.num_comments+">View more comments</span></div>").insertAfter("#status-id_"+value.post_id+" .comments-head")
+								$("<div id='view-more' class='comments-head'><span data-clicks='0' data-id="+value.post_id+" data-num="+value.comments.num_comments+">View more comments</span></div>").insertAfter("#status-id_"+value.post_id+" .comments-head")
 							}
 								
 							
@@ -389,11 +389,15 @@ function showPosts(){
 		});
 }
 
-function getMoreComments(post_id, offset){
-	$post_id = post_id
-	$offset = offset
+function getMoreComments( element ){
+	
+	$post_id = $(element).data().id
+	$clicks = ($(element).data().clicks)+1
+	$(element).data("clicks", $clicks)
+	$offset = 3+(5*($clicks-1))
+
 	$.ajax({
-		url:"api/comments/"+offset+"?post_id="+post_id,
+		url:"api/comments/"+$offset+"?post_id="+$post_id,
 		type: "GET",
 		dataType: "JSON",
 		success: function( response ){
@@ -407,7 +411,8 @@ function getMoreComments(post_id, offset){
 			})
 		}
 	})
-	
+		if ( ($offset+5) >= $(element).data().num )
+			$("#status-id_"+$post_id+" #view-more").fadeOut()
 	
 }
 
