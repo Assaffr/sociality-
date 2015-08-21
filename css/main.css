@@ -253,6 +253,11 @@ fieldset p {
 	
 }
 
+#loadMorePosts{
+	display:block;
+	
+}
+
 #the-likes{
 	float:right;
 	

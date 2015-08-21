@@ -29,7 +29,7 @@ require_once dirname(__FILE__).'/inc/header.php';
 						<textarea placeholder="What's on your mind?" autocomplete="off" aria-expanded="true"></textarea>
 					</div>
 					<div id="newStatus_footer">
-						<button type="button">Post</button>
+						<button type="button" name="finishPost">Post</button>
 					</div>
 				</div>
 					<div id="posts">
@@ -69,4 +69,6 @@ require_once dirname(__FILE__).'/inc/header.php';
 				</div>
 			
 			</aside>
+			<div class="C-B"></div>
 	</main>
+<?php require_once dirname(__FILE__).'/inc/footer.php';?>

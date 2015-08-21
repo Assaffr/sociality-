@@ -14,7 +14,7 @@ require_once dirname(__FILE__).'/inc/header.php';
 						<span class="firstname"></span>, update your status
 					</div>
 					<div id="newStatus_content">
-						<textarea id="postContent" placeholder="What's on your mind?" autocomplete="off" aria-expanded="true"></textarea>
+						<textarea id="postContent" placeholder="What's on your mind?" aria-expanded="true"></textarea>
 					</div>
 
 					<div id="newStatus_footer">

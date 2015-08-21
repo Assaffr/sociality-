@@ -31,7 +31,7 @@ require_once dirname(__FILE__).'/inc/header.php';
 					 <br><span>Select your gender (male orfemale)</span>
 				</p>
 				<p> <label class="line" for="aboutMe">About me &nbsp </label><textarea id="aboutMe"></textarea><br><span>About you (160 characters or less)</span></p>
-				<p> <label class="line" for="secretAbout">Secret about &nbsp </label><textarea id="secretAbout"></textarea></textarea><br><span>About you (160 characters or less)</span></p>
+				<p> <label class="line" for="secretAbout">Secret about &nbsp </label><textarea id="secretAbout"></textarea><br><span>About you (160 characters or less)</span></p>
 			</div>
 			
 			<div id="myAccount_footer">
