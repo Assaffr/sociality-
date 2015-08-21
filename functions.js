@@ -441,26 +441,6 @@ function getSixPack() {
 }
 
 
-function putUserInfo(){
-	
-	$.ajax({
-		url: "api/userInfo",
-		type:"GET",
-		dataType: "JSON",
-		success: function ( R ){
-			$("input[name=firstName]").val(R.user_firstname);
-			$("input[name=lastName]").val(R.user_lastname);
-			$("input[name=email]").val(R.user_email);
-			$("input[name=bornDate]").val(R.user_birthdate);
-			$("#aboutMe").val(R.user_about);
-			$("#secretAbout").val(R.user_secret_about);
-			console.log(R.user_email)
-		}
-		
-	});
-	
-}
-
 
 /**
 *	checkIfMyProfile
@@ -515,11 +495,22 @@ function buildMyProfile(){
 		type:"GET",
 		dataType: "JSON",
 		success: function ( response ){
-			$("span[id=profilePageFullName]").html(response[0].user_firstname + " " + response[0].user_lastname);
+			$("span[class=profilePageFullName]").html(response[0].user_firstname + " " + response[0].user_lastname);
 			$("#profilePhoto img").attr("src", "user-pics/"+response[0].user_profile_picture );
 			$("#coverPhoto img").attr("src", "cover-pics/"+response[0].user_secret_picture );
 			$("#writePostProfileTitle").html("Update your status");
 			$("#numFriends").html(response[0].user_num_friends);
+			$("section:nth-child(1) span:nth-child(2)").html("Israel"); //not in sql ;)
+			if ( response[0].user_birthdate )
+				$("section:nth-child(2) span:nth-child(2)").html( response[0].user_birthdate );
+			else
+				$("section:nth-child(2) span:nth-child(2)").html( "No birthday filled" );
+			$("section:nth-child(3) span:nth-child(2)").html("<a href='notinsql.com'>Visit Homepage</a>"); //not in sql ;)
+			$("section:nth-child(4) span:nth-child(2)").html("<a href='notinsql.com'>Visit Profile</a>"); //not in sql ;)
+			if ( response[0].user_about )
+				$("section:nth-child(5) span:nth-child(2)").html( response[0].user_about );
+			else
+				$("section:nth-child(5) span:nth-child(2)").html( "You haven't filled your about yet!" );
 		}
 		
 	});
@@ -540,18 +531,92 @@ function buildProfilebyId( $id ){
 		type:"GET",
 		dataType: "JSON",
 		success: function ( response ){
-			$("span[id=profilePageFullName]").html(response[0].user_firstname + " " + response[0].user_lastname);
+			$("span[class=profilePageFullName]").html(response[0].user_firstname + " " + response[0].user_lastname);
 			$("#profilePhoto img").attr("src", "user-pics/"+response[0].user_profile_picture );
 			$("#coverPhoto img").attr("src", "cover-pics/"+response[0].user_secret_picture );
 			$("#writePostProfileTitle").html("Write on " + response[0].user_firstname + "'s wall!");
 			$("#numFriends").html(response[0].user_num_friends);
+			$("#myBar_content section:nth-child(1) span:nth-child(2)").html("Israel"); //not in sql ;)
+			if ( response[0].user_birthdate )
+				$("section:nth-child(2) span:nth-child(2)").html( response[0].user_birthdate );
+			else
+				$("section:nth-child(2) span:nth-child(2)").html( "No birthday filled" );
+			$("section:nth-child(3) span:nth-child(2)").html("<a href='notinsql.com'>Visit Homepage</a>"); //not in sql ;)
+			$("section:nth-child(4) span:nth-child(2)").html("<a href='notinsql.com'>Visit Profile</a>"); //not in sql ;)
+			if ( response[0].user_about )
+				$("section:nth-child(5) span:nth-child(2)").html( response[0].user_about );
+			else
+				$("section:nth-child(5) span:nth-child(2)").html( "No info yet!" );
+		}
+		
+	});
+	
+}
+/**
+*	validateUserInfo
+*
+*	makes sure the first and last name updated in the account page pass the regex in UserNameRegex
+*
+*	@param (type) (name) - none
+*	@return (boolean) (true)- if they both pass
+*	@return (boolean) (false)- if one or both fail
+*/
+function validateUserInfo(){
+	if ( UserNameRegex( $("input[name=firstName]").val() ) && UserNameRegex( $("input[name=lastName]").val() ) )
+		return true;
+	return false;
+
+}
+
+/**
+*	UserNameRegex
+*
+*	regex for the first and last names in the account page - only letters, more than 3 characters
+*
+*	@param (string) (string) - name being tested
+*	@return (boolean) (pattern.test)- result of regex test
+*/
+function UserNameRegex(string){
+	var pattern =  new RegExp("^[a-zA-Z]{3,}$");
+	return pattern.test(string);
+}
+
+/**
+*	putUserInfo
+*
+*	gets the user info and puts it in the account page
+*
+*	@param (type) (name) about this param - none
+*	@return (type) (name)- none
+*/
+function putUserInfo(){
+	
+	$.ajax({
+		url: "api/userInfo",
+		type:"GET",
+		dataType: "JSON",
+		success: function ( R ){
+			$("input[name=firstName]").val(R.user_firstname);
+			$("input[name=lastName]").val(R.user_lastname);
+			$("input[name=email]").val(R.user_email);
+			$("input[name=bornDate]").val(R.user_birthdate);
+			$("#aboutMe").val(R.user_about);
+			$("#secretAbout").val(R.user_secret_about);
 		}
 		
 	});
 	
 }
 
-//NEEDS DOCUMENTATION!!!
+
+/**
+*	sendMyDetails
+*
+*	sends the new user info from the account page
+*
+*	@param (type) (name) about this param - none
+*	@return (type) (name)- none
+*/
 function sendMyDetails(){
 	
 	$.ajax({
@@ -566,7 +631,9 @@ function sendMyDetails(){
 			 user_secret_about:$("#secretAbout").val(),
 			 user_birthdate:$("input[name=bornDate]").val()
 				}),
-		success: function ( ){}
+		success: function (){
+			$("strong[class=fullName]").html( $("input[name=firstName]").val() + " " + $("input[name=lastName]").val() );
+		}
 		
 	
 	});

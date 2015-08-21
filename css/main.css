@@ -456,10 +456,18 @@ aside {
 	
 }
 
-#profilePageFullName{
+.profilePageFullName{
 	margin-left: 100px;
-	margin-top: 5px;
+	margin-top: 8px;
 	display: inline-block;
+	font-weight: normal !important;
+
+}
+
+#myDetails_content .profilePageFullName{
+	margin-left: 0px; !important;
+	display: inline;
+	font-weight: normal !important;
 
 }
 
@@ -641,4 +649,8 @@ fieldset{
 	color:#BDBDBD;
 	
 	
+}
+
+#updateInfoError{
+	margin-left: 270px;
 }

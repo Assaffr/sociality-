@@ -6,7 +6,12 @@ $(document).ready( function () {
 		putUserInfo();		
 					
 		$("#myAccount_footer button").on("click", function(){
-			sendMyDetails();
+			if ( validateUserInfo() ){
+				sendMyDetails();
+				$("#updateInfoError").html("Success");
+			}
+			else
+				$("#updateInfoError").html("Please fill name fields properly.");
 			
 		})
 });

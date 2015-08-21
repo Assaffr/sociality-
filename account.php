@@ -1,5 +1,5 @@
 <?php
-$title = "user_name";
+$title = "Update your details";
 $bodyId = "account";
 require_once dirname(__FILE__).'/inc/header.php';
 
@@ -35,7 +35,7 @@ require_once dirname(__FILE__).'/inc/header.php';
 			</div>
 			
 			<div id="myAccount_footer">
-				<button type="button">Save Changes</button>
+				<button type="button">Save Changes</button><span id="updateInfoError"></span>
 			
 			</div>
 		</div>

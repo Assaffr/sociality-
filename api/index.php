@@ -31,7 +31,6 @@ $app->post( '/upload/profile', function() {
 });
 
 //UPLOAD COVER PHOTO
-//this doesn't work with jpg and i;ll work on that tomorrow lol
 $app->post( '/upload/cover', function() {
 	global $user, $app;
 	$file = explode ( "/", $_FILES["cover"]["type"] );
@@ -113,16 +112,16 @@ $app->get( '/user/:id', function( $id ) {
 
 //Delete User
 $app->delete( '/user/:id', function( $id ) {
-	global $user, $app;
+	global $user;
 	$user->deleteUser($id);
 });
 
 //Update User
 $app->put( '/user', function( ) {
-	global $user, $app;
-	//var_dump($app->request->getBody());
+	global $user, $app, $login;
 	$jsonUser = json_decode( $app->request->getBody(), true );
-	echo $user->updateUser($_SESSION['user_id'] , $jsonUser);
+	echo $user->updateUser( $_SESSION['user_id'] , $jsonUser );
+	$login->setSession( $_SESSION['user_id'] );
 	
 });
 
@@ -178,8 +177,6 @@ $app->get('/friends/rndSix/:id', function ( $id ) use ( $friends ) {
 
 $app->get('/userInfo', function () use ($user) {
 	echo $user->getUserInfo( $_SESSION['user_id'] );
-	
-	
 });
 
 
