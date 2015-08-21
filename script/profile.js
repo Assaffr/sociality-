@@ -14,7 +14,6 @@
 					});		
 
 					buildMyProfileOrOther( checkIfMyProfile() );
-					verifyLogin();
 					
 					$("#wall").on( "click", "#view-more span", function(){
 						getMoreComments( $(this) );

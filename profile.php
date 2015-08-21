@@ -41,21 +41,22 @@ require_once dirname(__FILE__).'/inc/header.php';
 				<div id="myBar" class="box">
 					<div id="myBar_head" class="divHead"><span>About</span></div>
 					<div id="myBar_content">
-						Location: NotInSqlLand<br>
-						Born:<br>
-						Gender: Yes<br>
-						Homepage: notinsql.com<br>
-						Facebook: Notin Sql<br>
-						About:<br>
-					
+						<section> <span>Location:</span> <span></span></section>
+						<section> <span>Born:</span> <span></span></section>
+						<section> <span>Homepage:</span><span></span></section>
+						<section><span> Facebook:</span> <span></span></section>
+						<section> <span>Bio:</span> <span></span></section>
 					</div>
 				</div>
 				
 				<div id="myDetails" class="box">
 					<div id="myDetails_head" class="divHead"><span>Fliter Posts</span></div>
 					<div id="myDetails_content">
-						<span class="fullName"></span><br>
-						<span id="email"></span>
+						<section> <strong><span>Posts written by:</span> <span class="profilePageFullName"></span></strong></section>
+						<section> <strong><span>All time</span></strong></section>
+						<section> <span>Option 1</span></section>
+						<section> <span>Option 2</span></section>
+						<section> <span>Option 3</span></section>
 						</div>
 					
 					

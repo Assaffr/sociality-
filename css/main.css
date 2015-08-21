@@ -217,25 +217,29 @@ fieldset p {
 	
 }
 
-#settings_content section , .comments-head{
+section{
+	height:40px;
+	border-bottom: 1px solid #e5e6e9;
+	color:#9197a3;
+}
+
+section span{
+	display: inline-block;
+    margin: 10px;
+	
+	
+}
+
+.comments-head{
+	padding:2px;
 	height:26px;
 	border-bottom: 1px solid #e5e6e9;
 	color:#9197a3;
 }
 
-.comments-head{
-	padding:2px;
-	
-}
 
 
 
-#settings_content section span{
-	display:block;
-	margin:10px;
-
-	
-}
 .comments-head span{
 	margin:8px;
 	cursor: pointer;
@@ -383,7 +387,7 @@ aside {
 	
 }
 
-#myDetails_content{
+#home #myDetails_content{
 	font-weight:bold;
 	padding:12px;
 	color:#848484;
