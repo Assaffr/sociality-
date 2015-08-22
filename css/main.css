@@ -218,7 +218,7 @@ fieldset p {
 }
 
 section{
-	height:40px;
+	min-height:40px;
 	border-bottom: 1px solid #e5e6e9;
 	color:#9197a3;
 }
