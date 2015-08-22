@@ -1,0 +1,27 @@
+1. --DONE -- ADD NUM FRIENDS TO SESSION IN ORDER TO ADD TO HOME PAGE - need your help on this 
+
+3. --DONE -- ACCOUNT + ADD IMAGES
+
+4. --DONE -- FIX EPOCH TIME
+
+6. NOTIFICATIONS
+
+7. --DONE --  WRITE ON OTHER PERSON'S PAGE
+
+8. --DONE -- FINISH LIKES
+
+9. --DONE -- DESIGN PROFILE PAGE ASIDE AREA
+
+10. --DONE -- REJECT REQUEST -> BLOCK // why is this here? it's already done  
+
+11. --DONE -- IF YOU ARE ON YOUR OWN PROFILE IT KICKS YOU TO PROFILE PAGE 
+ 
+11. --DONE -- REDSIGN DIV FOR JUST PUBLISHED POST - INCLUDE LIKES AND COMMENTS
+
+12. holy shit put documentation on fucking every function lol <^^>
+
+13. --DONE -- there is a weird gap when you click on read more posts?
+
+14.--DONE -- --DONE -- --DONE --!!! look at page 5 on the PDF - some shit omer throw on us.. )=
+
+15. filter the friend profile posts.
