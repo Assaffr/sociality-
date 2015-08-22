@@ -371,7 +371,7 @@ function showPosts(){
 									"<div id='comment-content'>" +
 									"<span><a href='profile.php?id="+comment.user_id+"'>"+comment.user_firstname +" "+ comment.user_lastname+"</a></span><br>" +
 									"<span>"+comment.comment_content+"</span><br>" +
-									"<span>1 Day ago</span>" +
+									"<span>"+ comment.comment_time_ago + " </span>" +
 									"</div><div class='C-B'></div></div>");
 							});
 					});// END EACH POST

@@ -127,6 +127,12 @@
 				while ( $row = $results->fetch_assoc() ){
 					$comments["the_comments"][] = $row;
 				}
+				
+				foreach($comments["the_comments"] as $key => $value){
+					$value['comment_time_ago'] = $this->timeAgo( $value['comment_time'] );
+					$comments["the_comments"][$key] = $value;
+				}
+				
 			}else{
 				$qurey = "SELECT comments.comment_id, comments.comment_content, comments.comment_time, comments.user_id, users_info.user_firstname ,users_info.user_lastname, users_info.user_profile_picture
 				FROM comments
@@ -138,6 +144,11 @@
 				$results = $this->_db->query( $qurey );
 				while ( $row = $results->fetch_assoc() ){
 					$comments["the_comments"][] = $row;
+				}
+				
+				foreach($comments["the_comments"] as $key => $value){
+					$value['comment_time_ago'] = $this->timeAgo( $value['comment_time'] );
+					$comments["the_comments"][$key] = $value;
 				}
 			};
 			return $comments;
@@ -154,6 +165,11 @@
 			$results = $this->_db->query( $qurey );
 			while ( $row = $results->fetch_assoc() ){
 				$comments[] = $row;
+			}
+			
+			foreach($comments as $key => $value){
+				$value['comment_time_ago'] = $this->timeAgo( $value['comment_time'] );
+				$comments[$key] = $value;
 			}
 			return $comments;
 		}
