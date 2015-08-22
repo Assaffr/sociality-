@@ -168,13 +168,20 @@ $app->get('/friends/rndSix/:id', function ( $id ) use ( $friends ) {
 	echo json_encode($sixPack);
 });
 
-$app->get('/friends/all', function ( ) use ( $friends ) {
+$app->get('/friends/all', function ( ) use ( $friends, $post ) {
 	$friend_list = $friends->getAllfriends( $_SESSION['user_id'] );
+	foreach($friend_list as $key => $value){
+		$friend_list[$key]['friendship_time_ago'] = $post->timeAgo ( $friend_list[$key]['friendship_created'] );
+	}
+	
 	echo json_encode( $friend_list );
 });
 
-$app->get('/friends/allRequest', function ( ) use ( $friends ) {
+$app->get('/friends/allRequest', function ( ) use ( $friends, $post ) {
 	$friend_list = $friends->getAllfriendsRequest( $_SESSION['user_id'] );
+	foreach($friend_list as $key => $value){
+		$friend_list[$key]['request_time_ago'] = $post->timeAgo ( $friend_list[$key]['request_created'] );
+	}
 	echo json_encode( $friend_list );
 });
 

@@ -1043,16 +1043,20 @@ function getAllMyFreinds () {
 			
 			$("#wall").html("");
 			
-			console.log( response );
+			//console.log( response );
 			
 			$.each( response, function ( key, friend ){
-				$("<div class='friend-wrap box' id='friend-id_"+friend.user_friend_id+"'>" +
-						"<img class='unfriend' src='pics/unfriend.PNG' title='Remove friend'>"+
+				$("<div class='friend-wrap box' data-id="+friend.user_friend_id+" id='friend-id_"+friend.user_friend_id+"'>" +
+						"<img class='unfriend' src='pics/unfriend.PNG' title='Remove friend' class='unfriend'>"+
 						"<img class='friend-pic' src='user-pics/"+friend.user_profile_picture+"'>" +
 						"<div><a href='profile.php?id="+friend.user_friend_id+"'>"+friend.user_firstname+"&nbsp"+friend.user_lastname+"</a><br>" +
-							"<span>We've been friends since: "+friend.friendship_created+" </span></div>" +
+							"<span>We've been friends since  "+friend.friendship_time_ago +" </span></div>" +
 						"</div>").appendTo("#wall")
 			})
+			$(".unfriend").on("click", function(){
+				unFriend ( $(this).parent().attr("data-id") ); 
+				$(this).parent().fadeOut();
+			} );
 		}
 	})
 	getAllMyFreindsRequest ();
@@ -1065,13 +1069,20 @@ function getAllMyFreindsRequest () {
 		dataType: "JSON",
 		success: function( response ) {
 			$.each( response, function ( key, friend ){
-				$("<div class='friend-wrap box' id='friend-id_"+friend.user_id+"'>" +
-						"<img class='unfriend' src='pics/addfriend.PNG' title='Add as a friend'>"+
+				$("<div class='friend-wrap box' data-id="+friend.user_id+" id='friend-id_"+friend.user_id+"'>" +
+						"<img class='addFriend' src='pics/addfriend.PNG' title='Add as a friend'>"+
 						"<img class='friend-pic' src='user-pics/"+friend.user_profile_picture+"'>" +
 						"<div><a href='profile.php?id="+friend.user_id+"'>"+friend.user_firstname+"&nbsp"+friend.user_lastname+"</a><br>" +
-							"<span>Request was created: "+friend.request_created+" </span></div>" +
+							"<span>Request was created "+friend.request_time_ago+" </span></div>" +
 						"</div>").appendTo("#wall")
 			})
+			$(".addFriend").on("click", function(){
+				acceptFriendRequest ( $(this).parent().attr("data-id") ); 
+				$(this).attr("src", "pics/unfriend.PNG" );
+				$(this).attr("title", "Remove friend" );
+				$(this).addClass(".unfriend");
+				$(this).removeClass(".addFriend");
+			} );
 		}
 	})
 	
