@@ -270,14 +270,15 @@ function checkAmILoggedIn(){
 *	@param (string) (postContent) post content
 *	@return (type) (name) none
 */
-function publishPost($postContent){
+function publishPost  ( $postContent, $postTo ){
 	if ( $postContent ) {
 		$.ajax({
 				url: "api/post",
 				type: "POST",
 				dataType: "TEXT",
 				data: JSON.stringify({
-					post_content:$postContent}),
+					post_content:$postContent,
+					post_to_friend_id:$postTo }),
 				success: function( response ) {
 					if( response ){
 						$("<div id='status-id_"+response+"' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='"+$("#myBar_content img").attr("src")+"'><div><a href='profile.php'>"+ $("span[class=fullName]").text() +"</a><br><span class='postSince'>Just Now</span></div></div><div id='status_content'><p>"+ $postContent +"</p></div><div id='status_footer'>" +
@@ -531,6 +532,7 @@ function buildProfilebyId( $id ){
 		type:"GET",
 		dataType: "JSON",
 		success: function ( response ){
+			$("#myDetails").attr("data-id", response[0].user_id )
 			$("span[class=profilePageFullName]").html(response[0].user_firstname + " " + response[0].user_lastname);
 			$("#profilePhoto img").attr("src", "user-pics/"+response[0].user_profile_picture );
 			$("#coverPhoto img").attr("src", "cover-pics/"+response[0].user_secret_picture );
@@ -776,7 +778,6 @@ function amIFriendsWithUser( $id ){
 		type:"GET",
 		dataType: "JSON",
 		success: function ( response ){
-			console.log(response);
 			if ( response == 0 ){
 				$("#coverBottomLine").append("<span id='friendStatus'><a onclick='sendFriendRequest("+ $id +");'><img class='friend-button' src='pics/addfriend.png'></a></span>");
 			}

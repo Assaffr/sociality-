@@ -26,7 +26,7 @@ require_once dirname(__FILE__).'/inc/header.php';
 						 <span id="writePostProfileTitle">
 					</div>
 					<div id="newStatus_content">
-						<textarea placeholder="What's on your mind?" autocomplete="off" aria-expanded="true"></textarea>
+						<textarea placeholder="What's on your mind?" id="postContent" aria-expanded="true"></textarea>
 					</div>
 					<div id="newStatus_footer">
 						<button type="button" name="finishPost">Post</button>

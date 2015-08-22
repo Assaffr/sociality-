@@ -4,16 +4,25 @@
 		
 		private $_db;
 		
-		public function __construct(){
-			$this->_db = DB::getResource();
+		public function __construct () {
+			$this->_db = DB::getResource ();
 		}
 		
-		//i can't get this to show the last post id :((
-		public function publishPost($details){
+
+		public function publishPost ( $details ) {
 			
-			$query = "INSERT INTO socialityplus.posts ( user_id, post_content, post_created) VALUES ('$_SESSION[user_id]', '$details[post_content]', CURRENT_TIME() );";
+			if ( $details['post_to_friend_id'] == $_SESSION['user_id'] ) {
+				$query = "INSERT INTO posts ( user_id, post_content, post_created) VALUES ('$_SESSION[user_id]', '$details[post_content]', CURRENT_TIME() );";
+				$post = $this->_db->query( $query );
+			}else{
+				$query = "INSERT INTO posts ( user_id, post_content, post_created) VALUES ('$_SESSION[user_id]', '$details[post_content]', CURRENT_TIME() );
+				INSERT INTO posts_relations (post_id, user_id, post_to_friend_id) VALUES (LAST_INSERT_ID(), '$_SESSION[user_id]', '$details[post_to_friend_id]');";
+				
+				$post = $this->_db->multi_query( $query );
+			}
 			
-			$post = $this->_db->query( $query);
+			
+			
 
 			
 			if ( $post )
