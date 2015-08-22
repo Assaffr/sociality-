@@ -6,7 +6,7 @@
 
 6. NOTIFICATIONS
 
-7. --DONE --  WRITE ON OTHER PERSON'S PAGE
+7. WRITE ON OTHER PERSON'S PAGE
 
 8. --DONE -- FINISH LIKES
 
@@ -23,5 +23,3 @@
 13. --DONE -- there is a weird gap when you click on read more posts?
 
 14.--DONE -- --DONE -- --DONE --!!! look at page 5 on the PDF - some shit omer throw on us.. )=
-
-15. filter the friend profile posts.

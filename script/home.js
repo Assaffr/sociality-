@@ -21,7 +21,7 @@
 					
 					
 					$("#wall").on("keypress","#posts textarea" , function(){ 
-						setComment( this )
+						setComment(this, "")
 							
 						});
 					
