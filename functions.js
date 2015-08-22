@@ -215,6 +215,10 @@ function verifyLogin(){
 				$(".profile-photo").attr("src", "user-pics/" + response.user_profile_picture );
 				$("#cover_photo img").attr("src", "cover-pics/" + response.user_secret_picture );
 				$(".fullName").attr("data-id", response.user_id);
+				if ( response.user_birthdate ){
+					$("span[id=dateOfBirth]").html(response.user_birthdate);
+					$("span[id=age]").html(response.user_age);
+				}
 			}
 		});
 }

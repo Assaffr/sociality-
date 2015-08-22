@@ -119,11 +119,20 @@
 						SELECT * FROM users_info WHERE user_id = $id;
 					");
 			$users = array();
-			while ($row = mysqli_fetch_assoc ($result))
+			while ($row = mysqli_fetch_assoc ($result) )
 				$users[] = $row;
 			return $users;
 		}
 		
+		
+		public function getBirthday( $id ){
+			$query = "SELECT user_birthdate, CURDATE(), TIMESTAMPDIFF(YEAR, user_birthdate, CURDATE()) as age FROM users_info WHERE user_id = $id";
+			$result = $this->_db->query($query);
+			$users = array();
+			while ($row = mysqli_fetch_assoc ($result) )
+				$users[] = $row;
+			return $users[0]['age'];
+		}
 	}
 	
 	

@@ -45,8 +45,7 @@ require_once dirname(__FILE__).'/inc/header.php';
 					<div id="myDetails_head" class="divHead"><span>My details</span></div>
 					<div id="myDetails_content">
 						<span class="fullName"></span><br>
-					<!--  	<span id="dateOfBirth">01/01/1970</span> (<span id="age">40</span>)<br> -->
-					<!--  	only to be added when user adds it -->
+						<span id="dateOfBirth"></span> ( <span id="age"></span> )<br>
 						<span id="email"></span>
 						</div>
 					

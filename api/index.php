@@ -57,20 +57,13 @@ $app->delete( '/logout', function() {
 
 
 //VERIFY LOGIN BY ECHOING SESSION
-$app->get( '/login/', function() use( $friends ) {
-	
-	// $info = array(
-		// 'session' => $_SESSION,
-		// 'numFriends' => $friends->getNumberOfFriends($_SESSION['user_id'])
-	// );
-	// echo (json_encode ($info));
-	$_SESSION['num_friends'] = $friends->getNumberOfFriends( $_SESSION['user_id']);
-	echo (json_encode ($_SESSION));
-
-	});
-
-
-
+$app->get( '/login/', function() use( $friends, $user ) {
+	if ( isset( $_SESSION['user_id'] ) ){
+		$_SESSION['num_friends'] = $friends->getNumberOfFriends( $_SESSION['user_id'] );
+		$_SESSION['user_age'] = $user->getBirthday( $_SESSION['user_id'] );
+		echo ( json_encode ($_SESSION) );
+	}
+});
 
 
 //REGISTER PROCESS - check if email exists
