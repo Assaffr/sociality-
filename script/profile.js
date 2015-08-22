@@ -27,7 +27,8 @@
 					});
 					
 					$("#myFriends_head").on( "click", function(){
-						$("#wall").html("")
+						
+						getAllMyFreinds()
 						
 					});
 					

@@ -471,10 +471,9 @@ aside {
 
 }
 
-.status{
+.status, .friend-wrap{
 	color:#6E6E6E;
     width: 670px;
-    min-height: 160px;
     float:none;
 }
 #Status_head{
@@ -484,18 +483,36 @@ aside {
 	
 }
 
-#Status_head strong {
+#Status_head strong, .unfriend {
 	float:right;
 	
 }
 
-#Status_head img {
+.unfriend{
+	width: 30px;
+    height: 30px;
+	cursor: pointer;
+}
+
+#Status_head img, .friend-pic {
 	width: 45px;
     height: 45px;
     display:inline-block;
     float:left;
     margin-right:8px;
 	
+	
+}
+
+.friend-wrap{
+	padding: 10px;
+    height: 45px;
+	width:650px;
+}
+
+.friend-wrap a{
+	font-weight: bold;
+	color: -webkit-link;
 	
 }
 
@@ -661,3 +678,5 @@ fieldset{
 	
 	
 }
+
+

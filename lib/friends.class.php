@@ -34,13 +34,13 @@ class Friends {
 	
 	public function getAllfriends( $id ){
 		
-		$query = "(SELECT friends.user_friend_id, users_info.user_firstname, users_info.user_lastname, users_info.user_profile_picture
+		$query = "(SELECT friends.user_friend_id, users_info.user_firstname, users_info.user_lastname, users_info.user_profile_picture, friends.friendship_created
 					FROM users_info 
 					INNER JOIN friends 
 					ON users_info.user_id = friends.user_friend_id
 					WHERE friends.user_id = $id)
 					UNION
-					(SELECT friends.user_id, users_info.user_firstname, users_info.user_lastname, users_info.user_profile_picture
+					(SELECT friends.user_id, users_info.user_firstname, users_info.user_lastname, users_info.user_profile_picture, friends.friendship_created
 					FROM users_info 
 					INNER JOIN friends 
 					ON users_info.user_id = friends.user_id
@@ -53,6 +53,24 @@ class Friends {
 			$freinds[] = $row;
 		}
 		return $freinds;
+	}
+	
+	public function getAllfriendsRequest( $id ){
+	
+		$query = "SELECT friend_request.request_id, friend_request.user_id, friend_request.request_created, users_info.user_firstname, users_info.user_lastname, users_info.user_profile_picture
+				FROM friend_request
+				INNER JOIN users_info
+				ON  friend_request.user_id = users_info.user_id
+				WHERE friend_request.user_friend_id = $id
+				;";
+		$results = $this->_db->query($query);
+	
+		$freinds_req = array();
+	
+		while ( $row = $results->fetch_assoc() ){
+			$freinds_req[] = $row;
+		}
+		return $freinds_req;
 	}
 	
 	public function getNumberOfFriends($id){

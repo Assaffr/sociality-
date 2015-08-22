@@ -173,6 +173,11 @@ $app->get('/friends/all', function ( ) use ( $friends ) {
 	echo json_encode( $friend_list );
 });
 
+$app->get('/friends/allRequest', function ( ) use ( $friends ) {
+	$friend_list = $friends->getAllfriendsRequest( $_SESSION['user_id'] );
+	echo json_encode( $friend_list );
+});
+
 $app->get('/userInfo', function () use ($user) {
 	echo $user->getUserInfo( $_SESSION['user_id'] );
 });
