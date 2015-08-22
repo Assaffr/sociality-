@@ -58,16 +58,9 @@ $app->delete( '/logout', function() {
 
 //VERIFY LOGIN BY ECHOING SESSION
 $app->get( '/login/', function() use( $friends ) {
-	
-	// $info = array(
-		// 'session' => $_SESSION,
-		// 'numFriends' => $friends->getNumberOfFriends($_SESSION['user_id'])
-	// );
-	// echo (json_encode ($info));
-	$_SESSION['num_friends'] = $friends->getNumberOfFriends( $_SESSION['user_id']);
+	$_SESSION['num_friends'] = $friends->getNumberOfFriends( $_SESSION['user_id'] ) ;
 	echo (json_encode ($_SESSION));
-
-	});
+});
 
 
 
@@ -76,10 +69,8 @@ $app->get( '/login/', function() use( $friends ) {
 //REGISTER PROCESS - check if email exists
 $app->post( '/checkemail', function() {
 	global $user, $app;
-	//echo ($app->request->getBody());
 	$result = $user->checkEmailExists( $app->request->getBody() ) ;
 	echo $result;
-	//var_dump ($us0r->getAllUsers());
 });
 
 
@@ -98,7 +89,6 @@ $app->post( '/user/', function() {
 $app->get( '/user/', function() {
 	global $user, $app;
 	echo ( json_encode( $user->getAllUsers() ) );
-	//var_dump ($user->getAllUsers());
 });
 
 //Display specific user
@@ -106,7 +96,6 @@ $app->get( '/user/:id', function( $id ) {
 	global $user, $app;
 	$user = $user->getUser($id);
 	echo $user[0]['user_email'];
-	//echo ( json_encode($user->getUser($id)) );
 });
 
 
@@ -143,6 +132,7 @@ $app->get( '/post/:offset', function( $offset ) {
 
 });
 
+//show comments
 $app->get( '/comments/:offset', function( $offset ) use( $post ){
 	echo json_encode( $post->getMoreComments( $_GET['post_id'], $offset ) );
 	
@@ -158,7 +148,6 @@ $app->post('/like/:post_id', function ( $post_id ) use ( $post ){
 //set a new comment
 $app->post('/comment', function ( ) use ( $post, $app){
 	$details =  json_decode( $app->request->getBody(), true );
-	
 	echo $post->setComments( $details );
 	
 });
@@ -175,6 +164,7 @@ $app->get('/friends/rndSix/:id', function ( $id ) use ( $friends ) {
 	echo json_encode($sixPack);
 });
 
+//get user info for account page
 $app->get('/userInfo', function () use ($user) {
 	echo $user->getUserInfo( $_SESSION['user_id'] );
 });
@@ -214,7 +204,7 @@ $app->get( '/post/:id/:offset', function( $id, $offset ) {
 
 });
 
-		
+//show six random friends by session id		
 $app->get('/friends/rndSix', function ( ) use ( $friends ) {
 	$sixPack = $friends->getSixRndFriends( $_SESSION['user_id'] );
 	echo json_encode($sixPack);  
@@ -227,23 +217,26 @@ $app->get( '/checkfriendstatus/:id', function( $id ) {
 	echo json_encode ( $friends->checkIfFriends( $id ) );
 	});
 	
-
+//send friend request
 $app->post( '/sendfriendrequest', function() {
 	global $app, $friends;
 	echo $friends->sendFriendRequest ( $app->request->getBody() );
 	
 });
 
+//accept friend request
 $app->post( '/acceptfriendrequest', function() {
 	global $app, $friends;
 	echo $friends->acceptFriendRequest ( $app->request->getBody() );
 });
 
+//reject friend request
 $app->delete( '/rejecttfriendrequest', function() {
 	global $app, $friends;
 	echo $friends->rejectFriendRequest ( $app->request->getBody() );
 });
 
+//unfriend a friend
 $app->delete( '/unfriend', function() {
 	global $app, $friends;
 	echo $friends->unFriend( $app->request->getBody() );
