@@ -214,7 +214,7 @@ function verifyLogin(){
 				$("span[class=fullName]").html(response.user_firstname + " " + response.user_lastname);
 				$(".profile-photo").attr("src", "user-pics/" + response.user_profile_picture );
 				$("#cover_photo img").attr("src", "cover-pics/" + response.user_secret_picture );
-				$("#myDetails").attr("data-id", response.user_id);
+				$(".fullName").attr("data-id", response.user_id);
 			}
 		});
 }
@@ -309,7 +309,7 @@ function showPosts(){
 				if ( response ){
 					
 					
-					var user_id = $("#myDetails").data().id;
+					var user_id = $(".fullName").data().id;
 					
 					$.each( response, function(key, value){
 						
@@ -386,7 +386,7 @@ function showPosts(){
 				}
 				$("#loadMorePosts").on("click", function(){ showPosts( $offset ) } );
 				}
-				$(".profile-photo").attr("src", $("#myBar_content img").attr("src") );
+				$(".profile-photo").attr("src", $("#topBarContent .profile-photo").attr("src") );
 			}
 		});
 }
@@ -659,7 +659,7 @@ function showPostsbyId($id ){
 				if ( response ){
 					
 					
-					var user_id = $("#myDetails").data().id;
+					var user_id = $(".fullName").data().id;
 					
 					$.each( response, function(key, value){
 						
@@ -736,7 +736,7 @@ function showPostsbyId($id ){
 				}
 				$("#loadMorePosts").on("click", function(){ showPosts( $offset ) } );
 				}
-				$(".profile-photo").attr("src", $("#myBar_content img").attr("src") );
+				$(".profile-photo").attr("src", $("#topBarContent .profile-photo").attr("src") );
 			}
 		});
 }
@@ -934,7 +934,7 @@ function toggleLike ( element ) {
 		});
 }	
 //NEEDS DOCUMENTATION!!!
-function setComment ( element, details){
+function setComment ( element ){
 	
 	if ( event.which == 13 ){
 		
@@ -955,7 +955,7 @@ function setComment ( element, details){
 					if ( comment_id ){
 						console.log( content )
 						console.log( $(element).data().stid )
-						$("<div class='comment' data-comId='"+comment_id+"'><img src='"+$('.profile-photo').attr('src')+"'>" +
+						$("<div class='comment' data-comId='"+comment_id+"'><img src='"+$("#topBarContent .profile-photo").attr('src')+"'>" +
 								"<div id='comment-content'>" +
 								"<span><a href='profile.php'>"+$('#topBarNav strong').html()+"</a></span><br>" +
 								"<span>"+content+"</span><br>" +

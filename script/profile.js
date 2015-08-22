@@ -20,4 +20,14 @@
 					$("#wall").on( "click", "#view-more span", function(){
 						getMoreComments( $(this) );
 				});
+					
+					$("#wall").on( "click", "#like", function(){
+						toggleLike( this )
+						
+					});
+					
+					$("#wall").on("keypress","#posts textarea" , function(){ 
+						setComment( this )
+							
+						});
 	});
