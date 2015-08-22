@@ -10,19 +10,6 @@
 
 
 
-/**
-*	ucFirst
-*
-*	make the first letter to Uppercase
-*
-*	@param (string) (string) about this param
-*	@return (string) (name)
-*/
-
-function ucFirst (string){
-	return string[0].toUpperCase() + string.slice(1);
-}
-
 //INDEX PAGE//
 
 /**
@@ -47,7 +34,6 @@ function login($email, $password){
 					window.location.href = "home.php";
 					}
 				else {
-					//console.log("gg");
 					$("#login #errorReg").html("Incorrect details.");
 					$("#login #errorBox").fadeIn();
 				}
@@ -81,7 +67,6 @@ if ( !$("input[id=email].register").hasClass("validated") && !$email == ""){
 				dataType: "TEXT",
 				data: $email,
 				complete: function( response ){
-					console.log(response);
 					if (response.responseText == 0){
 						$("input[id=email].register").addClass("validated");
 						$("#errorBox").fadeOut();
@@ -418,6 +403,72 @@ function getMoreComments( element ){
 	
 }
 
+//NEEDS DOCUMENTATION!!!
+function toggleLike ( element ) {
+		$.ajax({
+			url: "api/like/"+ $( element ).data().id,
+			type: "POST",
+			dataType: "JSON",
+			success: function ( response ){
+				if ( response ){
+					
+					var post_id = $( element ).data().id;
+		
+		
+					$( element ).toggleClass( "unlike" )
+					$( element ).toggleClass( "like" )
+
+					
+					if ( $(element).hasClass("like") ){
+						
+						$(element).html("Like")
+						
+						$("#status-id_"+post_id+" .my-like").fadeOut();
+						
+					}else if ( $(element).hasClass("unlike") ){
+					$( element ).html( "Unlike" );
+					$( "#status-id_"+post_id+" #the-likes" ).prepend( $("<img src='pics/like_n.png' class='my-like'>") );
+					}
+				}
+			}
+		});
+}	
+//NEEDS DOCUMENTATION!!!
+function setComment ( element, details){
+	
+	if ( event.which == 13 ){
+		
+		event.preventDefault();	
+		
+		if ( $(element).val() ){
+			var content = $(element).val();
+			
+			$.ajax({
+				url: "api/comment",
+				type: "POST",
+				dataType: "JSON",
+				data:JSON.stringify({
+					post_id: $(element).data().stid, 
+					comment_content: content
+					 }),
+				success: function ( comment_id ){
+					if ( comment_id ){
+						$("<div class='comment' data-comId='"+comment_id+"'><img src='"+$('.profile-photo').attr('src')+"'>" +
+								"<div id='comment-content'>" +
+								"<span><a href='profile.php'>"+$('#topBarNav strong').html()+"</a></span><br>" +
+								"<span>"+content+"</span><br>" +
+								"<span>Just Now</span>" +
+								"</div><div class='C-B'></div></div>").appendTo("#status-id_"+$(element).data().stid+" #comments");
+					};					
+				}
+			})
+			$(element).val(null)
+		}
+	}	
+	
+	
+}
+
 
 /**
 *	getSixPack
@@ -441,8 +492,7 @@ function getSixPack() {
 	});
 }
 
-
-
+//PROFILE PAGE//
 /**
 *	checkIfMyProfile
 *
@@ -554,93 +604,6 @@ function buildProfilebyId( $id ){
 	});
 	
 }
-/**
-*	validateUserInfo
-*
-*	makes sure the first and last name updated in the account page pass the regex in UserNameRegex
-*
-*	@param (type) (name) - none
-*	@return (boolean) (true)- if they both pass
-*	@return (boolean) (false)- if one or both fail
-*/
-function validateUserInfo(){
-	if ( UserNameRegex( $("input[name=firstName]").val() ) && UserNameRegex( $("input[name=lastName]").val() ) )
-		return true;
-	return false;
-
-}
-
-/**
-*	UserNameRegex
-*
-*	regex for the first and last names in the account page - only letters, more than 3 characters
-*
-*	@param (string) (string) - name being tested
-*	@return (boolean) (pattern.test)- result of regex test
-*/
-function UserNameRegex(string){
-	var pattern =  new RegExp("^[a-zA-Z]{3,}$");
-	return pattern.test(string);
-}
-
-/**
-*	putUserInfo
-*
-*	gets the user info and puts it in the account page
-*
-*	@param (type) (name) about this param - none
-*	@return (type) (name)- none
-*/
-function putUserInfo(){
-	
-	$.ajax({
-		url: "api/userInfo",
-		type:"GET",
-		dataType: "JSON",
-		success: function ( R ){
-			$("input[name=firstName]").val(R.user_firstname);
-			$("input[name=lastName]").val(R.user_lastname);
-			$("input[name=email]").val(R.user_email);
-			$("input[name=bornDate]").val(R.user_birthdate);
-			$("#aboutMe").val(R.user_about);
-			$("#secretAbout").val(R.user_secret_about);
-		}
-		
-	});
-	
-}
-
-
-/**
-*	sendMyDetails
-*
-*	sends the new user info from the account page
-*
-*	@param (type) (name) about this param - none
-*	@return (type) (name)- none
-*/
-function sendMyDetails(){
-	
-	$.ajax({
-		url:"api/user",
-		type:"PUT",
-		dataType: "JSON",
-		data:JSON.stringify({
-			 user_firstname:$("input[name=firstName]").val(),
-			 user_lastname:$("input[name=lastName]").val(),
-			 user_email:$("input[name=email]").val(),
-			 user_about:$("#aboutMe").val(),
-			 user_secret_about:$("#secretAbout").val(),
-			 user_birthdate:$("input[name=bornDate]").val()
-				}),
-		success: function (){
-			$("strong[class=fullName]").html( $("input[name=firstName]").val() + " " + $("input[name=lastName]").val() );
-		}
-		
-	
-	});
-}
-
 /**
 *	showPostsbyId
 *
@@ -903,21 +866,59 @@ function sendFriendRequest( $id ){
 	});
 	
 }
-//NEEDS DOCUMENTATION!!!
-function toggleLike ( element ) {
-		$.ajax({
-			url: "api/like/"+ $( element ).data().id,
-			type: "POST",
-			dataType: "JSON",
-			success: function ( response ){
-				if ( response ){
-					
-					var post_id = $( element ).data().id;
-		
-		
-					$( element ).toggleClass( "unlike" )
-					$( element ).toggleClass( "like" )
+//ACCOUNT PAGE//
+/**
+*	validateUserInfo
+*
+*	makes sure the first and last name updated in the account page pass the regex in UserNameRegex
+*
+*	@param (type) (name) - none
+*	@return (boolean) (true)- if they both pass
+*	@return (boolean) (false)- if one or both fail
+*/
+function validateUserInfo(){
+	if ( UserNameRegex( $("input[name=firstName]").val() ) && UserNameRegex( $("input[name=lastName]").val() ) )
+		return true;
+	return false;
 
+<<<<<<< HEAD:script/functions.js
+}
+
+/**
+*	UserNameRegex
+*
+*	regex for the first and last names in the account page - only letters, more than 3 characters
+*
+*	@param (string) (string) - name being tested
+*	@return (boolean) (pattern.test)- result of regex test
+*/
+function UserNameRegex(string){
+	var pattern =  new RegExp("^[a-zA-Z]{3,}$");
+	return pattern.test(string);
+}
+
+/**
+*	putUserInfo
+*
+*	gets the user info and puts it in the account page
+*
+*	@param (type) (name) about this param - none
+*	@return (type) (name)- none
+*/
+function putUserInfo(){
+	
+	$.ajax({
+		url: "api/userInfo",
+		type:"GET",
+		dataType: "JSON",
+		success: function ( R ){
+			$("input[name=firstName]").val(R.user_firstname);
+			$("input[name=lastName]").val(R.user_lastname);
+			$("input[name=email]").val(R.user_email);
+			$("input[name=bornDate]").val(R.user_birthdate);
+			$("#aboutMe").val(R.user_about);
+			$("#secretAbout").val(R.user_secret_about);
+=======
 					
 					if ( $(element).hasClass("like") ){
 						
@@ -965,11 +966,47 @@ function setComment ( element ){
 				}
 			})
 			$(element).val(null)
+>>>>>>> origin/master:functions.js
 		}
-	}	
-	
+		
+	});
 	
 }
+
+
+/**
+*	sendMyDetails
+*
+*	sends the new user info from the account page
+*
+*	@param (type) (name) about this param - none
+*	@return (type) (name)- none
+*/
+function sendMyDetails(){
+	
+	$.ajax({
+		url:"api/user",
+		type:"PUT",
+		dataType: "JSON",
+		data:JSON.stringify({
+			 user_firstname:$("input[name=firstName]").val(),
+			 user_lastname:$("input[name=lastName]").val(),
+			 user_email:$("input[name=email]").val(),
+			 user_about:$("#aboutMe").val(),
+			 user_secret_about:$("#secretAbout").val(),
+			 user_birthdate:$("input[name=bornDate]").val()
+				}),
+		success: function (){
+			$("strong[class=fullName]").html( $("input[name=firstName]").val() + " " + $("input[name=lastName]").val() );
+		}
+		
+	
+	});
+}
+
+
+
+//IMAGE PAGE//
 /**
 *	uploadProfileImage
 *
@@ -1044,5 +1081,17 @@ $(document).ready(function(){
 	
 
 
+/**
+*	ucFirst
+*
+*	make the first letter to Uppercase
+*
+*	@param (string) (string) about this param
+*	@return (string) (name)
+*/
+
+function ucFirst (string){
+	return string[0].toUpperCase() + string.slice(1);
+}
 	
 
