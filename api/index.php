@@ -168,6 +168,11 @@ $app->get('/friends/rndSix/:id', function ( $id ) use ( $friends ) {
 	echo json_encode($sixPack);
 });
 
+$app->get('/friends/all', function ( ) use ( $friends ) {
+	$friend_list = $friends->getAllfriends( $_SESSION['user_id'] );
+	echo json_encode( $friend_list );
+});
+
 $app->get('/userInfo', function () use ($user) {
 	echo $user->getUserInfo( $_SESSION['user_id'] );
 });

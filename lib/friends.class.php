@@ -34,17 +34,25 @@ class Friends {
 	
 	public function getAllfriends( $id ){
 		
-		$query = "(SELECT user_friend_id FROM friends WHERE user_id = $id) 
-				UNION (SELECT user_id FROM friends WHERE user_friend_id = $id)";
+		$query = "(SELECT friends.user_friend_id, users_info.user_firstname, users_info.user_lastname, users_info.user_profile_picture
+					FROM users_info 
+					INNER JOIN friends 
+					ON users_info.user_id = friends.user_friend_id
+					WHERE friends.user_id = $id)
+					UNION
+					(SELECT friends.user_id, users_info.user_firstname, users_info.user_lastname, users_info.user_profile_picture
+					FROM users_info 
+					INNER JOIN friends 
+					ON users_info.user_id = friends.user_id
+					WHERE friends.user_friend_id = $id);";
+		$results = $this->_db->query($query);
 		
-		$results = $this->_db->query($query); 
-		
-		$friends = array();
+		$freinds = array();
 		
 		while ( $row = $results->fetch_assoc() ){
-			$friends[] = $row;
+			$freinds[] = $row;
 		}
-		return $friends;
+		return $freinds;
 	}
 	
 	public function getNumberOfFriends($id){

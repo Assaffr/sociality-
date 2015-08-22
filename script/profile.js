@@ -26,6 +26,11 @@
 						
 					});
 					
+					$("#myFriends_head").on( "click", function(){
+						$("#wall").html("")
+						
+					});
+					
 					$("#wall").on("keypress","#posts textarea" , function(){ 
 						setComment( this )
 							
