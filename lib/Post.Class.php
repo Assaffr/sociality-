@@ -19,15 +19,26 @@ class Post{
 			
 			$post = $this->_db->multi_query( $query );
 		}
-		
-		
-		
-
-		
 		if ( $post )
 			return  $this->_db->insert_id;
-		
+	}
 	
+	public function getSinglePost( $post_id ) {
+		$query = "SELECT users_info.user_id, users_info.user_firstname, users_info.user_lastname, users_info.user_profile_picture, posts.post_created, posts.post_content, posts.post_id
+				FROM users_info 
+				INNER JOIN posts
+				ON users_info.user_id = posts.user_id
+				WHERE posts.post_id = $post_id";
+		
+		$results = $this->_db->query( $query );
+		$post = $results->fetch_assoc();
+		$post['comments'] = $this->getAllComments($post["post_id"]);
+		$post['likes'] = $this->getLikes($post["post_id"]);
+		$post['post_time_ago'] = $this->timeAgo( $post['post_created'] );
+		
+		$wrap = array( $post );
+		
+		return $wrap;
 	}
 	
 	//this functions selects all the post info PLUS joins the users_info table in order to also fetch the name of the user who made the post
@@ -210,6 +221,32 @@ class Post{
 		return $comments;
 	}
 	
+	public function getAllComments( $post_id ){
+		$qurey = "SELECT comments.comment_id, comments.comment_content, comments.comment_time, comments.user_id, users_info.user_firstname ,users_info.user_lastname, users_info.user_profile_picture
+		FROM comments
+		INNER JOIN users_info
+		ON users_info.user_id = comments.user_id
+		WHERE comments.post_id = $post_id
+		ORDER BY comments.comment_time DESC";
+		
+		
+		$results = $this->_db->query( $qurey );
+		$comments = array ( );
+		$comments = array ( "the_comments" => array ( ) );
+		$comments['num_comments'] = $results->num_rows;
+		
+		
+		while ( $row = $results->fetch_assoc() ){
+			$comments["the_comments"][] = $row;
+		}
+		
+		foreach( $comments["the_comments"] as $key => $value){
+			$value['comment_time_ago'] = $this->timeAgo( $value['comment_time'] );
+			$comments[$key] = $value;
+		}
+		return $comments;
+		}
+
 	
 	public function setComments( $details ){
 		$qurey = "INSERT INTO comments 

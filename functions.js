@@ -296,7 +296,7 @@ function publishPost  ( $postContent, $postTo ){
 
 function postAppender( post ){
 	
-	$("<div id=status-id_"+post.post_id+" class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='user-pics/"+ post.user_profile_picture +"'><div><a href='profile.php?id="+ post.user_id +"'>"+ post.user_firstname + " " + post.user_lastname +"</a><br><span class='postSince'>"+ post.post_time_ago +"</span></div></div><div id='status_content'><p>"+ post.post_content +"</p></div><div id='status_footer'>" +
+	$("<div id=status-id_"+post.post_id+" class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='user-pics/"+ post.user_profile_picture +"'><div><a href='profile.php?id="+ post.user_id +"'>"+ post.user_firstname + " " + post.user_lastname +"</a><br><a href='post.php?post-id="+post.post_id+"'><span class='postSince'>"+ post.post_time_ago +"</span></a></div></div><div id='status_content'><p>"+ post.post_content +"</p></div><div id='status_footer'>" +
 			"<div class='comments-head'><span id='like' data-id='"+post.post_id+"' class='like'>Like</span>-<span>Comments</span><div id='the-likes'></div></div>" +
 			"<div id='comments'></div><div id='comment-area'><img alt='me' class='profile-photo'><textarea placeholder='Leave a comment...' data-stid='"+post.post_id+"'></textarea></div></div></div>").appendTo("#posts").hide().fadeIn();
 }
@@ -374,7 +374,7 @@ function fillPosts( response ){
 		
 	if( response.length < 3 ){
 		$( "#loadMorePosts" ).remove();
-		$("#wall").append("No more posts!");
+		$("#wall").append("<span id='no-more'>No more posts!</span>");
 		
 	}
 	else{
@@ -407,6 +407,24 @@ function fillWall(){
 					fillPosts( response );
 					
 				$(".profile-photo").attr("src", $("#topBarContent .profile-photo").attr("src") );
+			}
+		});
+}
+
+function fillSinglePost( post_id ){
+
+	$.ajax({
+			url: "api/singlePost/" + post_id,
+			type: "GET",
+			dataType: "JSON",
+			success: function( response ) {
+				
+				if ( response )
+					fillPosts( response );
+					
+				$(".profile-photo").attr("src", $("#topBarContent .profile-photo").attr("src") );
+				$("#view-more").remove()
+				$("#no-more").remove()
 			}
 		});
 }

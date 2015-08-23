@@ -24,4 +24,7 @@
 
 14.--DONE -- --DONE -- --DONE --!!! look at page 5 on the PDF - some shit omer throw on us.. )=
 
-15. filter the friend profile posts.
+15.--DONE -- filter the friend profile posts.
+
+16. validate profile picture.
+

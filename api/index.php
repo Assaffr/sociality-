@@ -136,6 +136,14 @@ $app->get( '/post/:offset', function( $offset ) {
 
 });
 
+//show posts
+$app->get( '/singlePost/:post_id', function( $post_id ) {
+		global $post, $app;
+		$posts = $post->getSinglePost( $post_id );
+		echo ( json_encode ( $posts ) );
+	
+});
+
 //show posts by id
 $app->get( '/wall/:id/:offset', function( $id, $offset ) {
 	global $post, $app;
