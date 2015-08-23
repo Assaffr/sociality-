@@ -217,7 +217,7 @@ function verifyLogin(){
 				$(".fullName").attr("data-id", response.user_id);
 				if ( response.user_birthdate ){
 					$("span[id=dateOfBirth]").html(response.user_birthdate);
-					$("span[id=age]").html(response.user_age);
+					$("span[id=age]").html( " ( " + response.user_age + " ) ");
 				}
 			}
 		});
@@ -683,7 +683,7 @@ function showPostsbyId( $id ){
 				
 				if ( response )
 					fillPosts( response );
-					
+				$("#loadMorePosts").on("click", function(){ showPostsbyId( $id ) } );	
 				$(".profile-photo").attr("src", $("#topBarContent .profile-photo").attr("src") );
 			}
 		});

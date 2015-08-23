@@ -10,7 +10,6 @@ class Post{
 	
 
 	public function publishPost ( $details ) {
-		
 		if ( $details['post_to_friend_id'] == $_SESSION['user_id'] ) {
 			$query = "INSERT INTO posts ( user_id, post_content, post_created) VALUES ('$_SESSION[user_id]', '$details[post_content]', CURRENT_TIME() );";
 			$post = $this->_db->query( $query );
@@ -81,9 +80,39 @@ class Post{
 	}
 	
 	public function getWallPosts ( $offset, $id ){
-		
-		
-		
+		$post = $this->_db->query("
+				(SELECT users_info.user_id, users_info.user_firstname, users_info.user_lastname, users_info.user_profile_picture, posts.post_created, posts.post_content, posts.post_id
+				FROM users_info 
+				INNER JOIN posts
+				ON users_info.user_id = posts.user_id
+				WHERE users_info.user_id = $id
+				)
+				UNION
+				(SELECT users_info.user_id, users_info.user_firstname, users_info.user_lastname, users_info.user_profile_picture, posts.post_created, posts.post_content, posts.post_id
+				FROM users_info 
+				INNER JOIN posts
+				ON users_info.user_id = posts.user_id
+				INNER JOIN posts_relations
+				ON posts.post_id = posts_relations.post_id
+				WHERE posts_relations.post_to_friend_id = $id)
+				ORDER BY post_created DESC LIMIT 3 OFFSET " . $offset . ";
+									");
+				$posts = array();
+				while ($row = mysqli_fetch_assoc ($post)){
+					$row['comments'] = $this->getFirstComments($row["post_id"]);
+					$row['likes'] = $this->getLikes($row["post_id"]);
+					$posts[] = $row;
+				}
+				
+				if ( $posts ){
+					foreach($posts as $value){
+						$value['post_time_ago'] = $this->timeAgo( $value['post_created'] );
+						$postsWithTimeAgo[] = $value;
+					}
+					return $postsWithTimeAgo;
+				}
+				else return $posts;
+				
 		
 	}
 
