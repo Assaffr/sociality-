@@ -295,101 +295,121 @@ function publishPost  ( $postContent, $postTo ){
 		});
 	}
 }
+
+function postAppender( post ){
+	
+	$("<div id=status-id_"+post.post_id+" class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='user-pics/"+ post.user_profile_picture +"'><div><a href='profile.php?id="+ post.user_id +"'>"+ post.user_firstname + " " + post.user_lastname +"</a><br><span class='postSince'>"+ post.post_time_ago +"</span></div></div><div id='status_content'><p>"+ post.post_content +"</p></div><div id='status_footer'>" +
+			"<div class='comments-head'><span id='like' data-id='"+post.post_id+"' class='like'>Like</span>-<span>Comments</span><div id='the-likes'></div></div>" +
+			"<div id='comments'></div><div id='comment-area'><img alt='me' class='profile-photo'><textarea placeholder='Leave a comment...' data-stid='"+post.post_id+"'></textarea></div></div></div>").appendTo("#posts").hide().fadeIn();
+}
+
+function CheckIfIliked ( likes, user_id ){
+	$.each( likes, function(key, like){
+		if ( like.user_id  == user_id ){
+			$("#status-id_"+like.post_id+" #like").html("Unlike").removeClass("like").addClass("unlike");
+			$("<img src='pics/like_n.png' class='my-like'>").appendTo( $("#status-id_"+like.post_id+" #the-likes") )
+		}
+
+	});
+}
+
+function fiveLikesAppend( likes, user_id ){
+	
+	var counter = 0;
+	
+	$.each( likes, function(key, like){
+		console.log(like)
+		if (like.user_id == user_id){
+			
+		$("<img src='user-pics/"+like.user_profile_picture+"' title='"+like.user_firstname +" " +like.user_lastname+"' class='my-like'>").appendTo("#status-id_"+like.post_id+" #the-likes");
+		}else{
+		$("<img src='user-pics/"+like.user_profile_picture+"' title='"+like.user_firstname +" " +like.user_lastname+"'>").appendTo("#status-id_"+like.post_id+" #the-likes");
+		}
+	
+		counter ++;
+			
+		if( counter >= 5 )
+			return false;
+	});
+}
+
+function commentAppender( value ){
+	$.each( value.comments.the_comments, function(key, comment){
+	$("#status-id_"+value.post_id+" #comments").prepend("<div class='comment' data-comId='"+comment.comment_id+"'><img src='user-pics/"+comment.user_profile_picture+"'>" +
+			"<div id='comment-content'>" +
+			"<span><a href='profile.php?id="+comment.user_id+"'>"+comment.user_firstname +" "+ comment.user_lastname+"</a></span><br>" +
+			"<span>"+comment.comment_content+"</span><br>" +
+			"<span>"+ comment.comment_time_ago + " </span>" +
+			"</div><div class='C-B'></div></div>");
+	});
+}
+
+function fillPosts( response ){
+				
+		var user_id = $(".fullName").data().id;
+		
+		$( "#loadMorePosts" ).remove();
+		
+		$.each( response, function(key, value){	
+			console.log(value)
+			var num_comments = value.comments.num_comments;
+			
+			//Builds single post
+			postAppender( value ); 
+			// chack if *I* liked and append(...) if true
+			CheckIfIliked ( value.likes, user_id )
+			// Five likes append
+			fiveLikesAppend( value.likes, user_id )
+			
+				// The number of likes append
+				if ( $(value.likes).size() )
+				$("<span>("+$(value.likes).size()+")</span>").appendTo("#status-id_"+value.post_id+" #the-likes");
+				
+				if( value.comments.num_comments > 5 ){
+					if( !$("#status-id_"+value.post_id+" #view-more").hasClass("comments-head") )
+					$("<div id='view-more' class='comments-head'><span data-clicks='0' data-id="+value.post_id+" data-num="+value.comments.num_comments+">View more comments</span></div>").insertAfter("#status-id_"+value.post_id+" .comments-head")
+				}
+				
+				// the comment append
+				commentAppender( value )
+		});// END EACH POST
+		
+		
+		
+	if( response.length < 3 ){
+		$( "#loadMorePosts" ).remove();
+		$("#wall").append("No more posts!");
+		
+	}
+	else{
+	$("#wall").append(
+				"<input type='button' value='Load More Posts' id='loadMorePosts'>"
+		);
+	}
+	$("#loadMorePosts").on("click", function(){ fillWall( $offset ) } );
+	}
+
+
+
 /**
-*	showPosts
+*	fillWall
 *
 *	shows posts
 *
 *	@param
 *	@return (type) (name) none
 */
-function showPosts(){
+function fillWall(){
 	$offset+= 3;
 	$.ajax({
 			url: "api/post/" + $offset,
 			type: "GET",
 			dataType: "JSON",
 			success: function( response ) {
-				if ( response ){
+				
+				if ( response )
+					fillPosts( response );
 					
-					
-					var user_id = $(".fullName").data().id;
-					
-					$.each( response, function(key, value){
-						
-						var num_comments = value.comments.num_comments;
-						
-						//Builds the post
-						$( "#loadMorePosts" ).remove();
-						//$("#wall br").remove();
-						$("<div id=status-id_"+value.post_id+" class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='user-pics/"+ value.user_profile_picture +"'><div><a href='profile.php?id="+ value.user_id +"'>"+ value.user_firstname + " " + value.user_lastname +"</a><br><span class='postSince'>"+ value.post_time_ago +"</span></div></div><div id='status_content'><p>"+ value.post_content +"</p></div><div id='status_footer'>" +
-							"<div class='comments-head'><span id='like' data-id='"+value.post_id+"' class='like'>Like</span>-<span>Comments</span><div id='the-likes'></div></div>" +
-							"<div id='comments'></div><div id='comment-area'><img alt='me' class='profile-photo'><textarea placeholder='Leave a comment...' data-stid='"+value.post_id+"'></textarea></div></div></div>").appendTo("#posts").hide().fadeIn();
-						
-						
-						// chack if *I* liked and append(...) if true
-						
-						$.each( value.likes, function(key, like){
-							if ( like.user_id  == user_id ){
-								$("#status-id_"+like.post_id+" #like").html("Unlike").removeClass("like").addClass("unlike");
-								$("<img src='pics/like_n.png' class='my-like'>").appendTo( $("#status-id_"+like.post_id+" #the-likes") )
-							}
-
-							
-						});
-						var counter = 0;
-						// the likes append
-							$.each( value.likes, function(key, like){
-								
-								if (like.user_id == user_id){
-									
-								$("<img src='user-pics/"+like.user_profile_picture+"' title='"+like.user_firstname +" " +like.user_lastname+"' class='my-like'>").appendTo("#status-id_"+value.post_id+" #the-likes");
-								}else{
-								$("<img src='user-pics/"+like.user_profile_picture+"' title='"+like.user_firstname +" " +like.user_lastname+"'>").appendTo("#status-id_"+value.post_id+" #the-likes");
-								}
-							
-								counter ++;
-								if (like.user_id = user_id)
-									
-									
-								if( counter == 5 )
-									return false;
-							});
-							// The number of likes append
-							if ( $(value.likes).size() )
-							$("<span>("+$(value.likes).size()+")</span>").appendTo("#status-id_"+value.post_id+" #the-likes");
-							
-							
-							if( value.comments.num_comments > 5 ){
-								$("<div id='view-more' class='comments-head'><span data-clicks='0' data-id="+value.post_id+" data-num="+value.comments.num_comments+">View more comments</span></div>").insertAfter("#status-id_"+value.post_id+" .comments-head")
-							}
-								
-							
-							// the comment append
-							$.each( value.comments.the_comments, function(key, comment){
-							$("#status-id_"+value.post_id+" #comments").prepend("<div class='comment' data-comId='"+comment.comment_id+"'><img src='user-pics/"+comment.user_profile_picture+"'>" +
-									"<div id='comment-content'>" +
-									"<span><a href='profile.php?id="+comment.user_id+"'>"+comment.user_firstname +" "+ comment.user_lastname+"</a></span><br>" +
-									"<span>"+comment.comment_content+"</span><br>" +
-									"<span>"+ comment.comment_time_ago + " </span>" +
-									"</div><div class='C-B'></div></div>");
-							});
-					});// END EACH POST
-					
-					
-					
-				if( response.length < 3 ){
-					$( "#loadMorePosts" ).remove();
-					$("#wall").append("No more posts!");
-					
-				}
-				else{
-				$("#wall").append(
-							"<input type='button' value='Load More Posts' id='loadMorePosts'>"
-					);
-				}
-				$("#loadMorePosts").on("click", function(){ showPosts( $offset ) } );
-				}
 				$(".profile-photo").attr("src", $("#topBarContent .profile-photo").attr("src") );
 			}
 		});
@@ -481,7 +501,7 @@ function buildMyProfileOrOther( $url ){
 	}
 	if ( typeof($url) == 'undefined' ){
 		buildMyProfile();
-		showPosts();
+		fillWall();
 		getSixPack();
 	}
 }
@@ -660,86 +680,10 @@ function showPostsbyId($id ){
 			type: "GET",
 			dataType: "JSON",
 			success: function( response ) {
-				if ( response ){
+				
+				if ( response )
+					fillPosts( response );
 					
-					
-					var user_id = $(".fullName").data().id;
-					
-					$.each( response, function(key, value){
-						
-						var num_comments = value.comments.num_comments;
-						
-						//Builds the post
-						$( "#loadMorePosts" ).remove();
-						
-						$("<div id=status-id_"+value.post_id+" class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='user-pics/"+ value.user_profile_picture +"'><div><a href='profile.php?id="+ value.user_id +"'>"+ value.user_firstname + " " + value.user_lastname +"</a><br><span class='postSince'>"+ value.post_time_ago +"</span></div></div><div id='status_content'><p>"+ value.post_content +"</p></div><div id='status_footer'>" +
-							"<div class='comments-head'><span id='like' data-id='"+value.post_id+"' class='like'>Like</span>-<span>Comments</span><div id='the-likes'></div></div>" +
-							"<div id='comments'></div><div id='comment-area'><img alt='me' class='profile-photo'><textarea placeholder='Leave a comment...' data-stid='"+value.post_id+"'></textarea></div></div></div>").appendTo("#posts").hide().fadeIn();
-						
-						
-						// chack if *I* liked and append(...) if true
-						
-						$.each( value.likes, function(key, like){
-							if ( like.user_id  == user_id ){
-								$("#status-id_"+like.post_id+" #like").html("Unlike").removeClass("like").addClass("unlike");
-								$("<img src='pics/like_n.png' class='my-like'>").appendTo( $("#status-id_"+like.post_id+" #the-likes") )
-							}
-
-							
-						});
-						var counter = 0;
-						// the likes append
-							$.each( value.likes, function(key, like){
-								
-								if (like.user_id == user_id){
-									
-								$("<img src='user-pics/"+like.user_profile_picture+"' title='"+like.user_firstname +" " +like.user_lastname+"' class='my-like'>").appendTo("#status-id_"+value.post_id+" #the-likes");
-								}else{
-								$("<img src='user-pics/"+like.user_profile_picture+"' title='"+like.user_firstname +" " +like.user_lastname+"'>").appendTo("#status-id_"+value.post_id+" #the-likes");
-								}
-							
-								counter ++;
-								if (like.user_id = user_id)
-									
-									
-								if( counter == 5 )
-									return false;
-							});
-							// The number of likes append
-							if ( $(value.likes).size() )
-							$("<span>("+$(value.likes).size()+")</span>").appendTo("#status-id_"+value.post_id+" #the-likes");
-							
-							
-							if( value.comments.num_comments > 5 ){
-								$("<div id='view-more' class='comments-head'><span data-clicks='0' data-id="+value.post_id+" data-num="+value.comments.num_comments+">View more comments</span></div>").insertAfter("#status-id_"+value.post_id+" .comments-head")
-							}
-								
-							
-							// the comment append
-							$.each( value.comments.the_comments, function(key, comment){
-							$("#status-id_"+value.post_id+" #comments").prepend("<div class='comment' data-comId='"+comment.comment_id+"'><img src='user-pics/"+comment.user_profile_picture+"'>" +
-									"<div id='comment-content'>" +
-									"<span><a href='profile.php?id="+comment.user_id+"'>"+comment.user_firstname +" "+ comment.user_lastname+"</a></span><br>" +
-									"<span>"+comment.comment_content+"</span><br>" +
-									"<span>"+ comment.comment_time_ago + "</span>" +
-									"</div><div class='C-B'></div></div>");
-							});
-					});// END EACH POST
-					
-					
-					
-				if( response.length < 3 ){
-					$( "#loadMorePosts" ).remove();
-					$("#wall").append("No more posts!");
-					
-				}
-				else{
-				$("#wall").append(
-							"<input type='button' value='Load More Posts' id='loadMorePosts'>"
-					);
-				}
-				$("#loadMorePosts").on("click", function(){ showPosts( $offset ) } );
-				}
 				$(".profile-photo").attr("src", $("#topBarContent .profile-photo").attr("src") );
 			}
 		});

@@ -9,7 +9,7 @@
 					
 					$offset = -3;
 					
-					showPosts( $offset );
+					fillWall( $offset );
 
 					//quick loader
 					$(window).load(function() {
