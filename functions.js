@@ -47,7 +47,6 @@ function login($email, $password){
 					window.location.href = "home.php";
 					}
 				else {
-					//console.log("gg");
 					$("#login #errorReg").html("Incorrect details.");
 					$("#login #errorBox").fadeIn();
 				}
@@ -81,7 +80,6 @@ if ( !$("input[id=email].register").hasClass("validated") && !$email == ""){
 				dataType: "TEXT",
 				data: $email,
 				complete: function( response ){
-					console.log(response);
 					if (response.responseText == 0){
 						$("input[id=email].register").addClass("validated");
 						$("#errorBox").fadeOut();
@@ -318,7 +316,6 @@ function fiveLikesAppend( likes, user_id ){
 	var counter = 0;
 	
 	$.each( likes, function(key, like){
-		console.log(like)
 		if (like.user_id == user_id){
 			
 		$("<img src='user-pics/"+like.user_profile_picture+"' title='"+like.user_firstname +" " +like.user_lastname+"' class='my-like'>").appendTo("#status-id_"+like.post_id+" #the-likes");
@@ -351,7 +348,6 @@ function fillPosts( response ){
 		$( "#loadMorePosts" ).remove();
 		
 		$.each( response, function(key, value){	
-			console.log(value)
 			var num_comments = value.comments.num_comments;
 			
 			//Builds single post
@@ -901,8 +897,6 @@ function setComment ( element ){
 					 }),
 				success: function ( comment_id ){
 					if ( comment_id ){
-						console.log( content )
-						console.log( $(element).data().stid )
 						$("<div class='comment' data-comId='"+comment_id+"'><img src='"+$("#topBarContent .profile-photo").attr('src')+"'>" +
 								"<div id='comment-content'>" +
 								"<span><a href='profile.php'>"+$('#topBarNav strong').html()+"</a></span><br>" +
@@ -986,8 +980,6 @@ function getAllMyFreinds () {
 		success: function( response ) {
 			
 			$("#wall").html("");
-			
-			//console.log( response );
 			
 			$.each( response, function ( key, friend ){
 				$("<div class='friend-wrap box' data-id="+friend.user_friend_id+" id='friend-id_"+friend.user_friend_id+"'>" +
