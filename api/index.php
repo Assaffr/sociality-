@@ -136,6 +136,14 @@ $app->get( '/post/:offset', function( $offset ) {
 
 });
 
+//show posts by id
+$app->get( '/wall/:id/:offset', function( $id, $offset ) {
+	global $post, $app;
+	$posts = $post->getWallPosts($offset, $id);
+	echo ( json_encode ( $posts ) );
+
+});
+
 $app->get( '/comments/:offset', function( $offset ) use( $post ){
 	echo json_encode( $post->getMoreComments( $_GET['post_id'], $offset ) );
 	
@@ -214,16 +222,6 @@ $app->get('/profile/:id', function ( $id ) {
 		
 		
 	});
-
-
-//show first posts by id
-$app->get( '/post/:id/:offset', function( $id, $offset ) {
-	global $post, $app;
-	$posts = $post->showPosts($offset, $id);
-	echo ( json_encode ( $posts ) );
-
-});
-
 		
 $app->get('/friends/rndSix', function ( ) use ( $friends ) {
 	$sixPack = $friends->getSixRndFriends( $_SESSION['user_id'] );

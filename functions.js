@@ -673,10 +673,10 @@ function sendMyDetails(){
 *	@param (string) ($id) the id of the profile
 *	@return (type) (name) none
 */
-function showPostsbyId($id ){
+function showPostsbyId( $id ){
 	$offset+= 3;
 	$.ajax({
-			url: "api/post/" + $id + "/" + $offset,
+			url: "api/wall/" + $id + "/" + $offset,
 			type: "GET",
 			dataType: "JSON",
 			success: function( response ) {
