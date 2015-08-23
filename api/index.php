@@ -19,25 +19,60 @@ $friends = new Friends();
 
 
 //UPLOAD PROFILE PHOTO
+
 $app->post( '/upload/profile', function() {
 	global $user, $app;
-	$file = explode ( "/", $_FILES["pic"]["type"] );
-	move_uploaded_file($_FILES["pic"]["tmp_name"], "../user-pics/" . $_FILES["pic"]["name"] );
-	$_SESSION['user_profile_picture'] = $_FILES["pic"]["name"]; //refreshes session profile pic
-	if ( $user->setProfileImage($_SESSION['user_id'] , $_FILES["pic"]["name"]) )
-		echo $_FILES["pic"]["name"];
-	else
-		echo 0;
+	if ( $_FILES ){
+		$type = pathinfo("../cover-pics/" . $_FILES["cover"]["name"],PATHINFO_EXTENSION);
+		if( $type !== "jpg"  && $type !== "png" && $type !== "jpeg" && $type !== "gif")
+			echo "notimage";
+		else {
+			$file = explode ( "/", $_FILES["pic"]["type"] );
+				if ( file_exists( "../user-pics/" . $_FILES["pic"]["name"] ) )
+					echo "imageexists";
+				else{
+					if ( $_FILES["pic"]["size"] > 500000 )
+						echo "toobig";
+					else {
+						move_uploaded_file($_FILES["pic"]["tmp_name"], "../user-pics/" . $_FILES["pic"]["name"] );
+						$_SESSION['user_profile_picture'] = $_FILES["pic"]["name"]; //refreshes session profile pic
+						if ( $user->setProfileImage($_SESSION['user_id'] , $_FILES["pic"]["name"]) )
+							echo $_FILES["pic"]["name"];
+						else
+							echo 0;
+						}
+					}
+		}	
+	}
+	else 
+		echo "notimage";
 });
 
 //UPLOAD COVER PHOTO
 $app->post( '/upload/cover', function() {
 	global $user, $app;
-	$file = explode ( "/", $_FILES["cover"]["type"] );
-	move_uploaded_file($_FILES["cover"]["tmp_name"], "../cover-pics/" . $_FILES["cover"]["name"] );
-	$_SESSION['user_secret_picture'] = $_FILES["cover"]["name"]; //refreshes session cover pic
-	if ( $user->setCoverImage($_SESSION['user_id'] , $_FILES["cover"]["name"]) )
-		echo $_FILES["cover"]["name"];
+	if ( $_FILES ){
+		$type = pathinfo("../cover-pics/" . $_FILES["cover"]["name"],PATHINFO_EXTENSION);
+		if( $type !== "jpg"  && $type !== "png" && $type !== "jpeg" && $type !== "gif")
+			echo "notimage";
+		else {
+			$file = explode ( "/", $_FILES["cover"]["type"] );
+			if ( file_exists( "../cover-pics/" . $_FILES["cover"]["name"] ) )
+				echo "imageexists";
+			else{
+				if ( $_FILES["cover"]["size"] > 500000 )
+					echo "toobig";
+				else {
+					move_uploaded_file($_FILES["cover"]["tmp_name"], "../cover-pics/" . $_FILES["cover"]["name"] );
+					$_SESSION['user_secret_picture'] = $_FILES["cover"]["name"]; //refreshes session profile pic
+					if ( $user->setCoverImage($_SESSION['user_id'] , $_FILES["cover"]["name"]) )
+						echo $_FILES["cover"]["name"];
+					else
+						echo 0;
+				}
+			}
+		}
+	}
 	else
 		echo 0;
 });

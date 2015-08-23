@@ -951,10 +951,19 @@ function uploadProfileImage(){
 		type: "POST",
 		data: fd,
 		success: function( response ) {
-			if (!response == "0"){
+			if ( !response == "0" && !response == "imageexists" && !response == "toobig" && !response == "notimage" ){
 				$(".profile-photo").attr("src", "user-pics/" + response );
 			}
-			else
+			if (response == "imageexists"){
+				$(".pic_field").html("Oops! This image already exists, please try again.");
+			}
+			if (response == "toobig"){
+				$(".pic_field").html("Oops! This image is too big, please try again.");
+			}
+			if (response == "notimage"){
+				$(".pic_field").html("Oops! This is not an image, please try again.");
+			}
+			if (response == "0")
 				$(".pic_field").html("Oops! Something went wrong, try refreshing the page.");
 		}
 	})
@@ -981,10 +990,19 @@ function uploadCoverImage(){
 		type: "POST",
 		data: fd,
 		success: function( response ) {
-			if (!response == "0"){
+			if ( response !== "0" && response !== "imageexists" && response !== "toobig" && response !== "notimage" ){
 				$("#cover_photo img").attr("src", "cover-pics/" + response );
 			}
-			else
+			if (response == "imageexists"){
+				$(".pic_field").html("Oops! This image already exists, please try again.");
+			}
+			if (response == "toobig"){
+				$(".pic_field").html("Oops! This image is too big, please try again.");
+			}
+			if (response == "notimage"){
+				$(".pic_field").html("Oops! This is not an image, please try again.");
+			}
+			if (response == "0")
 				$(".pic_field").html("Oops! Something went wrong, try refreshing the page.");
 		}
 	})
