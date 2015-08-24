@@ -10,8 +10,17 @@
 		}
 		
 		
-		
-		public function match($email, $password){
+		/**
+		 *  match
+		 *
+		 * Matches email and password to try and login.
+		 *
+		 * @param ( string ) ( $email ) email entered
+		 * @param ( string ) ( $password ) password entered
+		 * @return ( boolean ) ( 0 ) no match
+		 * @return ( boolean ) ( 1 ) match
+		 */
+		public function match( $email, $password ){
 			$resultSet = $this->_db->query("
 						SELECT user_id FROM users WHERE user_email = '$email' AND `user_password` = '" . md5( $password ) . "'
 					");
@@ -46,13 +55,9 @@
 				$_SESSION[$key] = $value;
 			}
 			
-			//$_SESSION['user_num_friends'] = $this->friends->getNumberOfFriends( $_SESSION['user_id'] );
 		}
 		
 		
-		public function verifyLogin(){
-			
-		}
 		
 	
 	}
