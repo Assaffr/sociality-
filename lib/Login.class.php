@@ -41,7 +41,14 @@
 			}
 		}
 		
-		public function setSession($id){
+		/**
+		 *  setSession
+		 *
+		 * sets a session with the user details
+		 *
+		 * @param ( int ) ( $id ) the id of the user
+		 */
+		public function setSession( $id ){
 			$_SESSION['user_id'] = $id;
 			$resultSet = $this->_db->query("
 					SELECT user_email, user_firstname, user_lastname, user_profile_picture, user_secret_picture, user_birthdate FROM users, users_info WHERE users_info.user_id = $id AND users.user_id = $id

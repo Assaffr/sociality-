@@ -483,12 +483,12 @@ aside {
 	
 }
 
-#Status_head strong, .unfriend, .addFriend {
+#Status_head strong, .unfriend, .addFriend, .rejectFriend {
 	float:right;
 	
 }
 
-.unfriend, .addFriend{
+.unfriend, .addFriend, .rejectFriend{
 	width: 30px;
     height: 30px;
 	cursor: pointer;

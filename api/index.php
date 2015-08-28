@@ -23,7 +23,7 @@ $friends = new Friends();
 $app->post( '/upload/profile', function() {
 	global $user, $app;
 	if ( $_FILES ){
-		$type = pathinfo("../cover-pics/" . $_FILES["cover"]["name"],PATHINFO_EXTENSION);
+		$type = pathinfo("../cover-pics/" . $_FILES["pic"]["name"],PATHINFO_EXTENSION);
 		if( $type !== "jpg"  && $type !== "png" && $type !== "jpeg" && $type !== "gif")
 			echo "notimage";
 		else {

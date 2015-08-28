@@ -171,12 +171,13 @@ function register(){
 				user_email:$("input[id=email].register").val(),
 				user_password:$("input[id=password].register").val()}),
 			success: function( response ) {
-				if (response === 1){
+				if ( response === 1 ){
 					login( $("input[id=email].register").val(), $("input[id=password].register").val() );
 				}
-				else 
+				else {
 					$("#errorReg").html("Oops! We couldn't register you.");
 					$("#errorBox").fadeIn();
+				}
 			}
 		});
 	}
@@ -213,8 +214,8 @@ function verifyLogin(){
 				$(".profile-photo").attr("src", "user-pics/" + response.user_profile_picture );
 				$("#cover_photo img").attr("src", "cover-pics/" + response.user_secret_picture );
 				$(".fullName").attr("data-id", response.user_id);
-				if ( response.user_birthdate ){
-					$("span[id=dateOfBirth]").html(response.user_birthdate);
+				if ( response.user_birthdate !== "0000-00-00" && response.user_birthdate !== null){
+					$("span[id=dateOfBirth]").html( response.user_birthdate );
 					$("span[id=age]").html( " ( " + response.user_age + " ) ");
 				}
 			}
@@ -283,9 +284,9 @@ function publishPost  ( $postContent, $postTo ){
 					post_to_friend_id:$postTo }),
 				success: function( response ) {
 					if( response ){
-						$("<div id='status-id_"+response+"' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='"+$("#myBar_content img").attr("src")+"'><div><a href='profile.php'>"+ $("span[class=fullName]").text() +"</a><br><span class='postSince'>Just Now</span></div></div><div id='status_content'><p>"+ $postContent +"</p></div><div id='status_footer'>" +
+						$("<div id='status-id_"+response+"' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='"+$("#topBarNav img").attr("src")+"'><div><a href='profile.php'>"+ $("strong[class=fullName]").text() +"</a><br><span class='postSince'>Just Now</span></div></div><div id='status_content'><p>"+ $postContent +"</p></div><div id='status_footer'>" +
 								"<div class='comments-head'><span id='like' data-id='"+response+"' class='like'>Like</span>-<span>Comments</span><div id='the-likes'></div></div>" +
-								"<div id='comments'></div><img alt='me' src='"+$("#myBar_content img").attr("src")+"'><textarea placeholder='Leave a comment...' data-stid='"+response+"'></textarea></div></div>").prependTo("#posts").hide().fadeIn();
+								"<div id='comments'></div><img alt='me' src='"+$("#topBarNav img").attr("src")+"'><textarea placeholder='Leave a comment...' data-stid='"+response+"'></textarea></div></div>").prependTo("#posts").hide().fadeIn();
 						$("#postContent").val("");
 					}
 					
@@ -951,7 +952,7 @@ function uploadProfileImage(){
 		type: "POST",
 		data: fd,
 		success: function( response ) {
-			if ( !response == "0" && !response == "imageexists" && !response == "toobig" && !response == "notimage" ){
+			if ( response !== "0" && response !== "imageexists" && response !== "toobig" && response !== "notimage" ){
 				$(".profile-photo").attr("src", "user-pics/" + response );
 			}
 			if (response == "imageexists"){
@@ -1043,6 +1044,7 @@ function getAllMyFreindsRequest () {
 			$.each( response, function ( key, friend ){
 				$("<div class='friend-wrap box' data-id="+friend.user_id+" id='friend-id_"+friend.user_id+"'>" +
 						"<img class='addFriend' src='pics/addfriend.PNG' title='Add as a friend'>"+
+						"<img class='rejectFriend' src='pics/unfriend.PNG' title='Reject request'>"+
 						"<img class='friend-pic' src='user-pics/"+friend.user_profile_picture+"'>" +
 						"<div><a href='profile.php?id="+friend.user_id+"'>"+friend.user_firstname+"&nbsp"+friend.user_lastname+"</a><br>" +
 							"<span>Request was created "+friend.request_time_ago+" </span></div>" +
@@ -1050,10 +1052,15 @@ function getAllMyFreindsRequest () {
 			})
 			$(".addFriend").on("click", function(){
 				acceptFriendRequest ( $(this).parent().attr("data-id") ); 
-				$(this).attr("src", "pics/unfriend.PNG" );
-				$(this).attr("title", "Remove friend" );
-				$(this).addClass(".unfriend");
-				$(this).removeClass(".addFriend");
+				$( this ).attr("src", "pics/unfriend.PNG" );
+				$( this ).attr("title", "Remove friend" );
+				$( this ).addClass(".unfriend");
+				$( " #friend-id_"+$(this).parent().attr("data-id")+" .rejectFriend" ).remove();
+				$( this ).removeClass(".addFriend");
+			} );
+			$(".rejectFriend").on("click", function(){
+				rejectFriendRequest ( $(this).parent().attr("data-id") ); 
+				$(this).parent().fadeOut();
 			} );
 		}
 	})

@@ -2,10 +2,9 @@
 					verifyLogin();
 					$("button[name=finishPost]").on( "click", function(){
 						
-						var post_to_id = $("#myDetails").data('id')
+						var post_to_id = $("#myDetails").data('id');
 						
 						publishPost( $("#postContent").val(), post_to_id  );
-						console.log( $("#postContent").val() )
 					});	
 					
 					

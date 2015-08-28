@@ -25,8 +25,8 @@
 					(user_email , user_password)
 					VALUES 
 					('".$userDetails['user_email']."', '". md5 ( $userDetails['user_password'] ). "');
-					INSERT INTO users_info ( user_id, user_firstname, user_lastname, user_profile_picture, user_secret_picture )
-					VALUES (LAST_INSERT_ID(),'".$userDetails['user_firstname']."','".$userDetails['user_lastname']."', 'nopicture.png', 'nocover.jpg');" ;
+					INSERT INTO users_info ( user_id, user_firstname, user_lastname, user_profile_picture, user_secret_picture, user_created )
+					VALUES (LAST_INSERT_ID(),'".$userDetails['user_firstname']."','".$userDetails['user_lastname']."', 'nopicture.png', 'nocover.jpg' , CURRENT_TIME());" ;
 		
 			$results = $this->_db->multi_query($query); 
 
@@ -43,8 +43,22 @@
 					WHERE user_id = $userID;";
 			
 			$results = $this->_db->query($query); 
-			// need to add ( updatethesessionfunction() )
+			$this->updateSession( $userID );
 			return $results	;
+		}
+		
+		private function updateSession( $id ){
+			$resultSet = $this->_db->query("
+					SELECT user_email, user_firstname, user_lastname, user_profile_picture, user_secret_picture, user_birthdate FROM users, users_info WHERE users_info.user_id = $id AND users.user_id = $id
+					");
+		
+			$results = array();
+			while ($row = mysqli_fetch_assoc ($resultSet))
+				$results[] = $row;
+				
+			foreach($results[0] as $key => $value){
+				$_SESSION[$key] = $value;
+			}
 		}
 		
 		//split these in two - what if someone just wants to change ONE of these things? ;)
