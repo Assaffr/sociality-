@@ -573,6 +573,7 @@ function buildMyProfile(){
 		type:"GET",
 		dataType: "JSON",
 		success: function ( response ){
+			$("#myDetails").attr("data-id", response[0].user_id );
 			$("span[class=profilePageFullName]").html(response[0].user_firstname + " " + response[0].user_lastname);
 			$("#profilePhoto img").attr("src", "user-pics/"+response[0].user_profile_picture );
 			$("#coverPhoto img").attr("src", "cover-pics/"+response[0].user_secret_picture );
