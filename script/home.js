@@ -31,9 +31,23 @@
 						
 					});
 					
+					$("#myFriends_head").on( "click", function(){
+						
+						getAllMyFreinds()
+						
+					});
 					
 					$("#wall").on( "click", "#view-more span", function(){
 							getMoreComments( $(this) );
 					});
+					
+					$("#wall").on( "click", "#Status_head strong", function(){
+						deletePost( $(this) );
+				});
+				
+					
+					
+					
+					
 					
 	});

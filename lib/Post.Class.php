@@ -157,14 +157,14 @@ class Post{
 	
 	
 	public function getFirstComments( $post_id ){
-		$qurey = "SELECT comments.comment_id, comments.comment_content, comments.comment_time, comments.user_id, users_info.user_firstname ,users_info.user_lastname, users_info.user_profile_picture
+		$query = "SELECT comments.comment_id, comments.comment_content, comments.comment_time, comments.user_id, users_info.user_firstname ,users_info.user_lastname, users_info.user_profile_picture
 				FROM comments
 				INNER JOIN users_info
 				ON users_info.user_id = comments.user_id
 				WHERE comments.post_id = $post_id
 				ORDER BY comments.comment_time DESC";
 		
-		$results = $this->_db->query( $qurey );
+		$results = $this->_db->query( $query );
 		$comments = array ( );
 		$comments = array ( "the_comments" => array ( ) );
 		$comments['num_comments'] = $results->num_rows;
@@ -181,14 +181,14 @@ class Post{
 			}
 			
 		}else{
-			$qurey = "SELECT comments.comment_id, comments.comment_content, comments.comment_time, comments.user_id, users_info.user_firstname ,users_info.user_lastname, users_info.user_profile_picture
+			$query = "SELECT comments.comment_id, comments.comment_content, comments.comment_time, comments.user_id, users_info.user_firstname ,users_info.user_lastname, users_info.user_profile_picture
 			FROM comments
 			INNER JOIN users_info
 			ON users_info.user_id = comments.user_id
 			WHERE comments.post_id = $post_id
 			ORDER BY comments.comment_time DESC LIMIT 3";
 			
-			$results = $this->_db->query( $qurey );
+			$results = $this->_db->query( $query );
 			while ( $row = $results->fetch_assoc() ){
 				$comments["the_comments"][] = $row;
 			}
@@ -202,14 +202,14 @@ class Post{
 	}
 	
 	public function getMoreComments( $post_id, $offset ){
-		$qurey = "SELECT comments.comment_id, comments.comment_content, comments.comment_time, comments.user_id, users_info.user_firstname ,users_info.user_lastname, users_info.user_profile_picture
+		$query = "SELECT comments.comment_id, comments.comment_content, comments.comment_time, comments.user_id, users_info.user_firstname ,users_info.user_lastname, users_info.user_profile_picture
 		FROM comments
 		INNER JOIN users_info
 		ON users_info.user_id = comments.user_id
 		WHERE comments.post_id = $post_id
 		ORDER BY comments.comment_time DESC LIMIT 5 OFFSET $offset";
 		
-		$results = $this->_db->query( $qurey );
+		$results = $this->_db->query( $query );
 		while ( $row = $results->fetch_assoc() ){
 			$comments[] = $row;
 		}
@@ -222,7 +222,7 @@ class Post{
 	}
 	
 	public function getAllComments( $post_id ){
-		$qurey = "SELECT comments.comment_id, comments.comment_content, comments.comment_time, comments.user_id, users_info.user_firstname ,users_info.user_lastname, users_info.user_profile_picture
+		$query = "SELECT comments.comment_id, comments.comment_content, comments.comment_time, comments.user_id, users_info.user_firstname ,users_info.user_lastname, users_info.user_profile_picture
 		FROM comments
 		INNER JOIN users_info
 		ON users_info.user_id = comments.user_id
@@ -230,7 +230,7 @@ class Post{
 		ORDER BY comments.comment_time DESC";
 		
 		
-		$results = $this->_db->query( $qurey );
+		$results = $this->_db->query( $query );
 		$comments = array ( );
 		$comments = array ( "the_comments" => array ( ) );
 		$comments['num_comments'] = $results->num_rows;
@@ -249,11 +249,11 @@ class Post{
 
 	
 	public function setComments( $details ){
-		$qurey = "INSERT INTO comments 
+		$query = "INSERT INTO comments 
 		( comment_content, comment_time, user_id, post_id ) VALUES 
 		('$details[comment_content]', CURRENT_TIME(), '$_SESSION[user_id]', '$details[post_id]' );";
 		
-		$results = $this->_db->query( $qurey );
+		$results = $this->_db->query( $query );
 		
 		if ( $results ){
 			return  $this->_db->insert_id;
@@ -262,13 +262,13 @@ class Post{
 	
 	
 	public function getLikes( $post_id ) {
-		$qurey = "SELECT likes.like_id, likes.user_id, likes.like_created, likes.post_id, users_info.user_firstname, users_info.user_lastname, users_info.user_profile_picture
+		$query = "SELECT likes.like_id, likes.user_id, likes.like_created, likes.post_id, users_info.user_firstname, users_info.user_lastname, users_info.user_profile_picture
 					FROM likes
 					INNER JOIN users_info
 					ON likes.user_id = users_info.user_id
 					WHERE likes.post_id = $post_id ORDER BY like_created DESC;";
 		
-		$results = $this->_db->query( $qurey );
+		$results = $this->_db->query( $query );
 		$likes = array ( );
 			
 		while ( $row = $results->fetch_assoc() ){
@@ -283,25 +283,58 @@ class Post{
 		
 		if ( !$this->chackLike ( $post_id ) ){
 		
-		$qurey = "INSERT INTO likes ( user_id, like_created, post_id )
+		$query = "INSERT INTO likes ( user_id, like_created, post_id )
 				VALUES ( '".$_SESSION['user_id']."', CURRENT_TIME(), $post_id )";
 		}else{
-		$qurey = "DELETE FROM likes WHERE like_id = ".$this->chackLike ( $post_id );
+		$query = "DELETE FROM likes WHERE like_id = ".$this->chackLike ( $post_id );
 		}
-		return  $this->_db->query( $qurey );
+		return  $this->_db->query( $query );
 	}
 	
 	
 	private function chackLike ( $post_id ){
 		
-		$qurey = "SELECT like_id FROM likes WHERE user_id = $_SESSION[user_id]  AND post_id = $post_id ;";
+		$query = "SELECT like_id FROM likes WHERE user_id = $_SESSION[user_id]  AND post_id = $post_id ;";
 		
-		$result = $this->_db->query( $qurey );
+		$result = $this->_db->query( $query );
 		
 			
 			return $result->fetch_assoc()['like_id'];
 		
 
+	}
+	
+	
+	private function chackPostOwner ( $post_id ){
+		
+		$query = "SELECT user_id FROM posts WHERE post_id =".$post_id;
+		
+		$result = $this->_db->query( $query );
+		
+		if ( $result->fetch_assoc()['user_id'] == $_SESSION['user_id']){
+			return true;
+		}else{
+			$query = "SELECT post_to_friend_id FROM posts_relations WHERE post_id = ".$post_id;
+			
+			$result = $this->_db->query( $query );
+			
+			if ( $result->fetch_assoc()['post_to_friend_id'] == $_SESSION['user_id']){
+				return true;
+			}
+		}
+		return false;
+		
+	}
+	
+	public function deletePost ( $post_id ){
+		if ( $this->chackPostOwner( $post_id ) ){
+			$query = "
+					DELETE FROM posts WHERE post_id = $post_id;
+					DELETE FROM posts_relations WHERE post_id = $post_id;";
+			return $result = $this->_db->multi_query($query);
+		}
+		return false;
+		
 	}
 	
 	

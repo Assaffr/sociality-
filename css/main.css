@@ -485,6 +485,7 @@ aside {
 
 #Status_head strong, .unfriend, .addFriend, .rejectFriend {
 	float:right;
+	cursor:pointer;
 	
 }
 

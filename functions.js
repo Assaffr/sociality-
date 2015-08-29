@@ -284,7 +284,7 @@ function publishPost  ( $postContent, $postTo ){
 					post_to_friend_id:$postTo }),
 				success: function( response ) {
 					if( response ){
-						$("<div id='status-id_"+response+"' class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='"+$("#topBarNav img").attr("src")+"'><div><a href='profile.php'>"+ $("strong[class=fullName]").text() +"</a><br><span class='postSince'>Just Now</span></div></div><div id='status_content'><p>"+ $postContent +"</p></div><div id='status_footer'>" +
+						$("<div id='status-id_"+response+"' class='box status'><div id='Status_head'><strong title='Delete this' data-post_id='"+response+"'>x</strong><img alt='S.writer' src='"+$("#topBarNav img").attr("src")+"'><div><a href='profile.php'>"+ $("strong[class=fullName]").text() +"</a><br><span class='postSince'>Just Now</span></div></div><div id='status_content'><p>"+ $postContent +"</p></div><div id='status_footer'>" +
 								"<div class='comments-head'><span id='like' data-id='"+response+"' class='like'>Like</span>-<span>Comments</span><div id='the-likes'></div></div>" +
 								"<div id='comments'></div><img alt='me' src='"+$("#topBarNav img").attr("src")+"'><textarea placeholder='Leave a comment...' data-stid='"+response+"'></textarea></div></div>").prependTo("#posts").hide().fadeIn();
 						$("#postContent").val("");
@@ -297,7 +297,7 @@ function publishPost  ( $postContent, $postTo ){
 
 function postAppender( post ){
 	
-	$("<div id=status-id_"+post.post_id+" class='box status'><div id='Status_head'><strong>x</strong><img alt='S.writer' src='user-pics/"+ post.user_profile_picture +"'><div><a href='profile.php?id="+ post.user_id +"'>"+ post.user_firstname + " " + post.user_lastname +"</a><br><a href='post.php?post-id="+post.post_id+"'><span class='postSince'>"+ post.post_time_ago +"</span></a></div></div><div id='status_content'><p>"+ post.post_content +"</p></div><div id='status_footer'>" +
+	$("<div id=status-id_"+post.post_id+" class='box status'><div id='Status_head'><img alt='S.writer' src='user-pics/"+ post.user_profile_picture +"'><div><a href='profile.php?id="+ post.user_id +"'>"+ post.user_firstname + " " + post.user_lastname +"</a><br><a href='post.php?post-id="+post.post_id+"'><span class='postSince'>"+ post.post_time_ago +"</span></a></div></div><div id='status_content'><p>"+ post.post_content +"</p></div><div id='status_footer'>" +
 			"<div class='comments-head'><span id='like' data-id='"+post.post_id+"' class='like'>Like</span>-<span>Comments</span><div id='the-likes'></div></div>" +
 			"<div id='comments'></div><div id='comment-area'><img alt='me' class='profile-photo'><textarea placeholder='Leave a comment...' data-stid='"+post.post_id+"'></textarea></div></div></div>").appendTo("#posts").hide().fadeIn();
 }
@@ -331,6 +331,21 @@ function fiveLikesAppend( likes, user_id ){
 	});
 }
 
+function appendEx ( post, user_id ){
+	
+	if( typeof( checkIfMyProfile() ) == 'undefined' ){
+		$("#status-id_"+post.post_id+" #Status_head").prepend( "<strong title='Delete this' data-post_id='"+post.post_id+"'>x</strong>" )
+		return false;
+	}
+	
+	if ( post.user_id ==  user_id ){
+		$("#status-id_"+post.post_id+" #Status_head").prepend( "<strong title='Delete this' data-post_id='"+post.post_id+"'>x</strong>" )
+		
+	}
+	
+	
+}
+
 function commentAppender( value ){
 	$.each( value.comments.the_comments, function(key, comment){
 	$("#status-id_"+value.post_id+" #comments").prepend("<div class='comment' data-comId='"+comment.comment_id+"'><img src='user-pics/"+comment.user_profile_picture+"'>" +
@@ -351,13 +366,15 @@ function fillPosts( response ){
 		$.each( response, function(key, value){	
 			var num_comments = value.comments.num_comments;
 			
-			//Builds single post
+			//Builds each single post
 			postAppender( value ); 
 			// chack if *I* liked and append(...) if true
-			CheckIfIliked ( value.likes, user_id )
+			CheckIfIliked ( value.likes, user_id );
 			// Five likes append
-			fiveLikesAppend( value.likes, user_id )
+			fiveLikesAppend( value.likes, user_id );
 			
+			appendEx ( value, user_id );
+
 				// The number of likes append
 				if ( $(value.likes).size() )
 				$("<span>("+$(value.likes).size()+")</span>").appendTo("#status-id_"+value.post_id+" #the-likes");
@@ -457,6 +474,22 @@ function getMoreComments( element ){
 	
 }
 
+function deletePost ( element ){
+	
+	var post_id = element.data("post_id")
+	
+	$.ajax({
+		url:"api/comment/delete/"+post_id,
+		type: "DELETE",
+		dataType: "JSON",
+		success: function( response ){
+			if ( response )
+				$("#status-id_"+post_id).fadeOut();
+	
+		}
+	})
+}
+	
 
 /**
 *	getSixPack
@@ -516,7 +549,6 @@ function buildMyProfileOrOther( $url ){
 	}
 	if ( typeof($url) == 'undefined' ){
 		buildMyProfile();
-		fillWall();
 		getSixPack();
 	}
 }
@@ -551,6 +583,8 @@ function buildMyProfile(){
 				$("section:nth-child(5) span:nth-child(2)").html( response[0].user_about );
 			else
 				$("section:nth-child(5) span:nth-child(2)").html( "You haven't filled your about yet!" );
+			
+			showPostsbyId( response[0].user_id)
 		}
 		
 	});

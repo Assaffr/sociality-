@@ -1,5 +1,8 @@
 	$(document).ready(function(){					
 					verifyLogin();
+					
+					
+					
 					$("button[name=finishPost]").on( "click", function(){
 						
 						var post_to_id = $("#myDetails").data('id');
@@ -15,6 +18,7 @@
 					});		
 
 					buildMyProfileOrOther( checkIfMyProfile() );
+					
 					
 					$("#wall").on( "click", "#view-more span", function(){
 						getMoreComments( $(this) );
@@ -35,4 +39,8 @@
 						setComment( this )
 							
 						});
+					
+					$("#wall").on( "click", "#Status_head strong", function(){
+						deletePost( $(this) );
+				});
 	});

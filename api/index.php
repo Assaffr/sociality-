@@ -300,6 +300,11 @@ $app->delete( '/unfriend', function() {
 	echo $friends->unFriend( $app->request->getBody() );
 });
 
+$app->delete( '/comment/delete/:post_id',  function( $post_id ) use( $post ) {
+
+	echo $post->deletePost ( $post_id );
+});
+
 
 $app->get( '/chack/:id', function( $id ) use ( $post ) {
 	
