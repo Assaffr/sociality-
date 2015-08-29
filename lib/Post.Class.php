@@ -242,7 +242,7 @@ class Post{
 		
 		foreach( $comments["the_comments"] as $key => $value){
 			$value['comment_time_ago'] = $this->timeAgo( $value['comment_time'] );
-			$comments[$key] = $value;
+			$comments["the_comments"][$key] = $value;
 		}
 		return $comments;
 		}
