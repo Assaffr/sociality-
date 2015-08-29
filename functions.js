@@ -518,15 +518,21 @@ function getSixPack() {
 /**
 *	checkIfMyProfile
 *
-*	Checks if you are on your profile or someone else's
+*	Checks if you are on your profile or someone else's or home page
 *	by splitting the current href and returns it
 *	@param (type) (name) about this param - none
+*	@return (boolean) (true)- if we are in the home page
 *	@return (string) ($url)- the id
 */
 function checkIfMyProfile(){
 	$path = window.location.href;
 	$pathSplit = $path.split("=");
 	$url = $pathSplit[1];
+	$pathSplitCheckifHome = $path.split("/");
+	if ( $pathSplitCheckifHome[4] == "home.php" ){
+		return true;
+	}
+		
 	return $url;
 	
 }
