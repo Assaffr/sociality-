@@ -96,8 +96,10 @@ $app->get( '/login/', function() use( $friends, $user ) {
 	if ( isset( $_SESSION['user_id'] ) ){
 		$_SESSION['num_friends'] = $friends->getNumberOfFriends( $_SESSION['user_id'] );
 		$_SESSION['user_age'] = $user->getBirthday( $_SESSION['user_id'] );
-		echo ( json_encode ($_SESSION) );
 	}
+	else
+		$_SESSION['login'] = false;
+	echo ( json_encode ($_SESSION) );
 });
 
 

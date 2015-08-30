@@ -2,4 +2,4 @@
 2.--DONE--  comment time doesnt work on post page
 3.--DONE--  move functions file to script folder please i am scared to do it it because of last time lol
 4. location of error divs during registration/login
-5. הזריקה של העמוד לא עובדת גם כשאין סשן פעיל.
+5. --DONE--  הזריקה של העמוד לא עובדת גם כשאין סשן פעיל.
