@@ -1,15 +1,15 @@
 //explains function//
 /**
-*	Function name
+*	name
 *
-*	what the function does
+*	does
 *
-*	@param (type) (name) about this param
+*	@param (type) (name)
 *	@return (type) (name)
 */
 
 
-
+//are we using this?
 /**
 *	ucFirst
 *
@@ -23,7 +23,6 @@ function ucFirst (string){
 	return string[0].toUpperCase() + string.slice(1);
 }
 
-//INDEX PAGE//
 
 /**
  *	login
@@ -187,7 +186,6 @@ function register(){
 	}
 }
 
-//REGULAR PAGE//
 
  /**
  *	verifyLogin
@@ -294,14 +292,14 @@ function publishPost  ( $postContent, $postTo ){
 		});
 	}
 }
-
+//NEEDS DOCUMENTATION
 function postAppender( post ){
 	
 	$("<div id=status-id_"+post.post_id+" class='box status'><div id='Status_head'><img alt='S.writer' src='user-pics/"+ post.user_profile_picture +"'><div><a href='profile.php?id="+ post.user_id +"'>"+ post.user_firstname + " " + post.user_lastname +"</a><br><a href='post.php?post-id="+post.post_id+"'><span class='postSince'>"+ post.post_time_ago +"</span></a></div></div><div id='status_content'><p>"+ post.post_content +"</p></div><div id='status_footer'>" +
 			"<div class='comments-head'><span id='like' data-id='"+post.post_id+"' class='like'>Like</span>-<span>Comments</span><div id='the-likes'></div></div>" +
 			"<div id='comments'></div><div id='comment-area'><img alt='me' class='profile-photo'><textarea placeholder='Leave a comment...' data-stid='"+post.post_id+"'></textarea></div></div></div>").appendTo("#posts").hide().fadeIn();
 }
-
+//NEEDS DOCUMENTATION
 function CheckIfIliked ( likes, user_id ){
 	$.each( likes, function(key, like){
 		if ( like.user_id  == user_id ){
@@ -311,7 +309,7 @@ function CheckIfIliked ( likes, user_id ){
 
 	});
 }
-
+//NEEDS DOCUMENTATION
 function fiveLikesAppend( likes, user_id ){
 	
 	var counter = 0;
@@ -330,7 +328,7 @@ function fiveLikesAppend( likes, user_id ){
 			return false;
 	});
 }
-
+//NEEDS DOCUMENTATION
 function appendEx ( post, user_id ){
 	
 	if( typeof( checkIfMyProfile() ) == 'undefined' ){
@@ -345,7 +343,7 @@ function appendEx ( post, user_id ){
 	
 	
 }
-
+//NEEDS DOCUMENTATION
 function commentAppender( value ){
 	$.each( value.comments.the_comments, function(key, comment){
 	$("#status-id_"+value.post_id+" #comments").prepend("<div class='comment' data-comId='"+comment.comment_id+"'><img src='user-pics/"+comment.user_profile_picture+"'>" +
@@ -356,7 +354,7 @@ function commentAppender( value ){
 			"</div><div class='C-B'></div></div>");
 	});
 }
-
+//NEEDS DOCUMENTATION
 function fillPosts( response ){
 				
 		var user_id = $(".fullName").data().id;
@@ -428,7 +426,7 @@ function fillWall(){
 			}
 		});
 }
-
+//NEEDS DOCUMENTATION
 function fillSinglePost( post_id ){
 
 	$.ajax({
@@ -446,7 +444,7 @@ function fillSinglePost( post_id ){
 			}
 		});
 }
-
+//NEEDS DOCUMENTATION
 function getMoreComments( element ){
 	
 	$post_id = $(element).data().id
@@ -473,7 +471,7 @@ function getMoreComments( element ){
 			$("#status-id_"+$post_id+" #view-more").fadeOut()
 	
 }
-
+//NEEDS DOCUMENTATION
 function deletePost ( element ){
 	
 	var post_id = element.data("post_id")
@@ -1049,7 +1047,7 @@ function uploadCoverImage(){
 		}
 	})
 }
-
+//NEEDS DOCUMENTATION
 function getAllMyFreinds () {
 	$.ajax({
 		url:'api/friends/all',
@@ -1075,7 +1073,7 @@ function getAllMyFreinds () {
 	})
 	getAllMyFreindsRequest ();
 }
-
+//NEEDS DOCUMENTATION
 function getAllMyFreindsRequest () {
 	$.ajax({
 		url:'api/friends/allRequest',
@@ -1110,7 +1108,7 @@ function getAllMyFreindsRequest () {
 }
 
 
-//NEEDS DOCUMENTATION!!!
+//NEEDS DOCUMENTATION!!! why is this different from the one on line 225?
 $(document).ready(function(){
 	$("#logout").on("click", function(){
 		logout();

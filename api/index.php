@@ -122,30 +122,6 @@ $app->post( '/user/', function() {
 	
 });
 
-
-
-//Display All Users:
-$app->get( '/user/', function() {
-	global $user, $app;
-	echo ( json_encode( $user->getAllUsers() ) );
-	//var_dump ($user->getAllUsers());
-});
-
-//Display specific user
-$app->get( '/user/:id', function( $id ) {
-	global $user, $app;
-	$user = $user->getUser($id);
-	echo $user[0]['user_email'];
-	//echo ( json_encode($user->getUser($id)) );
-});
-
-
-//Delete User
-$app->delete( '/user/:id', function( $id ) {
-	global $user;
-	$user->deleteUser($id);
-});
-
 //Update User
 $app->put( '/user', function( ) {
 	global $user, $app, $login;

@@ -5,6 +5,14 @@
 		private $_db;
 		//private $friends;		
 		
+		/**
+		 *  __construct
+		 *
+		 * This function get single connection to a database and put it in $this->_db
+		 *
+		 * @no param needed
+		 * @no return
+		 */
 		public function __construct(){
 			$this->_db = DB::getResource();
 		}

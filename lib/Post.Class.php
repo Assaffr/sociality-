@@ -4,11 +4,26 @@ class Post{
 	
 	private $_db;
 	
+	/**
+	 *  __construct
+	 *
+	 * This function get single connection to a database and put it in $this->_db
+	 *
+	 * @no param needed
+	 * @no return
+	 */
 	public function __construct () {
 		$this->_db = DB::getResource ();
 	}
 	
-
+	/**
+	 *	publishPost
+	 *
+	 *	publishes a post
+	 *
+	 *	@param (array) ($details) details of the post being published
+	 *	@return (boolean) ($this->_db->insert_id) whether the post was published or not
+	 */
 	public function publishPost ( $details ) {
 		if ( $details['post_to_friend_id'] == $_SESSION['user_id'] ) {
 			$query = "INSERT INTO posts ( user_id, post_content, post_created) VALUES ('$_SESSION[user_id]', '$details[post_content]', CURRENT_TIME() );";
@@ -23,6 +38,14 @@ class Post{
 			return  $this->_db->insert_id;
 	}
 	
+	/**
+	 *	getSinglePost
+	 *
+	 *	gets a single post with all its correct info (comments, likes, time ago) for post permalink page
+	 *
+	 *	@param (int) ($post_id) post id
+	 *	@return (type) (name)
+	 */
 	public function getSinglePost( $post_id ) {
 		$query = "SELECT users_info.user_id, users_info.user_firstname, users_info.user_lastname, users_info.user_profile_picture, posts.post_created, posts.post_content, posts.post_id
 				FROM users_info 
@@ -41,9 +64,20 @@ class Post{
 		return $wrap;
 	}
 	
-	//this functions selects all the post info PLUS joins the users_info table in order to also fetch the name of the user who made the post
-	//LIMITING POSTS will be used via "LIMIT" and "OFFSET" (skips to next x number of posts)
-	//ORDER BY puts latest posts on top
+
+	/**
+	 *	showPosts
+	 *
+	 *	shows all posts on someone's home page - theirs and their friends
+	 *	
+	 *	LIMITING POSTS will be used via "LIMIT" and "OFFSET" (skips to next x number of posts)
+	 *	ORDER BY puts latest posts on top
+	 *
+	 *	@param (int) ($offset) sets the offset for the post
+	 *	@param (int) ($id) id of user whose posts we're showing
+	 *	@return (array) ($postsWithTimeAgo) the posts with time ago
+	 *	@return (array) ($posts) posts without time ago
+	 */
 	public function showPosts($offset, $id){
 		$post = $this->_db->query("
 				(SELECT users_info.user_id, users_info.user_firstname, users_info.user_lastname, users_info.user_profile_picture, posts.post_created, posts.post_content, posts.post_id
@@ -90,6 +124,16 @@ class Post{
 
 	}
 	
+	/**
+	 *	getWallPosts
+	 *
+	 *	gets all the posts that should be on someone's wall - theirs, and the ones posted on their wall by other people.
+	 *
+	 *	@param (int) ($offset) sets the offset for the post
+	 *	@param (int) ($id) id of user whose posts we're showing
+	 *	@return (array) ($postsWithTimeAgo) the posts with time ago
+	 *	@return (array) ($posts) posts without time ago
+	 */
 	public function getWallPosts ( $offset, $id ){
 		$post = $this->_db->query("
 				(SELECT users_info.user_id, users_info.user_firstname, users_info.user_lastname, users_info.user_profile_picture, posts.post_created, posts.post_content, posts.post_id
@@ -131,6 +175,14 @@ class Post{
 	//sets timezone to israel, then takes the string of time in parm and turns it into epoch time
 	//$diff = the difference between current epoch time to the param epoch one.
 	//then it just figures out how long it's been and echoes the correct difference. (hopefully)
+	/**
+	 *	timeAgo
+	 *
+	 *	turns a timeestamp in string form into 'time ago' string.
+	 *
+	 *	@param (string) ($postTimeinString) the original timestamp
+	 *	@return (string) (string for each possible time)
+	 */
 	public function timeAgo( $postTimeinString ) {
 		date_default_timezone_set( 'Israel' );
 		$epoch = strtotime( $postTimeinString );
@@ -149,13 +201,15 @@ class Post{
 			return (int) ($diffDay)." days ago";
 	}
 	
-	// public function getFeed( $user_id ) {
-		// $feed = array(
-			// "comments" => $this->getFirstComments();
-		// );
-	// }
 	
-	
+	/**
+	 *	getFirstComments
+	 *
+	 *	//ADD DOCUMENTATION
+	 *
+	 *	@param (int) ($post_id) post id
+	 *	@return (array) ($comments) the first comments
+	 */
 	public function getFirstComments( $post_id ){
 		$query = "SELECT comments.comment_id, comments.comment_content, comments.comment_time, comments.user_id, users_info.user_firstname ,users_info.user_lastname, users_info.user_profile_picture
 				FROM comments
@@ -201,6 +255,14 @@ class Post{
 		return $comments;
 	}
 	
+	/**
+	 *	getMoreComments
+	 *
+	 *	//ADD DOCUMENTATION
+	 *
+	 *	@param (int) ($post_id) post id
+	 *	@return ?
+	 */
 	public function getMoreComments( $post_id, $offset ){
 		$query = "SELECT comments.comment_id, comments.comment_content, comments.comment_time, comments.user_id, users_info.user_firstname ,users_info.user_lastname, users_info.user_profile_picture
 		FROM comments
@@ -221,6 +283,14 @@ class Post{
 		return $comments;
 	}
 	
+	/**
+	 *	getAllComments
+	 *
+	 *	//ADD DOCUMENTATION
+	 *
+	 *	@param (int) ($post_id) post id
+	 *	@return ?
+	 */
 	public function getAllComments( $post_id ){
 		$query = "SELECT comments.comment_id, comments.comment_content, comments.comment_time, comments.user_id, users_info.user_firstname ,users_info.user_lastname, users_info.user_profile_picture
 		FROM comments
@@ -247,7 +317,14 @@ class Post{
 		return $comments;
 		}
 
-	
+		/**
+		 *	setComments
+		 *
+		 *	//ADD DOCUMENTATION
+		 *
+		 *	@param (?) ($details) ?
+		 *	@return ?
+		 */
 	public function setComments( $details ){
 		$query = "INSERT INTO comments 
 		( comment_content, comment_time, user_id, post_id ) VALUES 
@@ -278,7 +355,14 @@ class Post{
 
 	}
 	
-	
+	/**
+	 *	toggleLike
+	 *
+	 *	//ADD DOCUMENTATION
+	 *
+	 *	@param (int) ($post_id) post id
+	 *	@return ?
+	 */
 	public function toggleLike ( $post_id ){
 		
 		if ( !$this->chackLike ( $post_id ) ){
@@ -291,7 +375,14 @@ class Post{
 		return  $this->_db->query( $query );
 	}
 	
-	
+	/**
+	 *	chackLike
+	 *
+	 *	//ADD DOCUMENTATION
+	 *
+	 *	@param (int) ($post_id) post id
+	 *	@return ?
+	 */
 	private function chackLike ( $post_id ){
 		
 		$query = "SELECT like_id FROM likes WHERE user_id = $_SESSION[user_id]  AND post_id = $post_id ;";
@@ -304,7 +395,14 @@ class Post{
 
 	}
 	
-	
+	/**
+	 *	chackPostOwner
+	 *
+	 *	//ADD DOCUMENTATION
+	 *
+	 *	@param (int) ($post_id) post id
+	 *	@return ?
+	 */
 	private function chackPostOwner ( $post_id ){
 		
 		$query = "SELECT user_id FROM posts WHERE post_id =".$post_id;
@@ -326,6 +424,14 @@ class Post{
 		
 	}
 	
+	/**
+	 *	deletePost
+	 *
+	 *	//ADD DOCUMENTATION
+	 *
+	 *	@param (int) ($post_id) post id
+	 *	@return ?
+	 */
 	public function deletePost ( $post_id ){
 		if ( $this->chackPostOwner( $post_id ) ){
 			$query = "
