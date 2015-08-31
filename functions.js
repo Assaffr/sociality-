@@ -461,10 +461,10 @@ function fillPosts( response ){
 *
 *	ajax call to get posts with offset
 *
-*	@param ($offset) offset
+*	@param ()
 *	@return (type) (name) none
 */
-function fillWall( $offset ){
+function fillWall( ){
 	$offset+= 3;
 	$.ajax({
 			url: "api/post/" + $offset,
@@ -519,10 +519,10 @@ function getMoreComments( element ){
 	$post_id = $(element).data("id");
 	$clicks = ( $(element).data("clicks") )+1; //checks how many times you clicked the get more comments button
 	$(element).data("clicks", $clicks); //puts in dom element number of times you clicked on get more comments
-	$offset = 3+(5*($clicks-1)); //calculates offset based on number of clicks
+	$com_offset = 3+(5*($clicks-1)); //calculates offset based on number of clicks
 
 	$.ajax({
-		url:"api/comments/"+$offset+"?post_id="+$post_id,
+		url:"api/comments/"+$com_offset+"?post_id="+$post_id,
 		type: "GET",
 		dataType: "JSON",
 		success: function( response ){
@@ -536,7 +536,7 @@ function getMoreComments( element ){
 			})
 		}
 	})
-		if ( ($offset+5) >= $(element).data("num") )
+		if ( ($com_offset+5) >= $(element).data("num") )
 			$("#status-id_"+$post_id+" #view-more").fadeOut() //if all comments loaded, erase view more button
 	
 }
