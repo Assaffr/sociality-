@@ -46,8 +46,8 @@ function login($email, $password){
 					window.location.href = "home.php";
 					}
 				else {
-					$("#login #errorReg").html("Incorrect details.");
-					$("#login #errorBox").fadeIn();
+					$("#errorReg").html("Incorrect details.");
+					$("#errorBox").fadeIn();
 				}
 			}
 		});
