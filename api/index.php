@@ -284,7 +284,7 @@ $app->delete( '/comment/delete/:post_id',  function( $post_id ) use( $post ) {
 });
 
 
-$app->get( '/chack/:id', function( $id ) use ( $post ) {
+$app->get( '/check/:id', function( $id ) use ( $post ) {
 	
 });
 	

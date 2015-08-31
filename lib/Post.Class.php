@@ -172,9 +172,6 @@ class Post{
 	}
 
 	
-	//sets timezone to israel, then takes the string of time in parm and turns it into epoch time
-	//$diff = the difference between current epoch time to the param epoch one.
-	//then it just figures out how long it's been and echoes the correct difference. (hopefully)
 	/**
 	 *	timeAgo
 	 *
@@ -205,10 +202,12 @@ class Post{
 	/**
 	 *	getFirstComments
 	 *
-	 *	//ADD DOCUMENTATION
+	 *	IF there's five comments or less - bring all comments.
+	 *	IF there's more than five comments - bring the first three.
 	 *
 	 *	@param (int) ($post_id) post id
-	 *	@return (array) ($comments) the first comments
+	 *	@return (array) ($comments) contains: num comments - number of comments,
+	 *	and the_comments(array) - the comments themselves. 
 	 */
 	public function getFirstComments( $post_id ){
 		$query = "SELECT comments.comment_id, comments.comment_content, comments.comment_time, comments.user_id, users_info.user_firstname ,users_info.user_lastname, users_info.user_profile_picture
@@ -258,10 +257,11 @@ class Post{
 	/**
 	 *	getMoreComments
 	 *
-	 *	//ADD DOCUMENTATION
+	 *	brings five comments each time by offset.
 	 *
 	 *	@param (int) ($post_id) post id
-	 *	@return ?
+	 *	@param (int) ($offset) starts from three outside the function then jumps by five each time
+	 *	@return (array) ($comments) the comments
 	 */
 	public function getMoreComments( $post_id, $offset ){
 		$query = "SELECT comments.comment_id, comments.comment_content, comments.comment_time, comments.user_id, users_info.user_firstname ,users_info.user_lastname, users_info.user_profile_picture
@@ -286,10 +286,10 @@ class Post{
 	/**
 	 *	getAllComments
 	 *
-	 *	//ADD DOCUMENTATION
+	 *	brings all the comments without offset or limit and includes the number of comments
 	 *
 	 *	@param (int) ($post_id) post id
-	 *	@return ?
+	 *	@return (array) ($comments) the comments
 	 */
 	public function getAllComments( $post_id ){
 		$query = "SELECT comments.comment_id, comments.comment_content, comments.comment_time, comments.user_id, users_info.user_firstname ,users_info.user_lastname, users_info.user_profile_picture
@@ -317,14 +317,14 @@ class Post{
 		return $comments;
 		}
 
-		/**
-		 *	setComments
-		 *
-		 *	//ADD DOCUMENTATION
-		 *
-		 *	@param (?) ($details) ?
-		 *	@return ?
-		 */
+	/**
+	 *	setComments
+	 *
+	 *	adds new comment
+	 *
+	 *	@param (array) ($details) content and post id
+	 *	@return (int) ($this->_db->query( $query )) if success - comment id, if failed - 0
+	 */
 	public function setComments( $details ){
 		$query = "INSERT INTO comments 
 		( comment_content, comment_time, user_id, post_id ) VALUES 
@@ -337,7 +337,14 @@ class Post{
 		}
 	}
 	
-	
+	/**
+	 *	getLikes
+	 *
+	 *	returns likes
+	 *
+	 *	@param (int) ($post_id) post id
+	 *	@return (array) ($likes) the likes
+	 */
 	public function getLikes( $post_id ) {
 		$query = "SELECT likes.like_id, likes.user_id, likes.like_created, likes.post_id, users_info.user_firstname, users_info.user_lastname, users_info.user_profile_picture
 					FROM likes
@@ -355,55 +362,60 @@ class Post{
 
 	}
 	
+	
+	/**
+	 *	checkLike
+	 *
+	 *	checks if current session user has liked the post in the param
+	 *
+	 *	@param (int) ($post_id) post id
+	 *	@return (int) if there is a like - return like id, if not return 0.
+	 */
+	private function checkLike ( $post_id ){
+	
+		$query = "SELECT like_id FROM likes WHERE user_id = $_SESSION[user_id]  AND post_id = $post_id ;";
+	
+		$result = $this->_db->query( $query );
+	
+			
+		return $result->fetch_assoc()['like_id'];
+	
+	
+	}
+	
 	/**
 	 *	toggleLike
 	 *
-	 *	//ADD DOCUMENTATION
+	 *	when called - checks if there's a like using checkLike function, 
+	 *	if there is - deletes the like, if there isn't - sets like.
 	 *
 	 *	@param (int) ($post_id) post id
-	 *	@return ?
+	 *	@return (boolean) ($this->_db->query( $query )) whether it worked or not
 	 */
 	public function toggleLike ( $post_id ){
 		
-		if ( !$this->chackLike ( $post_id ) ){
+		if ( !$this->checkLike ( $post_id ) ){
 		
 		$query = "INSERT INTO likes ( user_id, like_created, post_id )
 				VALUES ( '".$_SESSION['user_id']."', CURRENT_TIME(), $post_id )";
 		}else{
-		$query = "DELETE FROM likes WHERE like_id = ".$this->chackLike ( $post_id );
+		$query = "DELETE FROM likes WHERE like_id = ".$this->checkLike ( $post_id );
 		}
 		return  $this->_db->query( $query );
 	}
 	
-	/**
-	 *	chackLike
-	 *
-	 *	//ADD DOCUMENTATION
-	 *
-	 *	@param (int) ($post_id) post id
-	 *	@return ?
-	 */
-	private function chackLike ( $post_id ){
-		
-		$query = "SELECT like_id FROM likes WHERE user_id = $_SESSION[user_id]  AND post_id = $post_id ;";
-		
-		$result = $this->_db->query( $query );
-		
-			
-			return $result->fetch_assoc()['like_id'];
-		
 
-	}
-	
 	/**
-	 *	chackPostOwner
+	 *	checkPostOwner
 	 *
-	 *	//ADD DOCUMENTATION
+	 *	checks if current session user wrote the post OR someone wrote it on their wall.
 	 *
 	 *	@param (int) ($post_id) post id
-	 *	@return ?
+	 *	@return (boolean) (true) session user  wrote the post
+	 *	@return (boolean) (true) someone wrote their post on session user's wall
+	 *	@return (boolean) (false) neither options are true
 	 */
-	private function chackPostOwner ( $post_id ){
+	private function checkPostOwner ( $post_id ){
 		
 		$query = "SELECT user_id FROM posts WHERE post_id =".$post_id;
 		
@@ -427,13 +439,16 @@ class Post{
 	/**
 	 *	deletePost
 	 *
-	 *	//ADD DOCUMENTATION
+	 *	checks if current session user wrote the post OR it was written on their wall.
+	 *	if so, deletes post
+	 *	also deletes post id from post_relations in case it was written on someone's wall
 	 *
 	 *	@param (int) ($post_id) post id
-	 *	@return ?
-	 */
+	 *	@return (boolean) ($result = $this->_db->multi_query($query)) whether it worked or not
+	 *	@return (boolean) (false) current session user didn't write post and it wasn't written on their wall - no permission to delete!
+	 */ 
 	public function deletePost ( $post_id ){
-		if ( $this->chackPostOwner( $post_id ) ){
+		if ( $this->checkPostOwner( $post_id ) ){
 			$query = "
 					DELETE FROM posts WHERE post_id = $post_id;
 					DELETE FROM posts_relations WHERE post_id = $post_id;";

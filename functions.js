@@ -292,14 +292,32 @@ function publishPost  ( $postContent, $postTo ){
 		});
 	}
 }
-//NEEDS DOCUMENTATION
+
+/**
+*	postAppender
+*
+*	creates main div element and content of post
+*
+*	@param (obj) (post) details of post
+*	@return (type) (name) none
+*/
 function postAppender( post ){
-	
 	$("<div id=status-id_"+post.post_id+" class='box status'><div id='Status_head'><img alt='S.writer' src='user-pics/"+ post.user_profile_picture +"'><div><a href='profile.php?id="+ post.user_id +"'>"+ post.user_firstname + " " + post.user_lastname +"</a><br><a href='post.php?post-id="+post.post_id+"'><span class='postSince'>"+ post.post_time_ago +"</span></a></div></div><div id='status_content'><p>"+ post.post_content +"</p></div><div id='status_footer'>" +
 			"<div class='comments-head'><span id='like' data-id='"+post.post_id+"' class='like'>Like</span>-<span>Comments</span><div id='the-likes'></div></div>" +
 			"<div id='comments'></div><div id='comment-area'><img alt='me' class='profile-photo'><textarea placeholder='Leave a comment...' data-stid='"+post.post_id+"'></textarea></div></div></div>").appendTo("#posts").hide().fadeIn();
 }
-//NEEDS DOCUMENTATION
+
+
+/**
+*	CheckIfIliked
+*
+*	goes through obj containing all likes in current post and checks if user liked the post.
+*	if they did, switches like button to unlike.
+*
+*	@param (obj) (likes) contains all likes
+*	@param (int) (user_id) current user's id
+*	@return (type) (name) - none
+*/
 function CheckIfIliked ( likes, user_id ){
 	$.each( likes, function(key, like){
 		if ( like.user_id  == user_id ){
@@ -309,7 +327,15 @@ function CheckIfIliked ( likes, user_id ){
 
 	});
 }
-//NEEDS DOCUMENTATION
+/**
+*	fiveLikesAppend
+*
+*	puts pictures of the users who liked the post - limited to five by counter.
+*
+*	@param (obj) (likes) contains all likes
+*	@param (int) (user_id) current user's id
+*	@return (boolean) (false) stops loop when it reaches five iterations.
+*/
 function fiveLikesAppend( likes, user_id ){
 	
 	var counter = 0;
@@ -328,7 +354,17 @@ function fiveLikesAppend( likes, user_id ){
 			return false;
 	});
 }
-//NEEDS DOCUMENTATION
+
+/**
+*	appendEx
+*
+*	appends the little x button to be able to delete the post.
+*	checks to see current user wrote the post or it was written on their wall - otherwise no permission, no button!
+*
+*	@param (obj) (post) contains the whole post
+*	@param (int) (user_id) current user's id
+*	@return (boolean) (false) stops the function if first condition occurred.  (if we are on current user's profile)
+*/
 function appendEx ( post, user_id ){
 	
 	if( typeof( checkIfMyProfile() ) == 'undefined' ){
@@ -343,7 +379,14 @@ function appendEx ( post, user_id ){
 	
 	
 }
-//NEEDS DOCUMENTATION
+/**
+*	commentAppender
+*
+*	appends comment section to each post
+*
+*	@param (obj) (value) contains comment
+*	@return (type) (name) - none
+*/
 function commentAppender( value ){
 	$.each( value.comments.the_comments, function(key, comment){
 	$("#status-id_"+value.post_id+" #comments").prepend("<div class='comment' data-comId='"+comment.comment_id+"'><img src='user-pics/"+comment.user_profile_picture+"'>" +
@@ -354,7 +397,16 @@ function commentAppender( value ){
 			"</div><div class='C-B'></div></div>");
 	});
 }
-//NEEDS DOCUMENTATION
+
+
+/**
+*	fillPosts
+*
+*	gets response of fillWall function and creates posts
+*
+*	@param (array of objects) (response) the post/s (depends on many posts we got) it needs to fill the wall with
+*	@return (type) (name) -none
+*/
 function fillPosts( response ){
 				
 		var user_id = $(".fullName").data().id;
@@ -375,8 +427,9 @@ function fillPosts( response ){
 
 				// The number of likes append
 				if ( $(value.likes).size() )
-				$("<span>("+$(value.likes).size()+")</span>").appendTo("#status-id_"+value.post_id+" #the-likes");
+					$("<span>("+$(value.likes).size()+")</span>").appendTo("#status-id_"+value.post_id+" #the-likes");
 				
+				// adds section of view more comments
 				if( value.comments.num_comments > 5 ){
 					if( !$("#status-id_"+value.post_id+" #view-more").hasClass("comments-head") )
 					$("<div id='view-more' class='comments-head'><span data-clicks='0' data-id="+value.post_id+" data-num="+value.comments.num_comments+">View more comments</span></div>").insertAfter("#status-id_"+value.post_id+" .comments-head")
@@ -406,12 +459,12 @@ function fillPosts( response ){
 /**
 *	fillWall
 *
-*	shows posts
+*	ajax call to get posts with offset
 *
-*	@param
+*	@param ($offset) offset
 *	@return (type) (name) none
 */
-function fillWall(){
+function fillWall( $offset ){
 	$offset+= 3;
 	$.ajax({
 			url: "api/post/" + $offset,
@@ -426,9 +479,16 @@ function fillWall(){
 			}
 		});
 }
-//NEEDS DOCUMENTATION
-function fillSinglePost( post_id ){
 
+/**
+*	fillSinglePost
+*
+*	ajax call to single post permalink
+*
+*	@param (int) (post_id)
+*	@return (type) (name) - none
+*/
+function fillSinglePost( post_id ){
 	$.ajax({
 			url: "api/singlePost/" + post_id,
 			type: "GET",
@@ -444,13 +504,22 @@ function fillSinglePost( post_id ){
 			}
 		});
 }
-//NEEDS DOCUMENTATION
+
+/**
+*	getMoreComments
+*
+*	it gets more comments!
+*	sends ajax request with offset and post id
+*
+*	@param (obj) (element) span which is clicked to load more comments
+*	@return (type) (name) none
+*/
 function getMoreComments( element ){
 	
-	$post_id = $(element).data().id
-	$clicks = ($(element).data().clicks)+1
-	$(element).data("clicks", $clicks)
-	$offset = 3+(5*($clicks-1))
+	$post_id = $(element).data().id;
+	$clicks = ($(element).data().clicks)+1; //checks how many times you clicked the get more comments button
+	$(element).data("clicks", $clicks); //puts in dom element number of times you clicked on get more comments
+	$offset = 3+(5*($clicks-1)); //calculates offset based on number of clicks
 
 	$.ajax({
 		url:"api/comments/"+$offset+"?post_id="+$post_id,
@@ -468,10 +537,18 @@ function getMoreComments( element ){
 		}
 	})
 		if ( ($offset+5) >= $(element).data().num )
-			$("#status-id_"+$post_id+" #view-more").fadeOut()
+			$("#status-id_"+$post_id+" #view-more").fadeOut() //if all comments loaded, erase view more button
 	
 }
-//NEEDS DOCUMENTATION
+
+/**
+*	deletePost
+*
+*	deletes a post
+*
+*	@param (obj) (element) x button
+*	@return (type) (name) none
+*/
 function deletePost ( element ){
 	
 	var post_id = element.data("post_id")
@@ -905,7 +982,16 @@ function sendFriendRequest( $id ){
 	});
 	
 }
-//NEEDS DOCUMENTATION!!!
+
+
+/**
+*	toggleLike
+*
+*	sends ajax request to see if there's a like and sets like status depending on answer
+*
+*	@param (obj) (element) like button
+*	@return (type) (name) none
+*/
 function toggleLike ( element ) {
 		$.ajax({
 			url: "api/like/"+ $( element ).data().id,
@@ -935,7 +1021,15 @@ function toggleLike ( element ) {
 			}
 		});
 }	
-//NEEDS DOCUMENTATION!!!
+
+/**
+*	setComment
+*
+*	sets a new comment by user pressing enter
+*
+*	@param (obj) (element) text area for the post's comment section
+*	@return (type) (name) none
+*/
 function setComment ( element ){
 	
 	if ( event.which == 13 ){
@@ -1047,8 +1141,16 @@ function uploadCoverImage(){
 		}
 	})
 }
-//NEEDS DOCUMENTATION
-function getAllMyFreinds () {
+
+/**
+*	getAllMyFriends
+*
+*	sends ajax to get list of friends and appends into friends area of the wall
+*
+*	@param (type) (name) none
+*	@return (type) (name) none
+*/
+function getAllMyFriends () {
 	$.ajax({
 		url:'api/friends/all',
 		type:"GET",
@@ -1071,10 +1173,19 @@ function getAllMyFreinds () {
 			} );
 		}
 	})
-	getAllMyFreindsRequest ();
+	getAllMyFriendsRequest ();
 }
-//NEEDS DOCUMENTATION
-function getAllMyFreindsRequest () {
+
+
+/**
+*	getAllMyFriendsRequest
+*
+*	sends ajax to get list of friend request and appends into friends area of the wall
+*
+*	@param (type) (name) none
+*	@return (type) (name) none
+*/
+function getAllMyFriendsRequest () {
 	$.ajax({
 		url:'api/friends/allRequest',
 		type:"GET",
@@ -1108,7 +1219,8 @@ function getAllMyFreindsRequest () {
 }
 
 
-//NEEDS DOCUMENTATION!!! why is this different from the one on line 225?
+//we are calling the logout function on each page when you press logout
+//this is the only file in common with all pages so we put it here
 $(document).ready(function(){
 	$("#logout").on("click", function(){
 		logout();

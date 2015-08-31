@@ -1,6 +1,3 @@
-1.--DONE-- Publishing a post while on your own profile page doesn't work
-2.--DONE--  comment time doesnt work on post page
-3.--DONE--  move functions file to script folder please i am scared to do it it because of last time lol
-4. location of error divs during registration/login
-5. --DONE--  הזריקה של העמוד לא עובדת גם כשאין סשן פעיל.
-6. ctrl-f 'DOCUMENTATION' on functions.js and post.class.php and add documentation, idk how these functions work!
+1. div of register/login error placement
+2. access friends from wall
+3. that dot in getmorecomments line 522
