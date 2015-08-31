@@ -154,6 +154,7 @@ fieldset p {
 	font:normal normal normal normal 13.3333330154419px/normal Arial;
 	height:45px !important;
 	display:none;
+	margin-top: 20px;
 }
 
 #errorBox h3{
