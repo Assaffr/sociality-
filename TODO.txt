@@ -1,3 +1,3 @@
 1. div of register/login error placement
-2. access friends from wall
-3. that dot in getmorecomments line 522
+2. -- DONE -- access friends from wall
+3. -- DONE -- that dot in getmorecomments line 522

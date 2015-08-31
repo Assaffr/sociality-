@@ -31,7 +31,7 @@
 					
 					$("#myFriends_head").on( "click", function(){
 						
-						getAllMyFreinds()
+						getAllMyFriends()
 						
 					});
 					

@@ -31,12 +31,7 @@
 						
 					});
 					
-					$("#myFriends_head").on( "click", function(){
-						
-						getAllMyFreinds()
-						
-					});
-					
+
 					$("#wall").on( "click", "#view-more span", function(){
 							getMoreComments( $(this) );
 					});
@@ -45,7 +40,11 @@
 						deletePost( $(this) );
 				});
 				
-					
+					$("#myFriends_head").on( "click", function(){
+						
+						getAllMyFriends()
+						
+					});
 					
 					
 					

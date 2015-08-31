@@ -165,8 +165,8 @@ function register(){
 			type: "POST",
 			dataType: "JSON",
 			data: JSON.stringify({
-				user_firstname:$("input[id=first_name].register").val(),
-				user_lastname:$("input[id=last_name].register").val(),
+				user_firstname:ucFirst( $("input[id=first_name].register").val() ),
+				user_lastname:ucFirst ( $("input[id=last_name].register").val() ),
 				user_email:$("input[id=email].register").val(),
 				user_password:$("input[id=password].register").val()}),
 			success: function( response ) {
@@ -409,7 +409,7 @@ function commentAppender( value ){
 */
 function fillPosts( response ){
 				
-		var user_id = $(".fullName").data().id;
+		var user_id = $(".fullName").data("id");
 		
 		$( "#loadMorePosts" ).remove();
 		
@@ -516,8 +516,8 @@ function fillSinglePost( post_id ){
 */
 function getMoreComments( element ){
 	
-	$post_id = $(element).data().id;
-	$clicks = ($(element).data().clicks)+1; //checks how many times you clicked the get more comments button
+	$post_id = $(element).data("id");
+	$clicks = ( $(element).data("clicks") )+1; //checks how many times you clicked the get more comments button
 	$(element).data("clicks", $clicks); //puts in dom element number of times you clicked on get more comments
 	$offset = 3+(5*($clicks-1)); //calculates offset based on number of clicks
 
@@ -536,7 +536,7 @@ function getMoreComments( element ){
 			})
 		}
 	})
-		if ( ($offset+5) >= $(element).data().num )
+		if ( ($offset+5) >= $(element).data("num") )
 			$("#status-id_"+$post_id+" #view-more").fadeOut() //if all comments loaded, erase view more button
 	
 }
@@ -994,13 +994,13 @@ function sendFriendRequest( $id ){
 */
 function toggleLike ( element ) {
 		$.ajax({
-			url: "api/like/"+ $( element ).data().id,
+			url: "api/like/"+ $( element ).data("id"),
 			type: "POST",
 			dataType: "JSON",
 			success: function ( response ){
 				if ( response ){
 					
-					var post_id = $( element ).data().id;
+					var post_id = $( element ).data("id");
 		
 		
 					$( element ).toggleClass( "unlike" )
@@ -1044,7 +1044,7 @@ function setComment ( element ){
 				type: "POST",
 				dataType: "JSON",
 				data:JSON.stringify({
-					post_id: $(element).data().stid, 
+					post_id: $(element).data("stid"), 
 					comment_content: content
 					 }),
 				success: function ( comment_id ){
@@ -1054,7 +1054,7 @@ function setComment ( element ){
 								"<span><a href='profile.php'>"+$('#topBarNav strong').html()+"</a></span><br>" +
 								"<span>"+content+"</span><br>" +
 								"<span>Just Now</span>" +
-								"</div><div class='C-B'></div></div>").appendTo("#status-id_"+$(element).data().stid+" #comments");
+								"</div><div class='C-B'></div></div>").appendTo("#status-id_"+$(element).data('stid')+" #comments");
 					};					
 				}
 			})
